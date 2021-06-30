@@ -42,7 +42,7 @@
         <div class="modal-content">
             <div class="modal-header" style="background:#2470bd;">
                 <h5 class="modal-title" id="exampleModalLabel2" style="color:white;">
-                    DETALLE DEL PEDIDO
+                    DETALLES E HISTORIAL
                 </h5>
 
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -60,19 +60,18 @@
                                             <div class="card-body px-4 px-lg-5">
                                                 <div class="mt-4">
                                                     <h1 class="page-title text-dark-l3 text-115">
-                                                        Productos encargados
+                                                        Detalle del pedido
                                                     </h1>
                                                     <div class="table-responsive row  text-95 text-secondary-d3 py-25 border-y-2" style=" margin-right: 0px; margin-left: 0px;">
                                                         <table class="table table-striped table-borderless border-0 border-b-2 brc-default-l1">
                                                             <thead class="bg-none " style="background-color:#309b74;">
                                                                 <tr class="text-white">
-                                                                    <th><b>Nombre del usuario</b></th>
-                                                                    <th><b>Sucursal del usuario</b></th>
-                                                                    <th><b>Total</b></th>
-                                                                    <th><b>Cantidad</b></th>
-                                                                    <th><b>Precio por unidad</b></th>
+                                                                    <th><b>Folio del pedido</b></th>
+                                                                    <th><b>Id del producto</b></th>
                                                                     <th><b>Nombre del producto</b></th>
-                                                                    <th><b>Nombre del proveedor</b></th>
+                                                                    <th><b>Cantidad</b></th>
+                                                                    <th><b>Descripción</b></th>
+
                                                                 </tr>
                                                             </thead>
                                                             <tbody class="text-95" id="tbl_pedido" name="tbl_pedido">
@@ -81,6 +80,28 @@
                                                         </table>
                                                     </div>
                                                 </div>
+
+                                                <div class="mt-4">
+                                                    <h1 class="page-title text-dark-l3 text-115">
+                                                        Historial de mi pedido
+                                                    </h1>
+                                                    <div class="table-responsive row  text-95 text-secondary-d3 py-25 border-y-2" style=" margin-right: 0px; margin-left: 0px;">
+                                                        <table class="table table-striped table-borderless border-0 border-b-2 brc-default-l1">
+                                                            <thead class="bg-none " style="background-color:#309b74;">
+                                                                <tr class="text-white">
+                                                                    <th><b>Folio del pedido</b></th>
+                                                                    <th><b>Status</b></th>
+                                                                    <th><b>Fecha</b></th>
+                                                                    <th><b>Descripción</b></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody class="text-95" id="tbl_historial" name="tbl_historial">
+
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -341,7 +362,49 @@
 
 </script>
 
+<script type="text/javascript">
+    $('#modalDetalle').on('show.bs.modal', function(event) {
+        /RECUPERAR METADATOS DEL BOTÓN/
+        var button = $(event.relatedTarget)
+        var id_pedido = button.data('id')
+        /*ASIGNAR VALOR A LOS METADATOS DEL MODAL*/
+        var llenado = '';
+        var llenado2='';
+        var datos = @json($detalles_pedido_sucursal);
+        var historial = @json($historial_pedidos);
+        var modal = $(this)
 
+
+        datos.forEach(objeto => {
+            if (objeto.id_pedido == id_pedido) {
+                //alert("hola");
+                llenado += '<tr> <td>' + objeto.id_pedido + '</td>' +
+                    '<td>' + objeto.id_producto + '</td>' +
+                    '<td>' + objeto.nombre + '</td>' +
+                    '<td>' + objeto.cantidad + '</td>' +
+                    '<td>' + objeto.descripcion + '</td>' +
+                    '</tr>';
+            }
+        });
+        console.log(llenado);
+        document.getElementById('tbl_pedido').innerHTML = llenado;
+
+        historial.forEach(objeto => {
+            if (objeto.id_pedido == id_pedido) {
+                //alert("hola");
+                llenado += '<tr> <td>' + objeto.id_pedido + '</td>' +
+                    '<td>' + objeto.status + '</td>' +
+                    '<td>' + objeto.fecha_evento + '</td>' +
+                    '<td>' + objeto.descripcion_evento + '</td>' +
+                    '</tr>';
+            }
+        });
+        document.getElementById('tbl_historial').innerHTML = llenado2;
+
+
+    });
+
+</script>
 
 @stop
 @stop

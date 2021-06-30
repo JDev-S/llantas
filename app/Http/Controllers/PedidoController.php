@@ -87,11 +87,21 @@ class PedidoController extends Controller
     
     function mostrar_catalogo_proveedores()
     {
-        $catalogos=DB::select("select catalogo.id_producto, productos_llantimax.nombre, proveedores.id_proveedor, proveedores.nombre_contacto,proveedores.nombre_empresa, proveedores.id_sucursal, IFNULL(sucursal.sucursal, 'Global') as sucursal,catalogo.precio_compra,catalogo.id_catalogo from catalogo INNER JOIN proveedores on proveedores.id_proveedor=catalogo.id_proveedor LEFT JOIN sucursal on sucursal.id_sucursal=proveedores.id_sucursal INNER JOIN productos_llantimax on productos_llantimax.id_productos_llantimax=catalogo.id_producto");
+        $sucursales=DB::select("SELECT * FROM sucursal");
         $sucursal_usuario= Session::get('sucursal_usuario');
-        return view('/Administrador/pedidos/proveedores/agregar',compact('catalogos','sucursal_usuario'));
+        return view('/Administrador/pedidos/proveedores/agregar',compact('sucursales','sucursal_usuario'));
     }
     
+    
+    function mostrar_catalogo_sucursal(Request $input)
+    {
+         $id_sucursal = $input ['sucursal'];
+         $catalogos=DB::select("select catalogo.id_producto, productos_llantimax.nombre, proveedores.id_proveedor, proveedores.nombre_contacto,proveedores.nombre_empresa, proveedores.id_sucursal, IFNULL(sucursal.sucursal, 'Global') as sucursal,catalogo.precio_compra,catalogo.id_catalogo from catalogo INNER JOIN proveedores on proveedores.id_proveedor=catalogo.id_proveedor LEFT JOIN sucursal on sucursal.id_sucursal=proveedores.id_sucursal INNER JOIN productos_llantimax on productos_llantimax.id_productos_llantimax=catalogo.id_producto WHERE proveedores.id_sucursal is null or proveedores.id_sucursal=".$id_sucursal." ORDER BY sucursal");
+         $json=json_encode($catalogos);
+		return response()->json($json);
+        
+    }
+        
     
      /*MÉTODO PARA GENERAR FOLIO pedido proveedor*/
     function generar_folio_proveedor($id_sucursal, $id_usuario)
