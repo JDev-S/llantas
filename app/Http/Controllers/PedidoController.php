@@ -52,13 +52,10 @@ class PedidoController extends Controller
     {
         $id_usuario = session('id_usuario');//session
         $id_sucursal_usuario = session('id_sucursal_usuario');//session
-        $id_sucursal =session('id_sucursal_usuario');
-        $id_metodo_pago = $input ['id_metodo_pago'];
+        $id_sucursal =$input ['sucursal'];
         $total_venta = $input ['total_venta'];
         $array_productos=$input['array_productos'];
        
-       
-        
         /*OBTENER FECHA ACTUAL*/ 
         $fecha_venta= PedidoController::obtener_fecha_actual();
        

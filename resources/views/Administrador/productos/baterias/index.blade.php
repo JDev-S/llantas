@@ -2,6 +2,25 @@
 @section('contenido')
 @section('styles')
 <link rel="stylesheet" type="text/css" href="\npm\bootstrap-table@1.18.3\dist\bootstrap-table.min.css">
+<style>
+    .table .thead-blue th {
+        color: #fff;
+        background-color: #3195f1;
+        border-color: #0d7adf;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    /*.thead-blue thead tr th{ 
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background-color: #ffffff;
+    }*/
+
+</style>
+<link rel="stylesheet" type="text/css" href="\npm\dropzone@5.9.2\dist\dropzone.min.css">
 @stop
 <div class="page-content container container-plus">
     <div class="page-header">
@@ -12,9 +31,8 @@
                 extended tables plugin
             </small>-->
         </h1>
+
     </div>
-
-
     <div class="card bcard">
         <div class="card-body p-0 border-x-1 border-b-1 brc-default-m4 radius-0 overflow-hidden">
             <div id="table-toolbar">
@@ -480,7 +498,7 @@
             data: arr,
             columns: [{
                     field: 'nombre',
-                    title: 'Código de la llanta',
+                    title: 'Código de la batería',
                     sortable: true
                 },
                 {

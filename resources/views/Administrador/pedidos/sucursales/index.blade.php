@@ -392,13 +392,14 @@
         historial.forEach(objeto => {
             if (objeto.id_pedido == id_pedido) {
                 //alert("hola");
-                llenado += '<tr> <td>' + objeto.id_pedido + '</td>' +
+                llenado2 += '<tr> <td>' + objeto.id_pedido + '</td>' +
                     '<td>' + objeto.status + '</td>' +
                     '<td>' + objeto.fecha_evento + '</td>' +
                     '<td>' + objeto.descripcion_evento + '</td>' +
                     '</tr>';
             }
         });
+        console.log(llenado2);
         document.getElementById('tbl_historial').innerHTML = llenado2;
 
 

@@ -68,11 +68,12 @@
                                                                 <tr class="text-white">
                                                                     <th class ="align-middle"><b>Nombre del usuario</b></th>
                                                                     <th class ="align-middle"><b>Sucursal del usuario</b></th>
-                                                                    <th class ="align-middle"><b>Total</b></th>
-                                                                    <th class ="align-middle"><b>Cantidad</b></th>
-                                                                    <th class ="align-middle"><b>Precio por unidad</b></th>
                                                                     <th class ="align-middle"><b>Nombre del producto</b></th>
                                                                     <th class ="align-middle"><b>Nombre del proveedor</b></th>
+                                                                    <th class ="align-middle"><b>Cantidad</b></th>
+                                                                    <th class ="align-middle"><b>Precio por unidad</b></th>
+                                                                    <th class ="align-middle"><b>Total</b></th>
+                                                                    
                                                                 </tr>
                                                             </thead>
                                                             <tbody class="text-95" id="tbl_pedido" name="tbl_pedido">
@@ -146,11 +147,11 @@
                     title: 'Sucursal del pedido',
                     sortable: true
                 },
-                {
+                /*{
                     field: 'descripcion',
                     title: 'Descripción',
                     sortable: true
-                },
+                },*/
                 {
                     field: 'total_venta',
                     title: 'Total del pedido',
@@ -368,11 +369,11 @@
                 //alert("hola");
                 llenado +='<tr> <td>'+objeto.nombre_completo+'</td>'+
                         '<td>'+objeto.sucursal_pedido+'</td>'+
-                        '<td>'+objeto.total+'</td>'+
-                        '<td>'+objeto.cantidad+'</td>'+
-                        '<td>'+objeto.precio_unidad+'</td>'+
                         '<td>'+objeto.nombre+'</td>'+
                         '<td>'+objeto.nombre_contacto+'</td>'+
+                        '<td>'+objeto.cantidad+'</td>'+
+                        '<td>'+objeto.precio_unidad+'</td>'+
+                        '<td>'+objeto.total+'</td>'+
                         '</tr>';                 
             }
         });
