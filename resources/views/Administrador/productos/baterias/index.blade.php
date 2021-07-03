@@ -166,11 +166,11 @@
                     <div class="form-row col-md-12">
                         <div class="form-group col-md-6">
                             <label for="codigo_llanta">Código de batería</label>
-                            <input type="text" class="form-control" id="nombre_bateria" name="nombre_bateria" placeholder="Codigo de batería">
+                            <input type="text" class="form-control" id="new_nombre_bateria" name="new_nombre_bateria" placeholder="Codigo de batería">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="modelo">Modelo</label>
-                            <input type="text" class="form-control mb-2" id="modelo" name="modelo" placeholder="Modelo">
+                            <input type="text" class="form-control mb-2" id="new_modelo" name="new_modelo" placeholder="Modelo">
                         </div>
                     </div>
 
@@ -181,18 +181,18 @@
                         $query2 = "select * from marca ";
                         $data2=DB::select($query2);      
                         ?>
-                            <select id="marca" name="marca" class="form-control">
+                            <select id="new_marca" name="new_marca" class="form-control">
                                 @foreach($data2 as $item)
                                 <option value="{{ $item->id_marca }}"> {{ $item->marca }} </option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="form-group col-5 mt-3 mb-0 my-0">
-                            <input type="text" disabled class="form-control" id="marca2" name="marca2" placeholder="Marca">
+                            <input type="text" disabled class="form-control" id="new_marca2" name="new_marca2" placeholder="Marca">
                         </div>
                         <div class="md-1 mt-4">
                             <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" id="check_marca" name="check_marca">
+                                <input class="form-check-input" type="checkbox" id="new_check_marca" name="new_check_marca">
                             </div>
                         </div>
                     </div>
@@ -200,33 +200,33 @@
                     <div class="form-row align-items-center col-md-12">
                         <div class="form-group col-md-6">
                             <label for="rin">Voltaje</label>
-                            <input type="text" class="form-control" id="voltaje" name="voltaje" placeholder="Voltaje">
+                            <input type="text" class="form-control" id="new_voltaje" name="new_voltaje" placeholder="Voltaje">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="medida">Capacidad de arranque</label>
-                            <input type="text" class="form-control" id="capacidad_arranque" name="capacidad_arranque" placeholder="Cpacidad de arranque">
+                            <input type="text" class="form-control" id="new_capacidad_arranque" name="new_capacidad_arranque" placeholder="Capacidad de arranque">
                         </div>
                     </div>
 
                     <div class="form-row align-items-center col-md-12">
                         <div class="form-group col-md-6">
                             <label for="rin">Capacidad de arranque en frio</label>
-                            <input type="text" class="form-control" id="capacidad_arranque_frio" name="capacidad_arranque_frio" placeholder="Capacidad de arranque en frío">
+                            <input type="text" class="form-control" id="new_capacidad_arranque_frio" name="new_capacidad_arranque_frio" placeholder="Capacidad de arranque en frío">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="medida">Medidas</label>
-                            <input type="text" class="form-control" id="medidas" name="medidas" placeholder="Medidas">
+                            <input type="text" class="form-control" id="new_medidas" name="new_medidas" placeholder="Medidas">
                         </div>
                     </div>
 
                     <div class="form-row align-items-center col-md-12">
                         <div class="form-group col-md-6">
                             <label for="rin">Peso</label>
-                            <input type="text" class="form-control" id="peso" name="peso" placeholder="Peso">
+                            <input type="text" class="form-control" id="new_peso" name="new_peso" placeholder="Peso">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="medida">Tamaño</label>
-                            <input type="text" class="form-control" id="tamanio" name="tamanio" placeholder="Tamaño">
+                            <input type="text" class="form-control" id="new_tamanio" name="new_tamanio" placeholder="Tamaño">
                         </div>
                     </div>
 
@@ -237,7 +237,7 @@
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">$</div>
                                 </div>
-                                <input type="number" min='0' , step="any" class="form-control" id="precio" name="precio" placeholder="0.00">
+                                <input type="number" min='0' , step="any" class="form-control" id="new_precio" name="new_precio" placeholder="0.00">
                             </div>
                         </div>
                         <div class="form-group col-md-6">
@@ -740,33 +740,33 @@
 
 </script>
 <script type="text/javascript">
-    $('#check_marca').on('change', function() {
+    $('#new_check_marca').on('change', function() {
         if ($(this).is(':checked')) {
-            $("#marca2").prop("disabled", false);
+            $("#new_marca2").prop("disabled", false);
         } else {
-            $("#marca2").prop("disabled", true);
+            $("#new_marca2").prop("disabled", true);
         }
     });
 
     function enviar_datos() {
-        var nombre_bateria = document.getElementById("nombre_bateria").value;
-        var marca = document.getElementById("marca").value;
-        var precio = document.getElementById("precio").value;
+        var nombre_bateria = document.getElementById("new_nombre_bateria").value;
+        var marca = document.getElementById("new_marca").value;
+        var precio = document.getElementById("new_precio").value;
         var fotografia_miniatura = document.getElementById("ace-file-input1").files[0];
-        var modelo = document.getElementById("modelo").value;
-        var voltaje = document.getElementById("voltaje").value;
-        var capacidad_arranque = document.getElementById("capacidad_arranque").value;
-        var capacidad_arranque_frio = document.getElementById("capacidad_arranque_frio").value;
-        var medidas = document.getElementById("medidas").value;
-        var peso = document.getElementById("peso").value;
-        var tamanio = document.getElementById("tamanio").value;
+        var modelo = document.getElementById("new_modelo").value;
+        var voltaje = document.getElementById("new_voltaje").value;
+        var capacidad_arranque = document.getElementById("new_capacidad_arranque").value;
+        var capacidad_arranque_frio = document.getElementById("new_capacidad_arranque_frio").value;
+        var medidas = document.getElementById("new_medidas").value;
+        var peso = document.getElementById("new_peso").value;
+        var tamanio = document.getElementById("new_tamanio").value;
 
         var check = 0;
         var nuevo = "";
-        var checado = document.getElementById('check_marca').checked;
+        var checado = document.getElementById('new_check_marca').checked;
         if (checado) {
             check = 1;
-            nuevo = document.getElementById("marca2").value;
+            nuevo = document.getElementById("new_marca2").value;
         } else {
             nuevo = "";
         }

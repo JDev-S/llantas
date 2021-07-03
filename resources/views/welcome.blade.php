@@ -328,7 +328,7 @@
 
 
                                         <li class="nav-item">
-                                            <a href="/mostrar_catalogo" class="nav-link">
+                                            <a href="/pedido_proveedor" class="nav-link">
                                                 <span class="nav-text">
                                                     <span>Generar pedido</span>
                                                 </span>

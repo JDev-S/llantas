@@ -99,7 +99,7 @@ Route::post('/insertar_venta', 'VentasController@insertar_venta')->name('inserta
 Route::get('/mostrar_pedido_proveedor','PedidoController@mostrar_pedidos_proveedor')->middleware('admin:1')
 ->name('mostrar_pedido_proveedor');
 /*Mostrar pedidos en proveedores*/
-Route::get('/mostrar_catalogo','PedidoController@mostrar_catalogo_proveedores')->middleware('admin:1')->name('mostrar_catalogo');
+Route::get('/pedido_proveedor','PedidoController@mostrar_catalogo_proveedores')->middleware('admin:1')->name('pedido_proveedor');
 /*MANDAR PRODUCTOS POR SUCURSAL*/
 Route::post('/mostrar_catalogo_sucursal','PedidoController@mostrar_catalogo_sucursal')->name('mostrar_catalogo_sucursal');
 /*Agregar un pedido en el proveedor*/

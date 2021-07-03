@@ -261,13 +261,16 @@ suc_origen.id_sucursal as id_sucursal_origen,suc_origen.sucursal as sucursal_ori
     public function pedido_sucursal()
     {
         $pedido="";
+         $sucursales=DB::select("SELECT * FROM sucursal");
+        $sucursal_usuario= Session::get('sucursal_usuario');
         
-        return view('/Administrador/pedidos/sucursales/agregar',compact('pedido'));
+        
+        return view('/Administrador/pedidos/sucursales/agregar',compact('pedido','sucursales','sucursal_usuario'));
     }
     
     public function obtener_productos_sucursales(Request $input)
     {
-        $id_sucursal=$input['id_sucursal'];
+        $id_sucursal=$input['sucursal'];
         $query=DB::select("select inventario.id_producto as id_producto, productos_llantimax.nombre as nombre_producto, categoria.categoria as categoria, marca.marca as marca, producto.modelo as modelo,productos_servicios.precio as precio, producto.fotografia_miniatura as foto, sucursal.sucursal as sucursal, inventario.cantidad as cantidad, sucursal.id_sucursal as id_sucursal from inventario inner join productos_llantimax on productos_llantimax.id_productos_llantimax=inventario.id_producto inner join sucursal on inventario.id_sucursal=sucursal.id_sucursal inner join productos_servicios on productos_servicios.id_producto_servicio=productos_llantimax.id_productos_llantimax inner join producto on producto.id_producto=productos_servicios.id_producto_servicio inner join marca on marca.id_marca=producto.id_marca inner join categoria on categoria.id_categoria=producto.id_categoria where sucursal.id_sucursal='".$id_sucursal."'");
         $json=json_encode($query);
 		return response()->json($json);
@@ -304,14 +307,6 @@ suc_origen.id_sucursal as id_sucursal_origen,suc_origen.sucursal as sucursal_ori
             foreach($array_productos as $propiedad){
                 $ingresar = DB::insert('INSERT INTO detalle_pedido(id_pedido, id_producto, cantidad, descripcion) VALUES (?,?,?,?)', [$id_venta, $propiedad['id_producto'], $propiedad['cantidad_producto'] , $comentario]);
                 //INSERT INTO `detalle_pedido`(`id_pedido`, `id_producto`, `cantidad`, `descripcion`) VALUES ([value-1],[value-2],[value-3],[value-4])
-                
-                
-                /*VERIFICAR SI SE TRATA DE UN SERVICIO O NO Y SER DESCONTADO DEL INVENTARIO*/
-                   // $cantidad=$cantidad_inventario[0]->cantidad;
-                    //$cantidad_final =intval($cantidad)- intval($propiedad['cantidad_producto']);
-                    //$actualizar = DB::update('UPDATE inventario SET cantidad='.$cantidad_final.' WHERE id_producto=? AND 7/id_sucursal=?', [$propiedad['id_producto'],$propiedad['id_sucursal_producto']]);    
-                
-                
             }
             $comentario_historial="Se hizo el pedido";
             $ingresar_historial=DB::insert('INSERT INTO historial_pedido(id_pedido, id_status, fecha_evento, descripcion_evento) VALUES (?,?,?,?)',[$id_venta,1,$fecha_venta,$comentario_historial]);

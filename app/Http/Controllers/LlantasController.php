@@ -124,6 +124,7 @@ class LlantasController extends Controller
         $numero_rin=$input['numero_rin'];
         $check=$input['check'];
         $nuevo=$input['nuevo'];
+
         if($input->hasFile('fotografia_miniatura'))
         {
             if($check=='1')

@@ -154,11 +154,11 @@
                     <div class="form-row col-md-12">
                         <div class="form-group col-md-6">
                             <label for="codigo_llanta">Código de llanta</label>
-                            <input type="text" class="form-control" id="nombre_llanta" name="nombre_llanta" placeholder="Codigo de llanta">
+                            <input type="text" class="form-control" id="new_nombre_llanta" name="new_nombre_llanta" placeholder="Codigo de llanta">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="modelo">Modelo</label>
-                            <input type="text" class="form-control mb-2" id="modelo" name="modelo" placeholder="Modelo">
+                            <input type="text" class="form-control mb-2" id="new_modelo" name="new_modelo" placeholder="Modelo">
                         </div>
                     </div>
 
@@ -169,18 +169,18 @@
                         $query2 = "select * from marca ";
                         $data2=DB::select($query2);      
                         ?>
-                            <select id="marca" name="marca" class="form-control">
+                            <select id="new_marca" name="new_marca" class="form-control">
                                 @foreach($data2 as $item)
                                 <option value="{{ $item->id_marca }}"> {{ $item->marca }} </option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="form-group col-5 mt-3 mb-0 my-0">
-                            <input type="text" disabled class="form-control" id="marca2" name="marca2" placeholder="Marca">
+                            <input type="text" disabled class="form-control" id="new_marca2" name="new_marca2" placeholder="Marca">
                         </div>
                         <div class="md-1 mt-4">
                             <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" id="check_marca" name="check_marca">
+                                <input class="form-check-input" type="checkbox" id="new_check_marca" name="new_check_marca">
                             </div>
                         </div>
                     </div>
@@ -188,11 +188,11 @@
                     <div class="form-row align-items-center col-md-12">
                         <div class="form-group col-md-4">
                             <label for="rin">Rin</label>
-                            <input type="text" class="form-control" id="numero_rin" name="numero_rin" placeholder="Rin">
+                            <input type="text" class="form-control" id="new_numero_rin" name="new_numero_rin" placeholder="Rin">
                         </div>
                         <div class="form-group col-md-8">
                             <label for="medida">Medida</label>
-                            <input type="text" class="form-control" id="medida" name="medida">
+                            <input type="text" class="form-control" id="new_medida" name="new_medida">
                         </div>
                     </div>
                     <div class="form-group col-md-12">
@@ -201,7 +201,7 @@
                             $query2 = "select * from capacidad_carga ";
                             $data2=DB::select($query2);      
                         ?>
-                        <select id="capacidad_carga" name="capacidad_carga" class="form-control">
+                        <select id="new_capacidad_carga" name="new_capacidad_carga" class="form-control">
                             @foreach($data2 as $item)
                             <option value="Codigo: {{ $item->codigo }}_ Libras:{{ $item->libras }}_ Kilogramos:{{ $item->kilogramos }}"> Codigo: {{ $item->codigo }}_ Libras: {{ $item->libras }}_ Kilogramos: {{ $item->kilogramos }} </option>
                             @endforeach
@@ -214,7 +214,7 @@
                             $query2 = "select * from indice_velocidad ";
                             $data2=DB::select($query2);      
                         ?>
-                        <select id="indice_velocidad" name="indice_velocidad" class="form-control">
+                        <select id="new_indice_velocidad" name="new_indice_velocidad" class="form-control">
                             @foreach($data2 as $item)
                             <option value=" Codigo: {{ $item->codigo }}_ MPH: {{ $item->mph }}_ KMH: {{ $item->kmh }}"> Codigo: {{ $item->codigo }}_ MPH: {{ $item->mph }}_ KMH: {{ $item->kmh }} </option>
                             @endforeach
@@ -228,7 +228,7 @@
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">$</div>
                                 </div>
-                                <input type="number" min='0' , step="any" class="form-control" id="precio" name="precio" placeholder="0.00">
+                                <input type="number" min='0' , step="any" class="form-control" id="new_precio" name="new_precio" placeholder="0.00">
                             </div>
                         </div>
                         <div class="form-group col-md-6">
@@ -739,36 +739,39 @@
 </script>
 
 <script type="text/javascript">
-    $('#check_marca').on('change', function() {
+    $('#new_check_marca').on('change', function() {
         if ($(this).is(':checked')) {
-            $("#marca2").prop("disabled", false);
+            $("#new_marca2").prop("disabled", false);
         } else {
-            $("#marca2").prop("disabled", true);
+            $("#new_marca2").prop("disabled", true);
         }
     });
 
     function enviar_datos() {
-      
-        var nombre_llanta = document.getElementById("nombre_llanta").value;
-        var marca = document.getElementById("marca").value;
-        var precio = document.getElementById("precio").value;
+        
+     
+        var nombre_llanta = document.getElementById("new_nombre_llanta").value;
+        var marca = document.getElementById("new_marca").value;
+        var precio = document.getElementById("new_precio").value;
         var fotografia_miniatura = document.getElementById("ace-file-input1").files[0];
-        var modelo = document.getElementById("modelo").value;
-        var medida = document.getElementById("medida").value;
-        var capacidad_carga = document.getElementById("capacidad_carga").value;
-        var indice_velocidad = document.getElementById("indice_velocidad").value;
-        var numero_rin = document.getElementById("numero_rin").value;
+        var modelo = document.getElementById("new_modelo").value;
+        var medida = document.getElementById("new_medida").value;
+        var capacidad_carga = document.getElementById("new_capacidad_carga").value;
+        var indice_velocidad = document.getElementById("new_indice_velocidad").value;
+        var numero_rin = document.getElementById("new_numero_rin").value;
 
         var check = 0;
         var nuevo = "";
-        var checado = document.getElementById('check_marca').checked;
+        var checado = document.getElementById('new_check_marca').checked;
         if (checado) {
             check = 1;
-            nuevo = document.getElementById("marca2").value;
+            nuevo = document.getElementById("new_marca2").value;
         } else {
             nuevo = "";
         }
-
+        
+        //console.log(nombre_llanta+", "+marca+", "+precio+", "+modelo+", "+medida+", "+capacidad_carga+", "+indice_velocidad+", "+numero_rin+", "+fotografia_miniatura+", "+nuevo);
+        
         var formData = new FormData();
         var token = '{{csrf_token()}}';
         formData.append("fotografia_miniatura", fotografia_miniatura);
@@ -783,6 +786,9 @@
         formData.append("check", check);
         formData.append("nuevo", nuevo);
         formData.append("_token", token);
+        
+        console.log(formData);
+        
         $.ajax({
             type: "POST",
             contentType: false,

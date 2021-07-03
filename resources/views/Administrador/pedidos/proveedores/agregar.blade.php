@@ -129,12 +129,21 @@
             <div class="col-auto mt-5 shadow">
                 <div class="card acard h-100">
                     <div class="card-header t-border-1 mb-2 mt-2">
-                        <h5 class="text-success-d4 mb-1">
-                            Detalles:
-                        </h5>
-                        <button class="btn-primary mb-1 px-4 btn" style="padding-right:20px;" onclick="generar_pedido()">Realizar pedido</button>
-                        <input type="text" value="0" disabled id="total_final" name="total_final" class="form-control col-2">
-
+                        <div class="row col-12">
+                            <div class="col clearfix">
+                                <span class="float-left">
+                                    <h5 class="text-success-d4 mb-1">
+                                        Detalles:
+                                    </h5>
+                                </span>
+                                <span class="float-right">
+                                    <div class="row justify-content-between">
+                                        <button class="btn-primary mb-1 px-4 btn" style="padding-right:20px;" onclick="generar_pedido()">Realizar pedido</button>
+                                        <input type="text" value="0" disabled id="total_final" name="total_final" class="form-control col-4">
+                                    </div>
+                                </span>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-body p-0 p-md-3">
                         <div class="panel panel-default">
@@ -269,15 +278,15 @@
                         document.getElementById("total_final").value = total_final;
 
                         /*ACTUALIZAR ARREGLO*/
-                           productos = productos.map(function(objeto) {
-        	               return objeto.id_producto == id_producto && objeto.catalogo == id_catalogo  ? {
-                               "id_producto" : objeto.id_producto,
-                               "cantidad_producto" :  cantidad,
-                               "precio_unidad" : objeto.precio_unidad,
-                               "total" : parseInt(cantidad) * parseInt(objeto.precio_unidad),
-                               "catalogo" : id_catalogo
-                           } : objeto;
-		                });
+                        productos = productos.map(function(objeto) {
+                            return objeto.id_producto == id_producto && objeto.catalogo == id_catalogo ? {
+                                "id_producto": objeto.id_producto,
+                                "cantidad_producto": cantidad,
+                                "precio_unidad": objeto.precio_unidad,
+                                "total": parseInt(cantidad) * parseInt(objeto.precio_unidad),
+                                "catalogo": id_catalogo
+                            } : objeto;
+                        });
 
                     }
                 }
@@ -309,16 +318,16 @@
                     "catalogo": id_catalogo
                 };
                 productos.push(producto);
-                
+
                 console.log(productos);
 
 
             }
         } else {
             // Nueva fila dentro de tbody.
-            
+
             alert(typeof(id_producto));
-            
+
             $('#table').append(`<tr id="R${++rowIdx}" data-id_catalogo="${id_catalogo}" data-id_producto="${id_producto}" data-precio="${precio_compra}" data-producto="${nombre_producto}"  data-proveedor="${nombre_proveedor}" data-total="${parseInt(cantidad) * parseInt(precio_compra)}" data-cantidad="${cantidad}" >` +
                 '<td data-th="Producto"><span class="bt-content">' + nombre_producto + '</span></td>' +
                 '<td data-th="Proveedor"><span class="bt-content">' + nombre_proveedor + '</span></td>' +
@@ -342,7 +351,7 @@
                 "catalogo": id_catalogo
             };
             productos.push(producto);
-            
+
             console.log(id_producto);
             console.log(productos);
         }
@@ -451,17 +460,17 @@
         var sucursal = $('#sucursal').val();
         console.log("sucursal :" + sucursal);
         console.log(productos);
-        
+
         var total_venta = 0;
         for (var t = 0; t < productos.length; t++) {
             total_venta += parseInt(productos[t]['total']);
         }
-        
+
         var token = '{{csrf_token()}}';
         var data = {
             total_venta: total_venta,
             array_productos: productos,
-            sucursal:sucursal,
+            sucursal: sucursal,
             _token: token
         };
 
