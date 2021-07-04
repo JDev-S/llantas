@@ -79,7 +79,15 @@
                         <div class="row mb-2">
                             <div class="form-row col-md-12 justify-content-center">
                                 <div class="form-group col-md-2 ml-2 justify-content-center">
-                                    <select class="form-control selectpicker form-control" title="-- Sucursal --" data-size="5" data-header="Seleccione sucursal" data-style="btn-primary" onChange="javascript:mostrar_productos_sucursal()" id="sucursal" name="sucursal" data-container="body">
+                                    <select class="form-control selectpicker form-control" title="-- Sucursal destino --" data-size="5" data-header="Seleccione sucursal" data-style="btn-primary"  id="destino_sucursal" name="destino_sucursal" data-container="body">
+                                        <option data-divider="true"></option>
+                                        @foreach($sucursales as $sucursal)
+                                        <option data-tokens="{{$sucursal->id_sucursal}}" value="{{$sucursal->id_sucursal}}">{{$sucursal->sucursal}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-2 ml-2 justify-content-center">
+                                    <select class="form-control selectpicker form-control" title="-- Sucursal origen--" data-size="5" data-header="Seleccione sucursal" data-style="btn-primary" onChange="javascript:mostrar_productos_sucursal()" id="sucursal" name="sucursal" data-container="body">
                                         <option data-divider="true"></option>
                                         @foreach($sucursales as $sucursal)
                                         <option data-tokens="{{$sucursal->id_sucursal}}" value="{{$sucursal->id_sucursal}}">{{$sucursal->sucursal}}</option>
@@ -185,9 +193,15 @@
 
     function mostrar_productos_sucursal() {
         var sucursal = $('#sucursal').val();
+        var sucursal_destino=$('#destino_sucursal').val();
         //alert(sucursal);
-
-        var token = '{{csrf_token()}}';
+        
+        if(sucursal==sucursal_destino)
+        {
+            alert("Porfavor elegir otra sucursal origen");
+        }
+        else{
+             var token = '{{csrf_token()}}';
         var data = {
             sucursal: sucursal,
             _token: token
@@ -225,6 +239,9 @@
                 });
             }
         });
+        }
+
+       
     }
 
 
@@ -446,6 +463,7 @@
 
     function generar_pedido() {
         var sucursal = $('#sucursal').val();
+        var sucursal_destino=$('#destino_sucursal').val();
         console.log("sucursal :" + sucursal);
         console.log(productos);
 
@@ -454,6 +472,7 @@
             array_productos: productos,
             descripcion: "Favor de confirmar el pedido, es urgente",
             id_sucursal: sucursal,
+            sucursal_destino:sucursal_destino,
             _token: token
         };
         console.log(data);

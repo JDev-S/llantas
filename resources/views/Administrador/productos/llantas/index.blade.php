@@ -67,23 +67,23 @@
             </div>
             <div class="modal-body">
                 <div class="ccard h-100 d-flex flex-column mx-2 px-2 py-3">
-                    
+
                     <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="codigo_llanta">Código de llanta</label>
-                            <input type="text" class="form-control" id="nombre_llanta"  disabled name="nombre_llanta" >
-                        </div>
-                         <div class="form-group">
-                            <label for="marca">Marca</label>
-                                
-                             <input type="text" class="form-control" disabled id="marca" name="marca" >
-                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="codigo_llanta">Código de llanta</label>
+                                <input type="text" class="form-control" id="nombre_llanta" disabled name="nombre_llanta">
+                            </div>
+                            <div class="form-group">
+                                <label for="marca">Marca</label>
+
+                                <input type="text" class="form-control" disabled id="marca" name="marca">
+                            </div>
                         </div>
                         <div class="col-md-6">
                             <div class="pos-rel d-style my-3 radius-1 shadow-sm overflow-hidden bgc-brown-m3" id="foto_llanta" name="foto_llanta">
-                                
-                            <div class="v-hover position-center h-100 w-100 bgc-dark-grad" style="pointer-events: none;"></div>
+
+                                <div class="v-hover position-center h-100 w-100 bgc-dark-grad" style="pointer-events: none;"></div>
                             </div>
                         </div>
                     </div>
@@ -103,7 +103,7 @@
                     </div>
                     <div class="form-group">
                         <label for="capacidad_carga">Capacidad de carga</label>
-                        
+
                         <input type="text" class="form-control" id="capacidad_carga" name="capacidad_carga" disabled>
                     </div>
 
@@ -118,7 +118,7 @@
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">$</div>
                                 </div>
-                                <input type="text" min='0' , step="any" class="form-control" id="precio" name="precio" disabled >
+                                <input type="text" min='0' , step="any" class="form-control" id="precio" name="precio" disabled>
                             </div>
                         </div>
                     </div>
@@ -128,10 +128,10 @@
 
             </div>
             <div class="modal-footer">
-                
+
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                        Cerrar
-                    </button>
+                    Cerrar
+                </button>
             </div>
         </div>
     </div>
@@ -346,8 +346,8 @@
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">$</div>
                                 </div>
-                                <input type="text" min='0'  class="form-control" id="update_precio" name="update_precio">
-                                
+                                <input type="text" min='0' class="form-control" id="update_precio" name="update_precio">
+
                             </div>
                         </div>
                         <div class="form-group col-md-6">
@@ -373,7 +373,44 @@
     </div>
 </div>
 <!--FIN MODAL ACTUALIZAR LLANTA-->
+<!--MODAL ELIMINAR-->
+<div class="modal fade" data-backdrop-bg="bgc-white" id="eliminarModal" tabindex="-1" aria-labelledby="dangerModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content bgc-transparent brc-danger-m2 shadow">
+            <div class="modal-header py-2 bgc-danger-tp1 border-0  radius-t-1">
+                <h5 class="modal-title text-white-tp1 text-110 pl-2 font-bolder" id="dangerModalLabel">
+                    Advertencia!
+                </h5>
 
+                <button type="button" class="position-tr btn btn-xs btn-outline-white btn-h-yellow btn-a-yellow mt-1px mr-1px btn-brc-tp" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="text-150">×</span>
+                </button>
+            </div>
+
+
+            <div class="modal-body bgc-white-tp2 p-md-4 pl-md-5">
+                <div class="d-flex align-items-top mr-2 mr-md-5">
+                    <i class="fas fa-exclamation-triangle fa-2x text-orange-d2 float-rigt mr-4 mt-1"></i>
+                    <input type="hidden" class="form-control" id="delete_id_llanta" name="update_id_llanta">
+                    <div class="text-secondary-d2 text-105">
+                        Esta seguro de que desea eliminarlo?
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer bgc-white-tp2 border-0">
+                <button type="button" class="btn px-4 btn-light-grey" data-dismiss="modal">
+                    No
+                </button>
+
+                <button type="button" class="btn px-4 btn-danger" id="id-danger-yes-btn" onclick="eliminar_producto()" data-dismiss="modal">
+                    Si
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Fin modal eliminar -->
 @section('scripts')
 
 <!-- include vendor scripts used in "Bootstrap Table" page. see "/views//pages/partials/table-bootstrap/@vendor-scripts.hbs" -->
@@ -388,7 +425,7 @@
 <script src="\npm\photoswipe@4.1.3\dist\photoswipe-ui-default.min.js"></script>
 
 <script>
-      jQuery(function($) {
+    jQuery(function($) {
 
         // set pointer-events to none for dark layers that appear on hover above dark images
         $('#gallery .h-100.w-100').css('pointer-events', 'none')
@@ -402,58 +439,59 @@
 
         // and each time we click an image/button to open lightbox, it should be initialized ... this is how the plugin works
         $(triggerBtns)
-          .on('click', function(e) {
-            e.preventDefault()
+            .on('click', function(e) {
+                e.preventDefault()
 
-            if (items == null) {
-              items = []
-              $('#gallery img[data-size]').each(function(index, img) {
-                var size = img.getAttribute('data-size').split(/\D/)
-                items.push({
-                  src: img.src.replace('/thumb', '/'),
-                  w: size[0],
-                  h: size[1],
-                  ref: img,
-                  title: img.getAttribute('alt') || 'Image ' + (index + 1) + ' caption'
-                })
-                triggerBtns[index].setAttribute('data-index', index)
-              })
-            }
-
-            var options = {
-              index: +this.getAttribute('data-index'),
-
-              bgOpacity: 0.8,
-              history: false,
-              closeOnScroll: false,
-
-              getThumbBoundsFn: function(index) {
-                var thumbnail = items[index].ref,
-                  pageYScroll = window.pageYOffset || document.documentElement.scrollTop,
-                  rect = thumbnail.getBoundingClientRect()
-
-                return {
-                  x: rect.left,
-                  y: rect.top + pageYScroll,
-                  w: rect.width
+                if (items == null) {
+                    items = []
+                    $('#gallery img[data-size]').each(function(index, img) {
+                        var size = img.getAttribute('data-size').split(/\D/)
+                        items.push({
+                            src: img.src.replace('/thumb', '/'),
+                            w: size[0],
+                            h: size[1],
+                            ref: img,
+                            title: img.getAttribute('alt') || 'Image ' + (index + 1) + ' caption'
+                        })
+                        triggerBtns[index].setAttribute('data-index', index)
+                    })
                 }
-              },
-              addCaptionHTMLFn: function(item, captionEl) {
-                if (!item.title) {
-                  return false
+
+                var options = {
+                    index: +this.getAttribute('data-index'),
+
+                    bgOpacity: 0.8,
+                    history: false,
+                    closeOnScroll: false,
+
+                    getThumbBoundsFn: function(index) {
+                        var thumbnail = items[index].ref,
+                            pageYScroll = window.pageYOffset || document.documentElement.scrollTop,
+                            rect = thumbnail.getBoundingClientRect()
+
+                        return {
+                            x: rect.left,
+                            y: rect.top + pageYScroll,
+                            w: rect.width
+                        }
+                    },
+                    addCaptionHTMLFn: function(item, captionEl) {
+                        if (!item.title) {
+                            return false
+                        }
+                        captionEl.children[0].innerHTML = item.title
+                        return true
+                    }
+
                 }
-                captionEl.children[0].innerHTML = item.title
-                return true
-              }
 
-            }
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options)
+                gallery.init()
+            }) // click
 
-            var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options)
-            gallery.init()
-          }) // click
+    })
 
-      })
-    </script>
+</script>
 
 
 <!-- "Bootstrap Table" page script to enable its demo functionality -->
@@ -656,14 +694,17 @@
         })
 
         function formatTableCellActions(value, row, index, field) {
-            var eliminar = "'" + row.id_llanta + "'";
+            var eliminar =  row.id_llanta ;
             return '<div class="action-buttons">\
             <button class="text-blue mx-1" data-target="#modalLlanta" data-toggle="modal"data-id="' + row.id_llanta + '" data-nombre="' + row.nombre + '" data-medida="' + row.medida + '" data-foto="' + row.foto + '" data-marca="' + row.marca + '" data-modelo="' + row.modelo + '" data-precio="' + row.precio + '" data-marc="' + row.id_marca + '" data-capacidad="' + row.capacidad_carga + '" data-indice="' + row.indice_velocidad + '" data-rin="' + row.numero_rin + '" ><i class="fa fa-search-plus text-105"></i></button>' +
                 '<button class="text-blue mx-1" data-toggle="modal" data-target="#editModal" data-id="' + row.id_llanta + '" data-nombre="' + row.nombre + '" data-foto="' + row.foto + '" data-medida="' + row.medida + '" data-marca="' + row.marca + '" data-modelo="' + row.modelo + '" data-precio="' + row.precio + '" data-marc="' + row.id_marca + '" data-capacidad="' + row.capacidad_carga + '" data-indice="' + row.indice_velocidad + '" data-rin="' + row.numero_rin + '" ><i class="fa fa-pencil-alt"></i></button>' +
-                '<a class="text-danger-m1 mx-1"  href="javascript:eliminar_producto(' + eliminar + ')">' +
+                //'<a class="text-danger-m1 mx-1"  href="javascript:eliminar_producto(' + eliminar + ')">' +
+                //'<i class="fa fa-trash-alt text-105"></i>' +
+                //'</a>' +
+                //'</div>'
+                '<button type="button" class="text-blue mx-1" data-id="' +eliminar + '"  data-toggle="modal" data-target="#eliminarModal">' +
                 '<i class="fa fa-trash-alt text-105"></i>' +
-                '</a>' +
-                '</div>'
+                '</button>'
         }
         // enable/disable 'remove' button
         var $removeBtn = $('#remove-btn')
@@ -692,14 +733,30 @@
 </script>
 
 <script type="text/javascript">
-    function eliminar_producto(id_producto) {
-        var id_producto = id_producto;
+    
+     $('#eliminarModal').on('show.bs.modal', function(event) {
+        /*RECUPERAR METADATOS DEL BOTÓN*/
+        var button = $(event.relatedTarget)
+        var id_llanta = button.data('id')
+        
+        var modal = $(this)
+        modal.find('#delete_id_llanta').val(id_llanta)
+        
+    });
+    
+
+</script>
+<script type="text/javascript">
+ function eliminar_producto() {
+        var id_producto =  document.getElementById("delete_id_llanta").value;
+        console.log(id_producto);
         var token = '{{csrf_token()}}';
         var data = {
             id_producto: id_producto,
             _token: token
         };
         console.log(data);
+        
         $.ajax({
             type: "POST",
             url: "/eliminar_Llanta",
@@ -748,8 +805,6 @@
     });
 
     function enviar_datos() {
-        
-     
         var nombre_llanta = document.getElementById("new_nombre_llanta").value;
         var marca = document.getElementById("new_marca").value;
         var precio = document.getElementById("new_precio").value;
@@ -769,9 +824,9 @@
         } else {
             nuevo = "";
         }
-        
+
         //console.log(nombre_llanta+", "+marca+", "+precio+", "+modelo+", "+medida+", "+capacidad_carga+", "+indice_velocidad+", "+numero_rin+", "+fotografia_miniatura+", "+nuevo);
-        
+
         var formData = new FormData();
         var token = '{{csrf_token()}}';
         formData.append("fotografia_miniatura", fotografia_miniatura);
@@ -786,9 +841,9 @@
         formData.append("check", check);
         formData.append("nuevo", nuevo);
         formData.append("_token", token);
-        
+
         console.log(formData);
-        
+
         $.ajax({
             type: "POST",
             contentType: false,
@@ -835,8 +890,8 @@
         $('#update_marca > option[value="' + id_marca + '"]').attr('selected', 'selected');
         $('#update_capacidad_carga > option[value="' + capacidad_carga + '"]').attr('selected', 'selected');
         $('#update_indice_velocidad > option[value="' + indice_velocidad + '"]').attr('selected', 'selected');
-        document.getElementById('update_precio').value=precio;
-         //var texto = document.getElementById('update_precio');
+        document.getElementById('update_precio').value = precio;
+        //var texto = document.getElementById('update_precio');
         //texto.value =precio;
         //$("#update_precio").val(precio);
     });
@@ -868,11 +923,11 @@
         modal.find('#capacidad_carga').val(capacidad_carga)
         modal.find('#indice_velocidad').val(indice_velocidad)
         modal.find('#precio').val(precio)
-        var llenado = '<a href="#" class="show-lightbox">'+
-                                  '<img alt="Gallery Image 1" src="/img/' + foto + '" class="w-100 d-zoom-2 " data-size="1200x800">'+
-                                '</a>' ;
+        var llenado = '<a href="#" class="show-lightbox">' +
+            '<img alt="Gallery Image 1" src="/img/' + foto + '" class="w-100 d-zoom-2 " data-size="1200x800">' +
+            '</a>';
         document.getElementById('foto_llanta').innerHTML = llenado;
-        
+
     });
 
 </script>
@@ -922,8 +977,8 @@
         formData.append("update_capacidad_carga", update_capacidad_carga);
         formData.append("update_indice_velocidad", update_indice_velocidad);
         formData.append("update_numero_rin", update_numero_rin);
-        formData.append("check2",check2);
-        formData.append("nuevo2",nuevo2);
+        formData.append("check2", check2);
+        formData.append("nuevo2", nuevo2);
         formData.append("_token", token);
         console.log(formData);
         console.log(update_id_llanta);

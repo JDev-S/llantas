@@ -280,11 +280,13 @@ suc_origen.id_sucursal as id_sucursal_origen,suc_origen.sucursal as sucursal_ori
     public function agregar_pedidos_sucursales(Request $input)
     {
           /*RECUPERAR DATOS PARA LA VENTA*/
-        $id_usuario_destino = session('id_usuario');//session
-        $id_sucursal_usuario_destino = session('id_sucursal_usuario');//session
-        
+        /*Destino*/
+         $id_sucursal_usuario_destino = $input['sucursal_destino'];
+        $id_usuario_destino =  PedidoController::obtener_usuario_origen($id_sucursal_usuario_destino);
+       
         
         $array_productos=$input['array_productos'];
+        /*origen*/
         $comentario=$input['descripcion'];
         $id_sucursal_origen=$input['id_sucursal'];
         $id_usuario_origen = PedidoController::obtener_usuario_origen($id_sucursal_origen);

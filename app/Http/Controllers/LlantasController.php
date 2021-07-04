@@ -290,7 +290,8 @@ class LlantasController extends Controller
     public function eliminar_Llanta(Request $input)
 	{
         $id_producto = $input['id_producto'];
-        $query=DB::update("DELETE FROM productos_llantimax where id_productos_llantimax=?",[$id_producto]);
+
+        $query=DB::update("DELETE FROM productos_llantimax where productos_llantimax.id_productos_llantimax=?",[$id_producto]);
         
     }
     

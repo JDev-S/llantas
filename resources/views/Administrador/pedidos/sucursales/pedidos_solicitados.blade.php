@@ -1,243 +1,284 @@
 @extends('welcome')
 @section('contenido')
-<!-- Page -->
-<div class="page">
+@section('styles')
+<link rel="stylesheet" type="text/css" href="\npm\bootstrap-table@1.18.3\dist\bootstrap-table.min.css">
+@stop
+<div class="page-content container container-plus">
     <div class="page-header">
-        <h1 class="page-title">Pedidos</h1>
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/principal">Inicio</a></li>
-            <li class="breadcrumb-item"><a href="javascript:void(0)">Sucursales</a></li>
-            <!--<li class="breadcrumb-item active"></li>-->
-        </ol>
-
+        <h1 class="page-title text-primary-d2">
+            Pedidos a sucursales
+            <!--<small class="page-info text-secondary-d2">
+                <i class="fa fa-angle-double-right text-80"></i>
+                extended tables plugin
+            </small>-->
+        </h1>
     </div>
 
-    <div class="page-content">
-        <!-- Panel Basic -->
-        <div class="panel">
-            <header class="panel-heading">
-                <div class="panel-actions"></div>
-                <!--<h3 class="panel-title">Basic</h3>-->
-            </header>
-            <div class="panel-body">
-                <table class="table table-hover dataTable table-striped w-full" data-plugin="dataTable">
-                    <thead>
-                        <tr>
-                            <th>Folio del pedido</th>
-                            <th>Nombre del solicitante</th>
-                            <th>Sucursal del solicitante</th>
-                            <th>Nombre del distribuidor</th>
-                            <th>Sucursal del distribuidor</th>
-                            <th>Status pedido</th>
-                            <th>Cambiar status del pedido</th>
-                        </tr>
-                    </thead>
 
-                    <tbody>
-                        <?php
-                        foreach($pedidos_solicitados as $pedido)
-                        {
-                            $boton_status="";
-                            if($pedido->id_status=="5" ||$pedido->id_status=="3" )
-                            {
-                                $boton_status="<td>No se puede cambiar status</td>";
-                            }
-                            else
-                            {
-                                $boton_status=' <td><button class="btn btn-primary" data-target="#modalHistorial_'.$pedido-> id_pedido.'" data-toggle="modal" type="button">CambiarStatus</button></td>';
-                            }
-                            echo'
-                           <tr>
-                                <td><button class="btn btn-primary" data-target="#modalLlanta_'.$pedido-> id_pedido.'" data-toggle="modal" type="button">'.$pedido-> id_pedido.'</button></td>
-                                <td>'.$pedido-> nombre_usuario_destino.'</td>
-                                <td>'.$pedido-> nombre_sucursal_usuario_destino.'</td>
-                                <td>'.$pedido-> nombre_usuario_origen.'</td>
-                                <td>'.$pedido-> nombre_sucursal_usuario_origen.'</td>
-                                <td>'.$pedido-> status.'</td>'.$boton_status.'
-                               
-                            </tr>';  
-                        }
-                       
-                        
-                            ?>
-                    </tbody>
-                </table>
+    <div class="card bcard">
+        <div class="card-body p-0 border-x-1 border-b-1 brc-default-m4 radius-0 overflow-hidden">
+            <div id="table-toolbar">
+                <style>
+                    / * Define a class named .thead-blue pattern * / .table .thead-blue th {
+                        color: #fff;
+                        background-color: #3195f1;
+                        border-color: #0d7adf;
+                    }
+
+                </style>
+
             </div>
+            <table class="table text-dark-m2 text-95 bgc-white ml-n1px" id="table">
+                <!-- table -->
+            </table>
         </div>
-
-        <!--MODAL DE LOS PEDIDOS-->
-        <?php
-        foreach($pedidos_solicitados as $pedido)
-        {
-        echo'<div class="modal fade" id="modalLlanta_'.$pedido-> id_pedido.'" aria-hidden="true" aria-labelledby="modalLlanta_'.$pedido->id_pedido.'" role="dialog" tabindex="-1">
-            <div class="modal-dialog modal-simple">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                        <h4 class="modal-title">Detalle del pedido</h4>
-                    </div>
-                    <div class="modal-body">';
-                        echo'<table class="table">
-                        <thead>
-                        <th>Folio del pedido</th>
-                        <th>Id del productoNo</th>
-                        <th>Nombre del producto</th>
-                        <th>Cantidad</th>
-                        <th>Descripción</th>
-                        </thead>
-                        
-                        <tbody>';
-                        for($a=0;$a<count($detalles_pedido_sucursal);$a++)
-                        {
-                            if($detalles_pedido_sucursal[$a]->id_pedido==$pedido->id_pedido)
-                            {
-                                 echo '<tr>
-                                    <td>'.$detalles_pedido_sucursal[$a]->id_pedido.'</td>
-                                   <td>'.$detalles_pedido_sucursal[$a]->id_producto.'</td>
-                                    <td>'.$detalles_pedido_sucursal[$a]->nombre.'</td>
-                                    <td>'.$detalles_pedido_sucursal[$a]->cantidad.'</td>
-                                    <td>'.$detalles_pedido_sucursal[$a]->descripcion.'</td>
-                                    </tr>';
-                            }
-                        }
-                       
-                    
-                        echo'</tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>';
-        }
-        ?>
-        <!--FIN MODAL LLANTAS-->
-
-        <!--MODAL CAMBIAR STATUS-->
-        <?php
-        
-        $query3="select* from status where id_status!=1 and id_status!=4 and id_status!=5";
-        $query4="select* from status where id_status!=1 and id_status!=2";
-        $solicitados=DB::select($query3);
-        $aceptados=DB::select($query4);
-       
-        foreach($pedidos_solicitados as $pedido)
-        {
-        echo'<div class="modal fade" id="modalHistorial_'.$pedido-> id_pedido.'" aria-hidden="true" aria-labelledby="modalHistorial_'.$pedido-> id_pedido.'" role="dialog" tabindex="-1">
-            <div class="modal-dialog modal-simple">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                        <h4 class="modal-title">Cambiar status del pedido</h4>
-                    </div>
-                    <div class="modal-body">
-                          <div class="row">
-                            <div class="col-xl-12 form-group">
-                            <input id="id_pedido" name="id_pedido" type="hidden" value="'.$pedido->id_pedido.'">';
-                           echo' <div class="form-group form-material">
-                                    <label class="form-control-label" for="inputBasicPassword">Status del pedido</label>
-                                    <select class="form-control" id="status" required name="status" >';
-                            $cantidades_historial=DB::select('select * from historial_pedido where id_pedido="'.$pedido->id_pedido.'"');
-                                    if(count($cantidades_historial)==1)
-                                    {
-                                       foreach($solicitados as $item)
-                                        {
-                                          echo '<option value="'.$item->id_status.'">'.$item->status.' </option>';
-                                        }  
-                                    }
-                                    else
-                                    {
-                                        foreach($aceptados as $item)
-                                        {
-                                          echo '<option value="'.$item->id_status.'">'.$item->status.' </option>';
-                                        }
-                                    }
-            
-                                       
-
-                                  echo'  </select>
-                                </div>';
-
-                            
-                             echo' 
-                           
-                            
-                            <div class="col-xl-12 form-group">
-                              <textarea class="form-control" rows="5" id="comentario" name="comentario" placeholder="Ingrese un comentario"></textarea>
-                            </div>
-                            <div class="col-md-12 float-right">
-                              <button onclick="cambiar_status()" class="btn btn-primary" data-dismiss="modal" type="button">Cambiar status </button>
-                            </div>
-                          </div>
-                        </div>
-                </div>
-            </div>
-        </div>';
-        }
-        ?>
-        <!--FIN MODAL REALIZAR ABONOS-->
-
     </div>
 </div>
-<!-- End Page -->
+
+
 @section('scripts')
-<!-- Plugins For This Page -->
-<script src="\global\vendor\datatables.net\jquery.dataTables.js?v4.0.1"></script>
-<script src="\global\vendor\datatables.net-bs4\dataTables.bootstrap4.js?v4.0.1"></script>
-<script src="\global\vendor\datatables.net-fixedheader\dataTables.fixedHeader.min.js?v4.0.1"></script>
-<script src="\global\vendor\datatables.net-fixedcolumns\dataTables.fixedColumns.min.js?v4.0.1"></script>
-<script src="\global\vendor\datatables.net-rowgroup\dataTables.rowGroup.min.js?v4.0.1"></script>
-<script src="\global\vendor\datatables.net-scroller\dataTables.scroller.min.js?v4.0.1"></script>
-<script src="\global\vendor\datatables.net-responsive\dataTables.responsive.min.js?v4.0.1"></script>
-<script src="\global\vendor\datatables.net-responsive-bs4\responsive.bootstrap4.min.js?v4.0.1"></script>
-<script src="\global\vendor\datatables.net-buttons\dataTables.buttons.min.js?v4.0.1"></script>
-<script src="\global\vendor\datatables.net-buttons\buttons.html5.min.js?v4.0.1"></script>
-<script src="\global\vendor\datatables.net-buttons\buttons.flash.min.js?v4.0.1"></script>
-<script src="\global\vendor\datatables.net-buttons\buttons.print.min.js?v4.0.1"></script>
-<script src="\global\vendor\datatables.net-buttons\buttons.colVis.min.js?v4.0.1"></script>
-<script src="\global\vendor\datatables.net-buttons-bs4\buttons.bootstrap4.min.js?v4.0.1"></script>
-<script src="\global\vendor\asrange\jquery-asRange.min.js?v4.0.1"></script>
-<script src="\global\vendor\bootbox\bootbox.min.js?v4.0.1"></script>
-<script type="text/javascript">
-    
-    
-    function cambiar_status() {
-        //alert("Hola"); 
-        
-        var id_pedido = document.getElementById('id_pedido').value;
-        var id_status = document.getElementById('status').value;
-        var comentario = document.getElementById('comentario').value;
-        
-        if(comentario.length==0)
-        {
-            comentario="Sin comentarios";        
+
+<!-- include vendor scripts used in "Bootstrap Table" page. see "/views//pages/partials/table-bootstrap/@vendor-scripts.hbs" -->
+<script src="\npm\tableexport.jquery.plugin@1.10.22\tableExport.min.js"></script>
+
+
+<script src="\npm\bootstrap-table@1.18.3\dist\bootstrap-table.min.js"></script>
+<script src="\npm\bootstrap-table@1.18.3\dist\extensions\export\bootstrap-table-export.min.js"></script>
+<script src="\npm\bootstrap-table@1.18.3\dist\extensions\print\bootstrap-table-print.min.js"></script>
+<script src="\npm\bootstrap-table@1.18.3\dist\extensions\mobile\bootstrap-table-mobile.min.js"></script>
+
+<!-- "Bootstrap Table" page script to enable its demo functionality -->
+<script>
+    jQuery(function($) {
+        var datos = @json($pedidos_solicitados);
+        // alert(datos);
+        var arr = [];
+
+        datos.forEach(objeto => {
+            //let tmp =[] ;
+            arr.push({
+                "id_pedido": objeto.id_pedido,
+                "nombre_usuario_destino": objeto.nombre_usuario_destino,
+                "nombre_sucursal_usuario_destino": objeto.nombre_sucursal_usuario_destino,
+                "nombre_usuario_origen": objeto.nombre_usuario_origen,
+                "nombre_sucursal_usuario_origen": objeto.nombre_sucursal_usuario_origen,
+                "status": objeto.status
+            }, );
+            //arr.push(tmp);
+            //console.log(arr);
+        });
+        console.log(arr)
+
+        // initiate the plugin
+        var $_bsTable = $('#table')
+        $_bsTable.bootstrapTable({
+            data: arr,
+            columns: [{
+                    field: 'nombre_usuario_destino',
+                    title: 'Nombre del solicitante',
+                    sortable: true
+                },
+                {
+                    field: 'nombre_sucursal_usuario_destino',
+                    title: 'Sucursal del solicitante',
+                    sortable: true
+                },
+                {
+                    field: 'nombre_usuario_origen',
+                    title: 'Nombre del distribuidor',
+                    sortable: true
+                },
+                {
+                    field: 'nombre_sucursal_usuario_origen',
+                    title: 'Sucursal del distribuidor',
+                    sortable: true
+                },
+                {
+                    field: 'status',
+                    title: 'Status pedido',
+                    sortable: true
+                },
+
+
+                {
+                    field: 'tools',
+                    title: '<i class="fa fa-cog text-secondary-d1 text-130"></i>',
+                    formatter: formatTableCellActions,
+                    width: 140,
+                    align: 'center',
+                    printIgnore: true
+                }
+            ],
+
+            icons: {
+                columns: 'fa-th-list text-orange-d1',
+                detailOpen: 'fa-plus text-blue',
+                detailClose: 'fa-minus text-blue',
+                export: 'fa-download text-blue',
+                print: 'fa-print text-purple-d1',
+                fullscreen: 'fa fa-expand',
+
+                search: 'fa-search text-blue'
+            },
+
+
+            toolbar: "#table-toolbar",
+            theadClasses: "bgc-white text-grey text-uppercase text-80",
+            clickToSelect: true,
+
+            checkboxHeader: true,
+            search: true,
+            searchAlign: "left",
+            //showSearchButton: true,
+
+            sortable: true,
+
+            detailView: false,
+            detailFormatter: "detailFormatter",
+
+            pagination: true,
+            paginationLoop: false,
+
+            buttonsClass: "outline-default bgc-white btn-h-light-primary btn-a-outline-primary py-1 px-25 text-95",
+
+            showExport: true,
+            showPrint: true,
+            showColumns: true,
+            showFullscreen: true,
+
+
+            mobileResponsive: true,
+            checkOnInit: true,
+
+            printPageBuilder: function(table) {
+
+                hoy = new Date();
+                return '<html>' +
+                    '<head>' +
+                    '<style type="text/css" media="print">' +
+                    ' @page {' +
+                    'size: auto;' +
+                    'margin: 25px 0 25px 0;' +
+                    '}' +
+                    '</style>' +
+                    '<style type="text/css" media="all">' +
+                    'table {' +
+                    'border-collapse: collapse;' +
+                    'font-size: 12px;' +
+                    '}' +
+                    'table, th, td {' +
+                    'border: 1px solid grey;' +
+                    '}' +
+                    'th, td {' +
+                    'text-align: center;' +
+                    'vertical-align: middle;' +
+                    '}' +
+                    ' p {' +
+                    'font-weight: bold;' +
+                    'margin-left:20px;' +
+                    'margin-left:3%;' +
+                    'margin-right:3%;' +
+                    '}' +
+                    'table {' +
+                    'width:94%;' +
+                    'margin-left:3%;' +
+                    'margin-right:3%;' +
+                    '}' +
+                    'div.bs-table-print {' +
+                    'text-align:center;' +
+                    '}' +
+                    '</style>' +
+                    '</head>' +
+                    '<title>Imprimir inventario</title>' +
+                    '<body>' +
+                    '<div style="text-align:center;">' +
+                    '<p style="font-size:20px;">Tabla de pedidos a proveedores' + '</p>' +
+                    '</div>' +
+                    '<div >' +
+                    '<span style="float:left; margin-left:50px; margin-bottom:15px; ">LLANTIMAX Sucusal:' + @json($sucursal_usuario) + '</span>' +
+                    '<span style="float:right;  margin-right:50px;  margin-bottom:15px">Fecha de impresion:' + hoy.toLocaleDateString() + '</span>' +
+                    '</div>' +
+
+                    '<div class="bs-table-print">' + table + '</div>' +
+                    '</body>' +
+                    '</html>'
+            },
+            formatFullscreen: function() {
+                return 'Pantalla completa'
+            },
+            formatExport: function() {
+                return 'Exportar datos'
+            },
+            formatPrint: function() {
+                return 'Imprimir'
+            },
+            formatColumns: function() {
+                return 'Columnas'
+            },
+            formatSearch: function() {
+                return 'Buscar'
+            },
+            formatShowingRows: function(pageFrom, pageTo, totalRows) {
+                return 'Mostrando: ' + totalRows + ' Clientes';
+            },
+            formatRecordsPerPage: function(pageNumber) {
+                return pageNumber + ' Filas por página';
+            },
+            formatNoMatches: function() {
+                return 'Cliente no encontrado';
+            },
+        })
+
+        function formatTableCellActions(value, row, index, field) {
+            var eliminar = "'" + row.id_cliente + "'";
+            return '<div class="action-buttons">' +
+                //<button class="text-blue mx-1" data-target="#modalLlanta_' + row.id_llanta + '" data-toggle="modal">' +
+                //  '<i class="fa fa-search-plus text-105"></i>' +
+                //'</button>' +
+                // '<a class="text-success mx-1" href="#">\
+                //<i class="fa fa-search-plus text-105"></i>\
+                //</a>'+
+                '<button class="text-blue mx-1" data-toggle="modal" data-target="#modalDetalle" data-id="' + row.id_pedido + '" ><i class="fa fa-search-plus text-105"></i></button>' +
+                '<a class="text-danger-m1 mx-1"  href="javascript:eliminar_cliente(' + eliminar + ')">' +
+                '<i class="fa fa-trash-alt text-105"></i>' +
+                '</a>' +
+                '</div>'
         }
 
-        alert("Realizando pago");
-        var token = '{{csrf_token()}}';
-        var data = {
-            id_pedido: id_pedido,
-            id_status: id_status,
-            comentario: comentario,
-            _token: token
-        };
-        console.log(data);
-        $.ajax({
-            type: "POST",
-            url: "/actualizar_status_pedido",
-            data: data,
-            success: function(msg) {
 
-                alert(msg);
-                location.href = "/mostrar_pedido_solicitado";
-            }
-        });
+        // enable/disable 'remove' button
+        var $removeBtn = $('#remove-btn')
+        $_bsTable
+            .on('check.bs.table uncheck.bs.table check-all.bs.table uncheck-all.bs.table', function() {
+                $removeBtn.prop('disabled', !$_bsTable.bootstrapTable('getSelections').length)
+            })
 
-    }
+        // remove an item
+        $removeBtn.on('click', function() {
+            var ids = $.map($_bsTable.bootstrapTable('getSelections'), function(row) {
+                return row.id
+            })
+
+            $_bsTable.bootstrapTable('remove', {
+                field: 'id',
+                values: ids
+            })
+
+            $removeBtn.prop('disabled', true)
+        })
+
+
+        // change caret of "X" rows per page button
+        $('.fixed-table-pagination .caret').addClass('fa fa-caret-down')
+        $_bsTable.on('page-change.bs.table', function() {
+            $('.fixed-table-pagination .caret').addClass('fa fa-caret-down')
+        })
+
+    })
 
 </script>
+
+
+
 @stop
 @stop
