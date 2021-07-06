@@ -11,6 +11,10 @@
         top: 0;
         z-index: 10;
     }
+    
+    .text-red {
+    color: red;
+}
 
     /*.thead-blue thead tr th{ 
       position: sticky;
@@ -696,13 +700,13 @@
         function formatTableCellActions(value, row, index, field) {
             var eliminar =  row.id_llanta ;
             return '<div class="action-buttons">\
-            <button class="text-blue mx-1" data-target="#modalLlanta" data-toggle="modal"data-id="' + row.id_llanta + '" data-nombre="' + row.nombre + '" data-medida="' + row.medida + '" data-foto="' + row.foto + '" data-marca="' + row.marca + '" data-modelo="' + row.modelo + '" data-precio="' + row.precio + '" data-marc="' + row.id_marca + '" data-capacidad="' + row.capacidad_carga + '" data-indice="' + row.indice_velocidad + '" data-rin="' + row.numero_rin + '" ><i class="fa fa-search-plus text-105"></i></button>' +
-                '<button class="text-blue mx-1" data-toggle="modal" data-target="#editModal" data-id="' + row.id_llanta + '" data-nombre="' + row.nombre + '" data-foto="' + row.foto + '" data-medida="' + row.medida + '" data-marca="' + row.marca + '" data-modelo="' + row.modelo + '" data-precio="' + row.precio + '" data-marc="' + row.id_marca + '" data-capacidad="' + row.capacidad_carga + '" data-indice="' + row.indice_velocidad + '" data-rin="' + row.numero_rin + '" ><i class="fa fa-pencil-alt"></i></button>' +
+            <button class="text-blue mx-1 " data-target="#modalLlanta" data-toggle="modal"data-id="' + row.id_llanta + '" data-nombre="' + row.nombre + '" data-medida="' + row.medida + '" data-foto="' + row.foto + '" data-marca="' + row.marca + '" data-modelo="' + row.modelo + '" data-precio="' + row.precio + '" data-marc="' + row.id_marca + '" data-capacidad="' + row.capacidad_carga + '" data-indice="' + row.indice_velocidad + '" data-rin="' + row.numero_rin + '" ><i class="fa fa-search-plus text-105"></i></button>' +
+                '<button class="text-green mx-1" data-toggle="modal" data-target="#editModal" data-id="' + row.id_llanta + '" data-nombre="' + row.nombre + '" data-foto="' + row.foto + '" data-medida="' + row.medida + '" data-marca="' + row.marca + '" data-modelo="' + row.modelo + '" data-precio="' + row.precio + '" data-marc="' + row.id_marca + '" data-capacidad="' + row.capacidad_carga + '" data-indice="' + row.indice_velocidad + '" data-rin="' + row.numero_rin + '" ><i class="fa fa-pencil-alt"></i></button>' +
                 //'<a class="text-danger-m1 mx-1"  href="javascript:eliminar_producto(' + eliminar + ')">' +
                 //'<i class="fa fa-trash-alt text-105"></i>' +
                 //'</a>' +
                 //'</div>'
-                '<button type="button" class="text-blue mx-1" data-id="' +eliminar + '"  data-toggle="modal" data-target="#eliminarModal">' +
+                '<button type="button" class="text-danger mx-1 " data-id="' +eliminar + '"  data-toggle="modal" data-target="#eliminarModal">' +
                 '<i class="fa fa-trash-alt text-105"></i>' +
                 '</button>'
         }

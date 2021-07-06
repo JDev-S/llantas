@@ -116,6 +116,8 @@ Route::get('/pedido_sucursal','PedidoController@pedido_sucursal')->middleware('a
 Route::post('/mostrar_productos_pedidos', 'PedidoController@obtener_productos_sucursales')->name('mostrar_productos_pedidos');
 /*PETICION DE HACER PEDIDOS SUCURSALES*/
 Route::post('/insertar_pedido_sucursal','PedidoController@agregar_pedidos_sucursales')->name('insertar_pedido_sucursal');
+/*MANDAR HISTORIAL DEL PEDIDO*/
+Route::post('/obtener_historiales','PedidoController@obtener_historiales')->name('obtener_historiales');
 
 /*MOSTRAR PEDIDOS SOLICITADOS*/
 Route::get('/mostrar_pedido_solicitado','PedidoController@mostrar_pedidos_solicitados')->middleware('admin:1')
@@ -144,6 +146,13 @@ Route::post('/agregar_proveedores', 'ProveedorController@agregar_proveedor')->na
 Route::post('/eliminar_Proveedor', 'ProveedorController@eliminar_Proveedor')->name('eliminar_Proveedor');
 /*ACTUALIZAR PROVEEDOR*/
 Route::post('/actualizar_proveedor', 'ProveedorController@actualizar_proveedor')->name('actualizar_proveedor');
+
+/*Catalogo*/
+/*mostrar formulario para agregar catalogo*/
+Route::get('/agregar_catalogo','CatalogoController@mostrar_formulario')->middleware('admin:1')->name('agregar_catalogo');
+/*Mostrar productos en el formulario de catalogo*/
+Route::post('/mostrar_productos_catalogo','CatalogoController@mostrar_productos_sucursal_catalogo')-> name('mostrar_productos_catalogo');
+Route::post('/agregar_producto_catalogo','CatalogoController@agregar_producto_catalogo')->name('agregar_producto_catalogo');
 
 /*TICKETS*/
 /*Mostrar ticket*/

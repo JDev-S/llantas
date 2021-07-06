@@ -262,33 +262,28 @@
 
                                 <div class="hideable submenu collapse">
                                     <ul class="submenu-inner">
-
                                         <li class="nav-item">
-
                                             <a href="/mostrar_clientes" class="nav-link">
-
                                                 <span class="nav-text">
                                                     <span>Mostrar clientes</span>
                                                 </span>
-
                                             </a>
-
-
                                         </li>
 
-
                                         <li class="nav-item">
-
                                             <a href="/mostrar_proveedores" class="nav-link">
-
                                                 <span class="nav-text">
                                                     <span>Mostrar proveedores</span>
                                                 </span>
-
-
                                             </a>
+                                        </li>
 
-
+                                        <li class="nav-item">
+                                            <a href="/agregar_catalogo" class="nav-link">
+                                                <span class="nav-text">
+                                                    <span>Proveedor catalogo</span>
+                                                </span>
+                                            </a>
                                         </li>
 
                                         <li class="nav-item">
@@ -300,9 +295,7 @@
                                         </li>
                                     </ul>
                                 </div>
-
                                 <b class="sub-arrow"></b>
-
                             </li>
 
 

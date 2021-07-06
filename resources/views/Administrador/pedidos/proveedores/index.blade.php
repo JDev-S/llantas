@@ -140,11 +140,13 @@
             columns: [{
                     field: 'nombre_completo',
                     title: 'Nombre completo',
+                    align: 'center',
                     sortable: true
                 },
                 {
                     field: 'sucursal_pedido',
                     title: 'Sucursal del pedido',
+                    align: 'center',
                     sortable: true
                 },
                 /*{
@@ -155,11 +157,13 @@
                 {
                     field: 'total_venta',
                     title: 'Total del pedido',
+                    align: 'center',
                     sortable: true
                 },
                 {
                     field: 'fecha_venta',
                     title: 'Fecha del pedido',
+                    align: 'center',
                     sortable: true
                 },
 

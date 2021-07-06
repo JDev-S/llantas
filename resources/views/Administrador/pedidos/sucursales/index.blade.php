@@ -67,8 +67,7 @@
                                                             <thead class="bg-none " style="background-color:#309b74;">
                                                                 <tr class="text-white">
                                                                     <th><b>Folio del pedido</b></th>
-                                                                    <th><b>Id del producto</b></th>
-                                                                    <th><b>Nombre del producto</b></th>
+                                                                    <th><b>Código del producto</b></th>
                                                                     <th><b>Cantidad</b></th>
                                                                     <th><b>Descripción</b></th>
 
@@ -139,14 +138,29 @@
         var arr = [];
 
         datos.forEach(objeto => {
-            //let tmp =[] ;
+            var status = "";
+            if (objeto.status == "Solicitado") {
+                status = '<span class="badge badge-sm bgc-info-d1 text-white pb-1 px-25">Solicitado</span>';
+            } else
+            if (objeto.status == "Aceptado") {
+                status = '<span class="badge badge-sm bgc-green-d1 text-white pb-1 px-25">Aceptado</span>';
+            } else
+            if (objeto.status == "Rechazado") {
+                status = '<span class="badge badge-sm bgc-red-d1 text-white pb-1 px-25">Rechazado</span>';
+            } else
+            if (objeto.status == "En transito") {
+                status = '<span class="badge badge-sm bgc-warning-d1 text-white pb-1 px-25">En transito</span>';
+            } else
+            if (objeto.status == "Entregado") {
+                status = '<span class="badge badge-sm bgc-green-d1 text-white pb-1 px-25">Entregado</span>';
+            }
             arr.push({
                 "id_pedido": objeto.id_pedido,
                 "nombre_usuario_destino": objeto.nombre_usuario_destino,
                 "nombre_sucursal_usuario_destino": objeto.nombre_sucursal_usuario_destino,
                 "nombre_usuario_origen": objeto.nombre_usuario_origen,
                 "nombre_sucursal_usuario_origen": objeto.nombre_sucursal_usuario_origen,
-                "status": objeto.status
+                "status": status
             }, );
             //arr.push(tmp);
             //console.log(arr);
@@ -158,28 +172,39 @@
         $_bsTable.bootstrapTable({
             data: arr,
             columns: [{
+                    field: 'id_pedido',
+                    title: 'Folio pedido',
+                    align: 'center',
+                    sortable: true
+                },
+                {
                     field: 'nombre_usuario_destino',
                     title: 'Nombre del solicitante',
+                    align: 'center',
                     sortable: true
                 },
                 {
                     field: 'nombre_sucursal_usuario_destino',
                     title: 'Sucursal del solicitante',
+                    align: 'center',
                     sortable: true
                 },
                 {
                     field: 'nombre_usuario_origen',
                     title: 'Nombre del distribuidor',
+                    align: 'center',
                     sortable: true
                 },
                 {
                     field: 'nombre_sucursal_usuario_origen',
                     title: 'Sucursal del distribuidor',
+                    align: 'center',
                     sortable: true
                 },
                 {
                     field: 'status',
                     title: 'Status pedido',
+                    align: 'center',
                     sortable: true
                 },
 
@@ -303,13 +328,13 @@
                 return 'Buscar'
             },
             formatShowingRows: function(pageFrom, pageTo, totalRows) {
-                return 'Mostrando: ' + totalRows + ' Clientes';
+                return 'Mostrando: ' + totalRows + ' Pedidos';
             },
             formatRecordsPerPage: function(pageNumber) {
                 return pageNumber + ' Filas por página';
             },
             formatNoMatches: function() {
-                return 'Cliente no encontrado';
+                return 'Pedido no encontrado';
             },
         })
 
@@ -369,7 +394,7 @@
         var id_pedido = button.data('id')
         /*ASIGNAR VALOR A LOS METADATOS DEL MODAL*/
         var llenado = '';
-        var llenado2='';
+        var llenado2 = '';
         var datos = @json($detalles_pedido_sucursal);
         var historial = @json($historial_pedidos);
         var modal = $(this)
@@ -379,7 +404,6 @@
             if (objeto.id_pedido == id_pedido) {
                 //alert("hola");
                 llenado += '<tr> <td>' + objeto.id_pedido + '</td>' +
-                    '<td>' + objeto.id_producto + '</td>' +
                     '<td>' + objeto.nombre + '</td>' +
                     '<td>' + objeto.cantidad + '</td>' +
                     '<td>' + objeto.descripcion + '</td>' +
@@ -391,9 +415,25 @@
 
         historial.forEach(objeto => {
             if (objeto.id_pedido == id_pedido) {
-                //alert("hola");
+                var status = "";
+                if (objeto.status == "Solicitado") {
+                    status = '<span class="badge badge-sm bgc-info-d1 text-white pb-1 px-25">Solicitado</span>';
+                } else
+                if (objeto.status == "Aceptado") {
+                    status = '<span class="badge badge-sm bgc-green-d1 text-white pb-1 px-25">Aceptado</span>';
+                } else
+                if (objeto.status == "Rechazado") {
+                    status = '<span class="badge badge-sm bgc-red-d1 text-white pb-1 px-25">Rechazado</span>';
+                } else
+                if (objeto.status == "En transito") {
+                    status = '<span class="badge badge-sm bgc-warning-d1 text-white pb-1 px-25">En transito</span>';
+                } else
+                if (objeto.status == "Entregado") {
+                    status = '<span class="badge badge-sm bgc-green-d1 text-white pb-1 px-25">Entregado</span>';
+                }
+
                 llenado2 += '<tr> <td>' + objeto.id_pedido + '</td>' +
-                    '<td>' + objeto.status + '</td>' +
+                    '<td>' + status + '</td>' +
                     '<td>' + objeto.fecha_evento + '</td>' +
                     '<td>' + objeto.descripcion_evento + '</td>' +
                     '</tr>';

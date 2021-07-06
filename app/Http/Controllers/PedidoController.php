@@ -170,10 +170,10 @@ class PedidoController extends Controller
        INNER JOIN sucursal suc_usu_solicitante on suc_usu_solicitante.id_sucursal=pedido.id_sucursal_destino AND pedido.id_usuario_solicitante=usu_solicitante.id_usuario
        INNER JOIN sucursal suc_usu_distribuidor on suc_usu_distribuidor.id_sucursal=pedido.id_sucursal_origen AND pedido.id_usuario_distribuidor=usu_solicitante.id_usuario');*/
       $pedidos_sucursales=DB::select('select pedido.id_pedido,
-suc_destino.id_sucursal as id_sucursal_destino,
-suc_destino.sucursal as sucursal_destino,
-suc_origen.id_sucursal as id_sucursal_origen,suc_origen.sucursal as sucursal_origen,status.id_status,status.status,usu_origen.id_usuario as id_usuario_origen, usu_origen.nombre_completo as nombre_usuario_origen,usu_destino.id_usuario as id_usuario_destino,usu_destino.nombre_completo as nombre_usuario_destino,sucu_usu_destino.id_sucursal as id_sucursal_usuario_destino,sucu_usu_destino.sucursal as nombre_sucursal_usuario_destino, sucu_usu_origen.id_sucursal as id_sucursal_usuario_origen, sucu_usu_origen.sucursal as nombre_sucursal_usuario_origen  from pedido inner join status on status.id_status=pedido.id_status inner join sucursal suc_origen on suc_origen.id_sucursal=pedido.id_origen inner join sucursal suc_destino on suc_destino.id_sucursal=pedido.id_destino inner join usuario usu_origen on usu_origen.id_usuario=pedido.id_usuario_distribuidor and usu_origen.id_sucursal=pedido.id_sucursal_origen inner join usuario usu_destino on usu_destino.id_usuario=pedido.id_usuario_solicitante and usu_destino.id_sucursal=pedido.id_sucursal_destino inner join sucursal sucu_usu_destino on sucu_usu_destino.id_sucursal=usu_destino.id_sucursal Inner join sucursal sucu_usu_origen on sucu_usu_origen.id_sucursal=usu_origen.id_sucursal');
-        
+        suc_destino.id_sucursal as id_sucursal_destino,
+        suc_destino.sucursal as sucursal_destino,
+        suc_origen.id_sucursal as id_sucursal_origen,suc_origen.sucursal as sucursal_origen,status.id_status,status.status,usu_origen.id_usuario as id_usuario_origen, usu_origen.nombre_completo as nombre_usuario_origen,usu_destino.id_usuario as id_usuario_destino,usu_destino.nombre_completo as nombre_usuario_destino,sucu_usu_destino.id_sucursal as id_sucursal_usuario_destino,sucu_usu_destino.sucursal as nombre_sucursal_usuario_destino, sucu_usu_origen.id_sucursal as id_sucursal_usuario_origen, sucu_usu_origen.sucursal as nombre_sucursal_usuario_origen  from pedido inner join status on status.id_status=pedido.id_status inner join sucursal suc_origen on suc_origen.id_sucursal=pedido.id_origen inner join sucursal suc_destino on suc_destino.id_sucursal=pedido.id_destino inner join usuario usu_origen on usu_origen.id_usuario=pedido.id_usuario_distribuidor and usu_origen.id_sucursal=pedido.id_sucursal_origen inner join usuario usu_destino on usu_destino.id_usuario=pedido.id_usuario_solicitante and usu_destino.id_sucursal=pedido.id_sucursal_destino inner join sucursal sucu_usu_destino on sucu_usu_destino.id_sucursal=usu_destino.id_sucursal Inner join sucursal sucu_usu_origen on sucu_usu_origen.id_sucursal=usu_origen.id_sucursal');
+
       $detalles_pedido_sucursal=DB::select('SELECT detalle_pedido.id_pedido, detalle_pedido.id_producto, productos_llantimax.nombre, detalle_pedido.cantidad, detalle_pedido.descripcion FROM detalle_pedido INNER JOIN productos_llantimax on productos_llantimax.id_productos_llantimax=detalle_pedido.id_producto');
         
     $historial_pedidos=DB::select('select * from historial_pedido inner join status on status.id_status=historial_pedido.id_status');
@@ -186,16 +186,14 @@ suc_origen.id_sucursal as id_sucursal_origen,suc_origen.sucursal as sucursal_ori
          $id_status = $input ['id_status'];
          $id_pedido=$input['id_pedido'];
          $comentario=$input['comentario'];
-        $id_sucursal = session('id_sucursal_usuario');
+         $id_sucursal=$input['sucursal'];
+        //$id_sucursal = session('id_sucursal_usuario');
          
         $dia=date("d");
         $mes=date("m");
         $anio=date("Y");
         $fecha_status =$anio.'-'.$mes.'-'.$dia; 
-         //INSERT INTO `historial_pedido`(`id_pedido`, `id_status`, `fecha_evento`, `descripcion_evento`) VALUES ([value-1],[value-2],[value-3],[value-4])
-            
-        
-               
+         //INSERT INTO `historial_pedido`(`id_pedido`, `id_status`, `fecha_evento`, `descripcion_evento`) VALUES ([value-1],[value-2],[value-3],[value-4])   
         $actualizar = DB::update('UPDATE pedido SET id_status='.$id_status.' WHERE id_pedido=? ', [$id_pedido]);
         
         $cantidades_historial=DB::select('select * from historial_pedido where id_pedido="'.$id_pedido.'"');
@@ -247,16 +245,32 @@ suc_origen.id_sucursal as id_sucursal_origen,suc_origen.sucursal as sucursal_ori
     
     public function mostrar_pedidos_solicitados()
     {
-        $id_sucursal_usuario_destino = session('id_sucursal_usuario');
+        //$id_sucursal_usuario_destino = session('id_sucursal_usuario');
+        /*$pedidos_solicitados=DB::select('select pedido.id_pedido,
+        suc_destino.id_sucursal as id_sucursal_destino,
+        suc_destino.sucursal as sucursal_destino,
+        suc_origen.id_sucursal as id_sucursal_origen,suc_origen.sucursal as sucursal_origen,status.id_status,status.status,usu_origen.id_usuario as id_usuario_origen, usu_origen.nombre_completo as nombre_usuario_origen,usu_destino.id_usuario as id_usuario_destino,usu_destino.nombre_completo as nombre_usuario_destino,sucu_usu_destino.id_sucursal as id_sucursal_usuario_destino,sucu_usu_destino.sucursal as nombre_sucursal_usuario_destino, sucu_usu_origen.id_sucursal as id_sucursal_usuario_origen, sucu_usu_origen.sucursal as nombre_sucursal_usuario_origen  from pedido inner join status on status.id_status=pedido.id_status inner join sucursal suc_origen on suc_origen.id_sucursal=pedido.id_origen inner join sucursal suc_destino on suc_destino.id_sucursal=pedido.id_destino inner join usuario usu_origen on usu_origen.id_usuario=pedido.id_usuario_distribuidor and usu_origen.id_sucursal=pedido.id_sucursal_origen inner join usuario usu_destino on usu_destino.id_usuario=pedido.id_usuario_solicitante and usu_destino.id_sucursal=pedido.id_sucursal_destino inner join sucursal sucu_usu_destino on sucu_usu_destino.id_sucursal=usu_destino.id_sucursal Inner join sucursal sucu_usu_origen on sucu_usu_origen.id_sucursal=usu_origen.id_sucursal where suc_origen.id_sucursal='.$id_sucursal_usuario_destino);*/
         $pedidos_solicitados=DB::select('select pedido.id_pedido,
         suc_destino.id_sucursal as id_sucursal_destino,
         suc_destino.sucursal as sucursal_destino,
-        suc_origen.id_sucursal as id_sucursal_origen,suc_origen.sucursal as sucursal_origen,status.id_status,status.status,usu_origen.id_usuario as id_usuario_origen, usu_origen.nombre_completo as nombre_usuario_origen,usu_destino.id_usuario as id_usuario_destino,usu_destino.nombre_completo as nombre_usuario_destino,sucu_usu_destino.id_sucursal as id_sucursal_usuario_destino,sucu_usu_destino.sucursal as nombre_sucursal_usuario_destino, sucu_usu_origen.id_sucursal as id_sucursal_usuario_origen, sucu_usu_origen.sucursal as nombre_sucursal_usuario_origen  from pedido inner join status on status.id_status=pedido.id_status inner join sucursal suc_origen on suc_origen.id_sucursal=pedido.id_origen inner join sucursal suc_destino on suc_destino.id_sucursal=pedido.id_destino inner join usuario usu_origen on usu_origen.id_usuario=pedido.id_usuario_distribuidor and usu_origen.id_sucursal=pedido.id_sucursal_origen inner join usuario usu_destino on usu_destino.id_usuario=pedido.id_usuario_solicitante and usu_destino.id_sucursal=pedido.id_sucursal_destino inner join sucursal sucu_usu_destino on sucu_usu_destino.id_sucursal=usu_destino.id_sucursal Inner join sucursal sucu_usu_origen on sucu_usu_origen.id_sucursal=usu_origen.id_sucursal where suc_origen.id_sucursal='.$id_sucursal_usuario_destino);
-        
-        $detalles_pedido_sucursal=DB::select('SELECT detalle_pedido.id_pedido, detalle_pedido.id_producto, productos_llantimax.nombre, detalle_pedido.cantidad, detalle_pedido.descripcion FROM detalle_pedido INNER JOIN productos_llantimax on productos_llantimax.id_productos_llantimax=detalle_pedido.id_producto');
-        
-        return view('/Administrador/pedidos/sucursales/pedidos_solicitados',compact('pedidos_solicitados','detalles_pedido_sucursal'));
+        suc_origen.id_sucursal as id_sucursal_origen,suc_origen.sucursal as sucursal_origen,status.id_status,status.status,usu_origen.id_usuario as id_usuario_origen, usu_origen.nombre_completo as nombre_usuario_origen,usu_destino.id_usuario as id_usuario_destino,usu_destino.nombre_completo as nombre_usuario_destino,sucu_usu_destino.id_sucursal as id_sucursal_usuario_destino,sucu_usu_destino.sucursal as nombre_sucursal_usuario_destino, sucu_usu_origen.id_sucursal as id_sucursal_usuario_origen, sucu_usu_origen.sucursal as nombre_sucursal_usuario_origen  from pedido inner join status on status.id_status=pedido.id_status inner join sucursal suc_origen on suc_origen.id_sucursal=pedido.id_origen inner join sucursal suc_destino on suc_destino.id_sucursal=pedido.id_destino inner join usuario usu_origen on usu_origen.id_usuario=pedido.id_usuario_distribuidor and usu_origen.id_sucursal=pedido.id_sucursal_origen inner join usuario usu_destino on usu_destino.id_usuario=pedido.id_usuario_solicitante and usu_destino.id_sucursal=pedido.id_sucursal_destino inner join sucursal sucu_usu_destino on sucu_usu_destino.id_sucursal=usu_destino.id_sucursal Inner join sucursal sucu_usu_origen on sucu_usu_origen.id_sucursal=usu_origen.id_sucursal');
+        $sucursal_usuario= Session::get('sucursal_usuario');
+        $detalles_pedido_sucursal=DB::select('SELECT detalle_pedido.id_pedido, detalle_pedido.id_producto, productos_llantimax.nombre, detalle_pedido.cantidad, detalle_pedido.descripcion FROM detalle_pedido INNER JOIN productos_llantimax on productos_llantimax.id_productos_llantimax=detalle_pedido.id_producto'); 
+        $query3="select* from status where id_status!=1 and id_status!=4 and id_status!=5";
+        $query4="select* from status where id_status!=1 and id_status!=2";
+        $solicitados=DB::select($query3);
+        $aceptados=DB::select($query4);
+        return view('/Administrador/pedidos/sucursales/pedidos_solicitados',compact('pedidos_solicitados','detalles_pedido_sucursal','sucursal_usuario','solicitados','aceptados'));
     }
+    
+    public function obtener_historiales(Request $input)
+    {
+         $id_pedido=$input['pedido'];
+         $cantidades_historial=DB::select('select * from historial_pedido where id_pedido="'.$id_pedido.'"');
+        $json=json_encode($cantidades_historial);
+		return response()->json($json);
+    }
+   
     
     public function pedido_sucursal()
     {

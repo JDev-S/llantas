@@ -238,15 +238,6 @@
                                 align: 'center',
                                 sortable: true
                             },
-
-                            /*{
-                                field: 'tools',
-                                title: '<i class="fa fa-cog text-secondary-d1 text-130"></i>',
-                                formatter: formatTableCellActions,
-                                width: 140,
-                                align: 'center',
-                                printIgnore: true
-                            }*/
                         ],
                         icons: {
                             columns: 'fa-th-list text-orange-d1',

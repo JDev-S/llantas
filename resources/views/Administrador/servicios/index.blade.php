@@ -146,7 +146,37 @@
         </div>
     </div>
 </div><!--FIN MODAL ACTUALIZAR SERVICIO-->
-
+<!--MODAL ELIMINAR-->
+<div class="modal fade" data-backdrop-bg="bgc-white" id="eliminarModal" tabindex="-1" aria-labelledby="dangerModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content bgc-transparent brc-danger-m2 shadow">
+            <div class="modal-header py-2 bgc-danger-tp1 border-0  radius-t-1">
+                <h5 class="modal-title text-white-tp1 text-110 pl-2 font-bolder" id="dangerModalLabel">
+                    Advertencia!
+                </h5>
+                <button type="button" class="position-tr btn btn-xs btn-outline-white btn-h-yellow btn-a-yellow mt-1px mr-1px btn-brc-tp" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="text-150">×</span>
+                </button>
+            </div>
+            <div class="modal-body bgc-white-tp2 p-md-4 pl-md-5">
+                <div class="d-flex align-items-top mr-2 mr-md-5">
+                    <i class="fas fa-exclamation-triangle fa-2x text-orange-d2 float-rigt mr-4 mt-1"></i>
+                    <input type="hidden" class="form-control" id="delete_id" name="delete_id">
+                    <div class="text-secondary-d2 text-105">
+                        Esta seguro de que desea eliminarlo?
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer bgc-white-tp2 border-0">
+                <button type="button" class="btn px-4 btn-light-grey" data-dismiss="modal">
+                    No
+                </button>
+                <button type="button" class="btn px-4 btn-danger" id="id-danger-yes-btn" onclick="eliminar_producto()" data-dismiss="modal">
+                    Si
+                </button>
+            </div>
+        </div>
+<!--FIN MODAL ELIMINAR-->
 
 @section('scripts')
 
@@ -187,16 +217,19 @@
             columns: [{
                     field: 'nombre',
                     title: 'Nombre del servicio',
+                    align: 'center',
                     sortable: true
                 },
                 {
                     field: 'precio',
                     title: 'Precio',
+                    align: 'center',
                     sortable: true
                 },
                 {
                     field: 'descripcion',
                     title: 'Descripcion',
+                    align: 'center',
                     sortable: true
                 },
                 {
@@ -317,15 +350,15 @@
         })
 
         function formatTableCellActions(value, row, index, field) {
-            var eliminar = "'" + row.id_productos_llantimax + "'";
+            var eliminar =  row.id_productos_llantimax;
             return '<div class="action-buttons">' +
                 // '<a class="text-success mx-1" href="#">\
                 //<i class="fa fa-pencil-alt text-105"></i>\
                 //</a>'+
                 '<button class="text-blue mx-1" data-toggle="modal" data-target="#editModal" data-id="' + row.id_productos_llantimax + '" data-nombre="' + row.nombre+ '" data-precio="' + row.precio +'" data-descripcion="' + row.descripcion +'" ><i class="fa fa-pencil-alt"></i></button>'+
-                '<a class="text-danger-m1 mx-1"  href="javascript:eliminar_producto(' + eliminar + ')">' +
+                 '<button type="button" class="text-danger mx-1 " data-id="' +eliminar + '"  data-toggle="modal" data-target="#eliminarModal">' +
                 '<i class="fa fa-trash-alt text-105"></i>' +
-                '</a>' +
+                '</button>'
                 '</div>'
         }
 
@@ -361,9 +394,21 @@
     })
 
 </script>
+
 <script type="text/javascript">
-    function eliminar_producto(id_producto) {
-        var id_producto = id_producto;
+    
+     $('#eliminarModal').on('show.bs.modal', function(event) {
+        /*RECUPERAR METADATOS DEL BOTÓN*/
+        var button = $(event.relatedTarget)
+        var id_servicio = button.data('id')
+        var modal = $(this)
+        modal.find('#delete_id').val(id_servicio)
+    });
+</script>
+
+<script type="text/javascript">
+    function eliminar_producto() {
+        var id_producto =  document.getElementById("delete_id").value;
         var token = '{{csrf_token()}}';
         var data = {
             id_producto: id_producto,

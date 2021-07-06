@@ -205,6 +205,37 @@
     </div>
 </div>
 <!--FIN MODAL ACTUALIZAR REFACCION-->
+<!--MODAL ELIMINAR-->
+<div class="modal fade" data-backdrop-bg="bgc-white" id="eliminarModal" tabindex="-1" aria-labelledby="dangerModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content bgc-transparent brc-danger-m2 shadow">
+            <div class="modal-header py-2 bgc-danger-tp1 border-0  radius-t-1">
+                <h5 class="modal-title text-white-tp1 text-110 pl-2 font-bolder" id="dangerModalLabel">
+                    Advertencia!
+                </h5>
+                <button type="button" class="position-tr btn btn-xs btn-outline-white btn-h-yellow btn-a-yellow mt-1px mr-1px btn-brc-tp" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="text-150">×</span>
+                </button>
+            </div>
+            <div class="modal-body bgc-white-tp2 p-md-4 pl-md-5">
+                <div class="d-flex align-items-top mr-2 mr-md-5">
+                    <i class="fas fa-exclamation-triangle fa-2x text-orange-d2 float-rigt mr-4 mt-1"></i>
+                    <input type="hidden" class="form-control" id="delete_id" name="delete_id">
+                    <div class="text-secondary-d2 text-105">
+                        Esta seguro de que desea eliminarlo?
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer bgc-white-tp2 border-0">
+                <button type="button" class="btn px-4 btn-light-grey" data-dismiss="modal">
+                    No
+                </button>
+                <button type="button" class="btn px-4 btn-danger" id="id-danger-yes-btn" onclick="eliminar_producto()" data-dismiss="modal">
+                    Si
+                </button>
+            </div>
+        </div>
+<!--FIN DEL MODAL-->
 @section('scripts')
 <!-- include vendor scripts used in "Bootstrap Table" page. see "/views//pages/partials/table-bootstrap/@vendor-scripts.hbs" -->
 <script src="\npm\tableexport.jquery.plugin@1.10.22\tableExport.min.js"></script>
@@ -248,37 +279,44 @@
             columns: [{
                     field: 'nombre_refacciones',
                     title: 'Código de la refacción',
+                    align: 'center',
                     sortable: true
                 },
                 {
                     field: 'sucursal',
                     title: 'Sucursal',
+                    align: 'center',
                     sortable: true
                 },
 
                 {
                     field: 'marca',
                     title: 'Marca',
+                    align: 'center',
                     sortable: true
                 },
                 {
                     field: 'modelo',
                     title: 'Modelo',
+                    align: 'center',
                     sortable: true
                 },
                 {
                     field: 'precio',
                     title: 'Precio',
+                    align: 'center',
                     sortable: true
                 },
                 {
                     field: 'descripcion',
                     title: 'Descripción',
+                    align: 'center',
                     sortable: true
                 },
                 {
                     field: 'foto',
                     title: 'Foto',
+                    align: 'center',
                     printIgnore: true,
                     sortable: true
                 },
@@ -413,12 +451,12 @@
         })
 
         function formatTableCellActions(value, row, index, field) {
-            var eliminar = "'" + row.id_refacciones + "'";
+            var eliminar=row.id_refacciones;
             return '<div class="action-buttons">' +
                 '<button class="text-blue mx-1" data-toggle="modal" data-target="#editModal" data-id="' + row.id_refacciones + '" data-nombre="' + row.nombre_refacciones + '" data-sucursal="' + row.sucursal + '" data-suc="' + row.id_sucursal + '" data-precio="' + row.precio + '" data-foto="' + row.photo + '" data-marca="' + row.marca + '" data-modelo="' + row.modelo + '" data-descripcion="' + row.descripcion + '" ><i class="fa fa-pencil-alt"></i></button>' +
-                '<a class="text-danger-m1 mx-1"  href="javascript:eliminar_producto(' + eliminar + ')">' +
+                 '<button type="button" class="text-danger mx-1 " data-id="' +eliminar + '"  data-toggle="modal" data-target="#eliminarModal">' +
                 '<i class="fa fa-trash-alt text-105"></i>' +
-                '</a>' +
+                '</button>'+
                 '</div>'
         }
         // enable/disable 'remove' button
@@ -475,9 +513,21 @@
 
 
 </script>
+
 <script type="text/javascript">
-    function eliminar_producto(id_producto) {
-        var id_producto = id_producto;
+    
+     $('#eliminarModal').on('show.bs.modal', function(event) {
+        /*RECUPERAR METADATOS DEL BOTÓN*/
+        var button = $(event.relatedTarget)
+        var id_refaccion = button.data('id')
+        var modal = $(this)
+        modal.find('#delete_id').val(id_refaccion) 
+    });
+</script>
+
+<script type="text/javascript">
+    function eliminar_producto() {
+        var id_producto =  document.getElementById("delete_id").value;
         var token = '{{csrf_token()}}';
         var data = {
             id_producto: id_producto,
@@ -494,8 +544,8 @@
             }
         });
     }
-
 </script>
+
 <script type="text/javascript">
     function enviar_datos() {
         var nombre_refaccion = document.getElementById("nombre_refaccion").value;

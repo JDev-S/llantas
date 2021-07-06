@@ -588,42 +588,50 @@
             columns: [{
                     field: 'nombre',
                     title: 'Código del producto',
+                    align: 'center',
                     sortable: true
                 },
                 {
                     field: 'categoria',
                     title: 'Categoria',
+                    align: 'center',
                     sortable: true
                 },
                 {
                     field: 'marca',
                     title: 'Marca',
+                    align: 'center',
                     sortable: true
                 },
                 {
                     field: 'modelo',
                     title: 'Modelo',
+                    align: 'center',
                     sortable: true
                 },
                 {
                     field: 'precio',
                     title: 'Precio',
+                    align: 'center',
                     sortable: true
                 },
                 {
                     field: 'fotografia_miniatura',
                     title: 'Foto',
+                    align: 'center',
                     sortable: true,
                     printIgnore: true,
                 },
                 {
                     field: 'sucursal',
                     title: 'Sucursal',
+                    align: 'center',
                     sortable: true
                 },
                 {
                     field: 'cantidad',
                     title: 'Cantidad',
+                    align: 'center',
                     sortable: true
                 },
 
