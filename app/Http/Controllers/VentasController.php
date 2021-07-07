@@ -10,32 +10,37 @@ use DB;
 class VentasController extends Controller
 {
     var $total_venta = 0;
-    public function mostrar_productos_ventas()
+    public function mostrar_productos_ventas(Request $input)
     {
+        $id_sucursal=$input['sucursal'];
          /*$inventarios=DB::select("select inventario.id_producto as id_producto, productos_llantimax.nombre as nombre_producto, categoria.categoria as categoria, marca.marca as marca, producto.modelo as modelo,productos_servicios.precio as precio, producto.fotografia_miniatura as foto, sucursal.sucursal as sucursal, inventario.cantidad as cantidad, sucursal.id_sucursal as id_sucursal from inventario inner join productos_llantimax on productos_llantimax.id_productos_llantimax=inventario.id_producto inner join sucursal on inventario.id_sucursal=sucursal.id_sucursal inner join productos_servicios on productos_servicios.id_producto_servicio=productos_llantimax.id_productos_llantimax inner join producto on producto.id_producto=productos_servicios.id_producto_servicio inner join marca on marca.id_marca=producto.id_marca inner join categoria on categoria.id_categoria=producto.id_categoria
 
 UNION
 
 select inventario.id_producto as id_producto, productos_llantimax.nombre as nombre_producto, (select 'Refacciones' as refaccion), productos_independientes.marca as marca, productos_independientes.modelo as modelo,productos_independientes.precio as precio, productos_independientes.fotografia_miniatura as foto, sucursal.sucursal as sucursal, inventario.cantidad as cantidad, sucursal.id_sucursal as id_sucursal from inventario inner join productos_llantimax on productos_llantimax.id_productos_llantimax=inventario.id_producto inner join sucursal on inventario.id_sucursal=sucursal.id_sucursal inner join productos_independientes on productos_independientes.id_producto_independiente=productos_llantimax.id_productos_llantimax");*/
 
-        $inventarios=DB::select("select inventario.id_producto as id_producto, productos_llantimax.nombre as nombre_producto, categoria.categoria as categoria, marca.marca as marca, producto.modelo as modelo,productos_servicios.precio as precio, producto.fotografia_miniatura as foto, sucursal.sucursal as sucursal, inventario.cantidad as cantidad, sucursal.id_sucursal as id_sucursal from inventario inner join productos_llantimax on productos_llantimax.id_productos_llantimax=inventario.id_producto inner join sucursal on inventario.id_sucursal=sucursal.id_sucursal inner join productos_servicios on productos_servicios.id_producto_servicio=productos_llantimax.id_productos_llantimax inner join producto on producto.id_producto=productos_servicios.id_producto_servicio inner join marca on marca.id_marca=producto.id_marca inner join categoria on categoria.id_categoria=producto.id_categoria
+        $inventarios=DB::select("select inventario.id_producto as id_producto, productos_llantimax.nombre as nombre_producto, categoria.categoria as categoria, marca.marca as marca, producto.modelo as modelo,productos_servicios.precio as precio, producto.fotografia_miniatura as foto, sucursal.sucursal as sucursal, inventario.cantidad as cantidad, sucursal.id_sucursal as id_sucursal from inventario inner join productos_llantimax on productos_llantimax.id_productos_llantimax=inventario.id_producto inner join sucursal on inventario.id_sucursal=sucursal.id_sucursal inner join productos_servicios on productos_servicios.id_producto_servicio=productos_llantimax.id_productos_llantimax inner join producto on producto.id_producto=productos_servicios.id_producto_servicio inner join marca on marca.id_marca=producto.id_marca inner join categoria on categoria.id_categoria=producto.id_categoria where sucursal.id_sucursal=".$id_sucursal."
 
-UNION
+        UNION
 
-select inventario.id_producto as id_producto, productos_llantimax.nombre as nombre_producto, (select 'Refacciones' as refaccion), productos_independientes.marca as marca, productos_independientes.modelo as modelo,productos_independientes.precio as precio, productos_independientes.fotografia_miniatura as foto, sucursal.sucursal as sucursal, inventario.cantidad as cantidad, sucursal.id_sucursal as id_sucursal from inventario inner join productos_llantimax on productos_llantimax.id_productos_llantimax=inventario.id_producto inner join sucursal on inventario.id_sucursal=sucursal.id_sucursal inner join productos_independientes on productos_independientes.id_producto_independiente=productos_llantimax.id_productos_llantimax
+        select inventario.id_producto as id_producto, productos_llantimax.nombre as nombre_producto, (select 'Refacciones' as refaccion), productos_independientes.marca as marca, productos_independientes.modelo as modelo,productos_independientes.precio as precio, productos_independientes.fotografia_miniatura as foto, sucursal.sucursal as sucursal, inventario.cantidad as cantidad, sucursal.id_sucursal as id_sucursal from inventario inner join productos_llantimax on productos_llantimax.id_productos_llantimax=inventario.id_producto inner join sucursal on inventario.id_sucursal=sucursal.id_sucursal inner join productos_independientes on productos_independientes.id_producto_independiente=productos_llantimax.id_productos_llantimax where sucursal.id_sucursal=".$id_sucursal."
 
-UNION
+        UNION
 
-SELECT productos_llantimax.id_productos_llantimax as id_producto, productos_llantimax.nombre as nombre_producto, (SELECT 'Servicio') as categoria, (SELECT 'NA') as marca, (SELECT 'NA') as modelo, productos_servicios.precio, (SELECT 'NA') as foto, (SELECT 'Global') as sucursal, (SELECT 'NA') as cantidad, (SELECT 'NA') as id_sucursal FROM productos_llantimax INNER JOIN productos_servicios on productos_servicios.id_producto_servicio=productos_llantimax.id_productos_llantimax INNER JOIN servicio_cliente on servicio_cliente.id_servicio=productos_servicios.id_producto_servicio");
-        
+        SELECT productos_llantimax.id_productos_llantimax as id_producto, productos_llantimax.nombre as nombre_producto, (SELECT 'Servicio') as categoria, (SELECT 'NA') as marca, (SELECT 'NA') as modelo, productos_servicios.precio, (SELECT 'NA') as foto, (SELECT 'Global') as sucursal, (SELECT '1') as cantidad, (SELECT 'NA') as id_sucursal FROM productos_llantimax INNER JOIN productos_servicios on productos_servicios.id_producto_servicio=productos_llantimax.id_productos_llantimax INNER JOIN servicio_cliente on servicio_cliente.id_servicio=productos_servicios.id_producto_servicio");
+        $json=json_encode($inventarios);
+		return response()->json($json);
+    }
     
-   
-		return view('/Administrador/ventas/agregar',compact('inventarios'));
+    
+    public function mostrar_vista()
+    {
+        return view('/Administrador/ventas/agregar');
     }
     
     
       /*MÉTODO PARA INSERTAR EN VENTA Y DETALLE DE LA VENTA*/
-   public function insertar_venta(Request $input)
+    public function insertar_venta(Request $input)
 	{
        
         /*RECUPERAR DATOS PARA LA VENTA*/
@@ -58,8 +63,6 @@ SELECT productos_llantimax.id_productos_llantimax as id_producto, productos_llan
          //  echo $producto['id_producto'];
            //var_dump ($producto);
     //   }
-      
-         
         $id_sucursal_cliente = VentasController::obtener_sucursal_cliente($id_cliente);
                 
         /*DATOS DE LOS PRODUCTOS*/
@@ -117,7 +120,7 @@ SELECT productos_llantimax.id_productos_llantimax as id_producto, productos_llan
                 
                 
                 /*VERIFICAR SI SE TRATA DE UN SERVICIO O NO Y SER DESCONTADO DEL INVENTARIO*/
-                $contador=DB::select("select COUNT(*) as contador from servicio_cliente WHERE id_servicio='".$propiedad['id_sucursal_producto']."'");
+                $contador=DB::select("select COUNT(*) as contador from servicio_cliente WHERE id_servicio='".$propiedad['id_producto']."'");
                 if($contador==0)
                 {
                     $cantidad_inventario = DB:: select("select cantidad  from inventario where id_producto='".$propiedad['id_producto']."' and id_sucursal='".$propiedad['id_sucursal_producto']."'");

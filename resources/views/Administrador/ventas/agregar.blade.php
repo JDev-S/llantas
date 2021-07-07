@@ -80,34 +80,21 @@
                             <div class="form-row col-md-12 justify-content-center">
                                 <div class="form-group col-md-2 ml-2 justify-content-center">
                                     <select class="form-control selectpicker form-control" title="-- Sucursal --" data-size="5" data-header="Seleccione sucursal" data-style="btn-primary" onChange="javascript:mostrar_productos_sucursal()" id="sucursal" name="sucursal" data-container="body">
-                                        <option data-divider="true"></option>
-                                        <option data-tokens="Salamanca" value="Salamanca">Salamanca</option>
-                                        <option data-tokens="Cortazar" value="Cortazar">Cortazar</option>
-                                        <option data-tokens="San Miguel de Allende" value="San Miguel de Allende">San Miguel de Alllende</option>
+                                        <?php
+                                        $query2 = "select * from sucursal ";
+                                        $data2=DB::select($query2);      
+                                        ?>
+                                        @foreach($data2 as $item)
+                                        <option data-tokens="Sucursal" data-sucur="{{$item->sucursal}}" value="{{$item->id_sucursal}}">{{$item->sucursal}}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                                 <div class="form-group col-md-4 ml-2">
                                     <select class="form-control selectpicker form-control" multiple data-max-options="1" data-live-search="true" title="-- Producto --" data-size="4" data-header="Selecciona una producto" data-style="btn-primary" id="productos" name="productos" data-container="body">
                                         <optgroup label="los chidos">
-                                            <option data-divider="true"></option>
-                                            <option data-tokens="Producto 1" value="Salamanca">Producto 1</option>
-                                            <option data-tokens="Producto 2" value="Salamanca">Producto 2</option>
-                                            <option data-tokens="Producto 3" value="Salamanca">Producto 3</option>
-                                            <option data-tokens="Producto 4" value="Salamanca">Producto 4</option>
-                                            <option data-tokens="Producto 5" value="Salamanca">Producto 5</option>
-                                            <option data-tokens="Producto 6" value="Salamanca">Producto 6</option>
-                                            <option data-tokens="Producto 7" value="Salamanca">Producto 7</option>
+
                                         </optgroup>
-                                        <optgroup label="los mamalones">
-                                            <option data-divider="true"></option>
-                                            <option data-tokens="Producto 8" value="Salamanca">Producto 8</option>
-                                            <option data-tokens="Producto 9" value="Salamanca">Producto 9</option>
-                                            <option data-tokens="Producto 10" value="Salamanca">Producto 10</option>
-                                            <option data-tokens="Producto 11" value="Salamanca">Producto 11</option>
-                                            <option data-tokens="Producto 12" value="Salamanca">Producto 12</option>
-                                            <option data-tokens="Producto 13" value="Salamanca">Producto 13</option>
-                                            <option data-tokens="Producto 14" value="Salamanca">Producto 14</option>
-                                        </optgroup>
+
                                     </select>
                                 </div>
                                 <div class="form-group col-md-1 ml-2">
@@ -189,8 +176,8 @@
                                             Llantimax
                                         </span>
                                         <br>
-                                        <span class="text-dark-l2 text-90">
-                                            Sucursal Salamanca
+                                        <span class="text-dark-l2 text-90" id="sucursal_venta">
+
                                         </span>
                                     </div>
 
@@ -200,17 +187,41 @@
                                                 <div class="text-secondary-d1 text-600 text-125 align-middle">
                                                     Cliente
                                                 </div>
-                                                <div class="form-group col-lg-6 col-md-4 justify-content-center pl-0 mt-2 ml-0">
-                                                    <select class="form-control selectpicker form-control" title="-- Cliente --" data-size="5" data-header="" data-style="btn-primary" onChange="javascript:mostrar_productos_sucursal()" id="sucursal" name="sucursal" data-container="body">
-                                                        <option data-divider="true"></option>
-                                                    </select>
+                                                <div class="row mt-2">
+                                                    <div class="form-group col-7 col-lg-8 col-md-7 justify-content-center pl-2 mt-2 ml-2 mb-1">
+                                                        <select class="form-control selectpicker form-control" title="-- Cliente --" data-size="5" data-header="" data-style="btn-primary" onChange="javascript:mostrar_info()" id="cliente" name="cliente" data-container="body">
+                                                            <option data-divider="true"></option>
+                                                            <?php
+                                                                $query2 = "select * from clientes";
+                                                                $data2=DB::select($query2);      
+                                                            ?>
+                                                            @foreach($data2 as $item)
+                                                            <option data-tokens="Cliente" data-telefono="{{$item->telefono}}" data-correo="{{$item->correo_electronico}}" value="{{$item->id_cliente}}">{{$item->nombre_completo}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-2 text-left align-self-center pl-0 mb-1 mt-2">
+                                                        <button type="button" class="btn btn-primary" data-trigger="hover" data-target="#modalNuevo" data-toggle="modal" type="button" data-placement="top" data-content="Agregar cliente" data-original-title="" title="">
+                                                            <i class="fas fa-user-plus"></i>
+                                                            <div class="ripple-container"></div>
+                                                        </button>
+                                                    </div>
                                                 </div>
                                                 <div class="text-dark-l1">
-                                                    <div class="my-1">
-                                                        Teléfono:
+                                                    <div class="my-1" id="telefono_cliente">
+
                                                     </div>
-                                                    <div class="my-1">
-                                                        Correo:
+                                                    <div class="my-1" id="correo_cliente">
+
+                                                    </div>
+                                                     <div class="my-1" >
+                                                         <input type="text" class="form-control mr-3" placeholder="Tipo de auto" id="auto" name="auto">
+                                                    </div>
+                                                    <div class="my-1" id="fecha_ultima">
+
+                                                    </div>
+                                                    <div class="my-1" id="comentario">
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -237,7 +248,10 @@
                                                     <span class="text-600 text-90">
                                                         Fecha:
                                                     </span>
-                                                    12 Jun, 2021
+                                                    <?php $hoy = getdate();   
+                                                        echo $hoy['mday'].'/'.$hoy['mon'].'/'.$hoy['year'];
+                                                        //print_r($hoy);
+                                                    ?>
                                                 </div>
                                             </div>
                                         </div><!-- /.col -->
@@ -245,148 +259,23 @@
 
 
                                     <div class="mt-4">
-                                        <div class="row text-600 text-95 text-secondary-d3 brc-green-l1 py-25 border-y-2">
-                                            <div class="d-none d-sm-block col-1">
-                                                #
-                                            </div>
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-borderless border-0 border-b-2 brc-default-l1" id="responsive-table">
+                                                <thead class="bg-none bgc-default-tp1">
+                                                    <tr class="text-white">
+                                                        <th class="opacity-2">Producto/servicio</th>
+                                                        <th>Cantidad</th>
+                                                        <th>Precio</th>
+                                                        <th>Total</th>
+                                                        <th>Acciones</th>
+                                                    </tr>
+                                                </thead>
 
-                                            <div class="col-7 col-sm-5">
-                                                Descripción
-                                            </div>
+                                                <tbody class="text-95 text-secondary-d3" id="table">
 
-                                            <div class="d-none d-sm-block col-4 col-sm-2">
-                                                Cant.
-                                            </div>
-
-                                            <div class="d-none d-sm-block col-sm-2">
-                                                Precio U.
-                                            </div>
-
-                                            <div class="col-5 col-sm-2">
-                                                Total
-                                            </div>
+                                                </tbody>
+                                            </table>
                                         </div>
-
-                                        <div class="text-95 text-dark-m3">
-                                            <div class="row mb-2 mb-sm-0 py-25">
-                                                <div class="d-none d-sm-block col-1">
-                                                    1
-                                                </div>
-
-                                                <div class="col-7 col-sm-5">
-                                                    Producto 1
-                                                </div>
-
-                                                <div class="d-none d-sm-block col-2">
-                                                    2
-                                                </div>
-
-                                                <div class="d-none d-sm-block col-2 text-95">
-                                                    $10
-                                                </div>
-
-                                                <div class="col-5 col-sm-2 text-secondary-d3 text-600">
-                                                    $20
-                                                </div>
-                                            </div>
-
-                                            <div class="row mb-2 mb-sm-0 py-25 bgc-green-l4">
-                                                <div class="d-none d-sm-block col-1">
-                                                    2
-                                                </div>
-
-                                                <div class="col-7 col-sm-5">
-                                                    Producto 2
-                                                </div>
-
-                                                <div class="d-none d-sm-block col-2">
-                                                    1
-                                                </div>
-
-                                                <div class="d-none d-sm-block col-2 text-95">
-                                                    $30
-                                                </div>
-
-                                                <div class="col-5 col-sm-2 text-secondary-d3 text-600">
-                                                    $30
-                                                </div>
-                                            </div>
-
-                                            <div class="row mb-2 mb-sm-0 py-25">
-                                                <div class="d-none d-sm-block col-1">
-                                                    3
-                                                </div>
-
-                                                <div class="col-7 col-sm-5">
-                                                    Producto 3
-                                                </div>
-
-                                                <div class="d-none d-sm-block col-2">
-                                                    --
-                                                </div>
-
-                                                <div class="d-none d-sm-block col-2 text-95">
-                                                    $1,700
-                                                </div>
-
-                                                <div class="col-5 col-sm-2 text-secondary-d3 text-600">
-                                                    $1,700
-                                                </div>
-                                            </div>
-
-                                            <div class="row mb-2 mb-sm-0 py-25 bgc-green-l4">
-                                                <div class="d-none d-sm-block col-1">
-                                                    4
-                                                </div>
-
-                                                <div class="col-7 col-sm-5">
-                                                    Producto 4
-                                                </div>
-
-                                                <div class="d-none d-sm-block col-2">
-                                                    1
-                                                </div>
-
-                                                <div class="d-none d-sm-block col-2 text-95">
-                                                    $500
-                                                </div>
-
-                                                <div class="col-5 col-sm-2 text-secondary-d3 text-600">
-                                                    $500
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row border-b-2 brc-green-l1"></div>
-
-                                        <!-- or use a table instead -->
-                                        <!--
-                    <div class="table-responsive">
-                        <table class="table table-striped table-borderless border-0 border-b-2 brc-default-l1">
-                            <thead class="bg-none bgc-default-tp1">
-                                <tr class="text-white">
-                                    <th class="opacity-2">#</th>
-                                    <th>Description</th>
-                                    <th>Qty</th>
-                                    <th>Unit Price</th>
-                                    <th width="140">Amount</th>
-                                </tr>
-                            </thead>
-
-                            <tbody class="text-95 text-secondary-d3">
-                                <tr></tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Domain registration</td>
-                                    <td>2</td>
-                                    <td class="text-95">$10</td>
-                                    <td class="text-secondary-d2">$20</td>
-                                </tr> 
-                            </tbody>
-                        </table>
-                    </div>
-                    -->
-
 
                                         <div class="row mt-4">
                                             <div class="col-12 col-sm-7 mt-2 mt-lg-0">
@@ -399,38 +288,56 @@
                                                     </p>
 
                                                     <div>
-                                                        <form autocomplete="off" class="p-2 p-sm-3 bgc-secondary-l4 radius-1 btn-group btn-group-toggle mx-n3 mx-sm-0" data-toggle="buttons">
-                                                            <div role="button" class="mr-1 p-3 border-2 btn btn-brc-tp shadow-sm btn-light btn-text-blue btn-h-lighter-blue btn-a-light-blue bgc-white">
-                                                                <input type="radio" name="place" id="place1" value="1">
-                                                                <i class="fab fa-paypal d-block text-150 text-blue-d1 w-4 mx-2"></i>
+                                                        <div autocomplete="off" class="p-2 p-sm-3 bgc-secondary-l4 radius-1 btn-group btn-group-toggle mx-n3 mx-sm-0" data-toggle="buttons">
+                                                            <div role="button" class="mr-1 p-3 border-2 btn btn-brc-tp shadow-sm btn-light btn-text-blue btn-h-lighter-blue btn-a-light-blue bgc-white" title="Efectivo">
+                                                                <input type="radio" name="pago" id="pago" value="2">
+                                                                <i class="far fa-money-bill-alt fa-4x text-150 text-blue-d1 w-4 mx-2" ></i>
                                                             </div>
 
-                                                            <div role="button" class="mr-1 p-3 border-2 btn btn-brc-tp shadow-sm btn-text-purple btn-light btn-h-lighter-purple btn-a-light-purple bgc-white">
-                                                                <input type="radio" name="place" id="place2" value="1">
-                                                                <i class="far fa-credit-card d-block text-150 text-purple-d1 w-4 mx-2"></i>
+                                                            <div role="button" class="mr-1 p-3 border-2 btn btn-brc-tp shadow-sm btn-text-purple btn-light btn-h-lighter-purple btn-a-light-purple bgc-white" title="Tarjeta de crédito">
+                                                                <input type="radio" name="pago" id="pago" value="1">
+                                                                <i class="far fa-credit-card d-block text-150 text-purple-d1 w-4 mx-2" ></i>
                                                             </div>
 
-                                                            <div role="button" class="p-3 border-2 btn btn-brc-tp shadow-sm btn-light btn-text-orange btn-h-lighter-orange btn-a-light-orange bgc-white">
-                                                                <input type="radio" name="place" id="place3" value="3">
-                                                                <i class="fab fa-bitcoin d-block text-150 text-orange-d3 w-4 mx-2"></i>
+                                                            <div role="button" class="p-3 border-2 btn btn-brc-tp shadow-sm btn-light btn-text-orange btn-h-lighter-orange btn-a-light-orange bgc-white" title="Llantimax crédito" onclick="mostrar_formulario_credito()">
+                                                                <input type="radio" name="pago" id="pago" value="3">
+                                                                <i class="fas fa-clipboard-list text-150 text-orange-d3 w-4 mx-2" ></i>
                                                             </div>
-                                                        </form>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-12 col-sm-5 text-dark-l1 text-90 order-first order-sm-last">
-                                                <div class="row my-3 align-items-center bgc-green-d3 p-2 radius-1 mr-4 ml-1">
-                                                    <div class="col-7 text-right text-white text-140 justify-content-start">
-                                                        Monto Total:
+                                                <!-- <div class="row my-3 align-items-center bgc-green-d3 p-2 radius-1 mr-4 ml-1">
+                                                    <div class="col-7 col-md-5  text-white text-115 justify-content-start">
+                                                        Total:
                                                     </div>
-                                                    <div class="col-5 justify-content-end">
-                                                        <span class="text-140 text-white">
-                                                            $2,475
+                                                    <div class="col-5 col-md-5 justify-content-center">-->
+                                                <!--<span class="text-115 text-white" id="total_final">
+                                                            0
                                                         </span>
+                                                        
+                                                        <input type="text" value="0" disabled="" id="total_final" name="total_final" class="form-control border-0 bgc-green-d3 text-115 text-white">
+                                                    </div>
+                                                </div>-->
+                                                <div class="input-group mb-2">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text bgc-green-d3 text-white">$</div>
+                                                    </div>
+                                                    <input type="text" disabled class="form-control bgc-green-d3 text-white mr-3" id="total_final" name="total_final" value="0">
+                                                </div>
+                                                <div class="row my-2 align-items-center">
+                                                    <div class="col-5 col-lg-7 col-sm-8 text-left">
+                                                        Requiere Factura
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <div class="form-check mb-2 float-left">
+                                                            <input class="form-check-input" type="checkbox" id="check_factura" name="check_factura">
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="row my-2 col-12 justify-content-center pr-0">
-                                                    <button class="btn px-4 btn-primary mb-1 btn-lg btn-block">Finalizar Compra</button>
+                                                    <button class="btn px-4 btn-primary mb-1 btn-lg btn-block" onclick="generar_pedido()">Finalizar Compra</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -451,22 +358,114 @@
     </div>
 </div>
 
+<!--MODAL AGREGAR CLIENTE -->
+
+<div class="modal fade" id="modalNuevo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background:#2470bd;">
+                <h5 class="modal-title" id="exampleModalLabel" style="color:white;">Ingresar cliente</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="ccard h-100 d-flex flex-column mx-2 px-2 py-3">
+                    <div class="form-row col-md-12">
+                        <div class="form-group col-md-6">
+                            <label for="codigo_llanta">Nombre completo del cliente</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre completo del cliente">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="modelo">Telefono</label>
+                            <input type="text" class="form-control mb-2" id="telefono" name="telefono" placeholder="Telefono">
+                        </div>
+                    </div>
+
+                    <div class="form-row align-items-center col-md-12">
+                        <div class="form-group col-md-6">
+                            <label for="rin">Correo eléctronico</label>
+                            <input type="email" class="form-control" id="correo" name="correo" placeholder="Email">
+                        </div>
+
+                    </div>
+
+                    <div class="form-group col-md-12">
+                        <label for="indice_velocidad">Sucursal</label>
+                        <?php
+                            $query2 = "select * from sucursal ";
+                            $data2=DB::select($query2);      
+                        ?>
+                        <select id="sucursales" name="sucursales" class="form-control">
+                            @foreach($data2 as $item)
+                            <option value="{{ $item->id_sucursal }}"> {{ $item->sucursal }} </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="form-row align-items-center col-md-12">
+                        <div class="form-group col-md-6">
+                            <label for="id-form-field-1" class="mb-0">
+                                Cliente habitual
+                            </label>
+
+                            <div class="radio-custom radio-default radio-inline">
+                                <label for="inputBasicMale">Sí</label>
+                                <input type="radio" id="habitual" name="habitual" value="1">
+
+                            </div>
+                            <div class="radio-custom radio-default radio-inline">
+                                <label for="inputBasicFemale">No</label>
+                                <input type="radio" id="habitual" name="habitual" value="0">
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    Cerrar
+                </button>
+                <button type="submit" class="btn btn-primary" onclick="enviar_datos();">
+                    Aceptar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--FIN MODAL AGREGAR CLIENTE-->
 
 @section('scripts')
 
 <!-- include vendor scripts used in "Bootstrap Table" page. see "/views//pages/partials/table-bootstrap/@vendor-scripts.hbs" -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/basictable@2.0.2/dist/js/jquery.basictable.min.js"></script>
-
-
-
 <script type="text/javascript">
     var rowIdx = 0;
     var productos = new Array();
 
+    function mostrar_info() {
+        var telefono = $('#cliente option:selected').attr("data-telefono");
+        var correo = $('#cliente option:selected').attr("data-correo");
+
+        document.getElementById("telefono_cliente").innerHTML = "";
+        document.getElementById("telefono_cliente").innerHTML = "Teléfono: " + telefono;
+
+        document.getElementById("correo_cliente").innerHTML = "";
+        document.getElementById("correo_cliente").innerHTML = "Correo: " + correo;
+    }
+
     function mostrar_productos_sucursal() {
         var sucursal = $('#sucursal').val();
-        //alert(sucursal);
+        alert(sucursal);
+
+        var sucursal_ventas = $('#sucursal option:selected').attr("data-sucur");
+        document.getElementById("sucursal_venta").innerHTML = "";
+        document.getElementById("sucursal_venta").innerHTML = "Sucursal: " + sucursal_ventas;
 
         var token = '{{csrf_token()}}';
         var data = {
@@ -475,7 +474,7 @@
         };
         $.ajax({
             type: "POST",
-            url: "/mostrar_catalogo_sucursal",
+            url: "/mostrar_productos_ventas",
             data: data,
             success: function(msg) {
                 console.log(msg);
@@ -494,14 +493,15 @@
 
                 $("#responsive-table tbody tr").html("");
                 document.getElementById("cantidad").value = "";
-                document.getElementById("total_final").value = 0;
+
                 productos = new Array();
 
                 datos.forEach(objeto => {
-                    // alert("Id_proveedor: " + objeto.id_proveedor);
-                    //llenado += '<option data-tokens="Espresso" data-subtext="Proveedor: ' + objeto.nombre_contacto + '; precio: $' + objeto.precio_compra + '" showSubtext="true">' + objeto.nombre + '</option>';
-                    $('#productos').append('<option value="' + objeto.id_producto + '"    data-sucursal="' + objeto.id_sucursal + '" data-catalogo="' + objeto.id_catalogo + '" data-tokens="Espresso" data-subtext="Proveedor: ' + objeto.nombre_contacto + '; precio: $' + objeto.precio_compra + '" showSubtext="true" data-contacto="' + objeto.nombre_contacto + '" data-precio="' + objeto.precio_compra + '" data-producto="' + objeto.nombre + '" data-proveedor="' + objeto.id_proveedor + '">' + objeto.nombre + '</option>');
-                    $("#productos").selectpicker("refresh");
+                    if (objeto.cantidad > 0) {
+                        $('#productos').append('<option data-thumbnail="assets/image/user.JPG' + objeto.foto + '"  value="' + objeto.id_producto + '"data-producto="' + objeto.nombre_producto + '" data-cantidad="' + objeto.cantidad + '" data-categoria="' + objeto.categoria + '" data-marca="' + objeto.marca + '" data-modelo="' + objeto.modelo + '" data-subtext="Categoria: ' + objeto.categoria + '; Marca: ' + objeto.marca + '; Modelo: ' + objeto.modelo + '; Sucursal: ' + objeto.sucursal + '; Cantidad: ' + objeto.cantidad + '" showSubtext="true" data-precio="' + objeto.precio + '" data-foto="' + objeto.foto + '" data-sucursal="' + objeto.sucursal + '" data-suc="' + objeto.id_sucursal + '">' + objeto.nombre_producto + '</option>');
+                        $("#productos").selectpicker("refresh");
+                    }
+
                 });
             }
         });
@@ -509,19 +509,21 @@
 
 
     function mostrar_tabla() {
-
         /Value tiene el valor del producto/
         /*OBTENER LOS VALORES DE LOS OTROS DATA */
         // var datos=$('#productos option:selected').attr("data-value2");
         var cantidad = document.getElementById("cantidad").value;
         var sucursal = $('#sucursal').val();
         var id_producto = $('#productos').val()[0];
-        var id_proveedor = $('#productos option:selected').attr("data-proveedor");
-        var id_sucursal = $('#productos option:selected').attr("data-sucursal");
-        var id_catalogo = $('#productos option:selected').attr("data-catalogo");
-        var nombre_proveedor = $('#productos option:selected').attr("data-contacto");
-        var precio_compra = $('#productos option:selected').attr("data-precio");
         var nombre_producto = $('#productos option:selected').attr("data-producto");
+        var categoria = $('#productos option:selected').attr("data-categoria");
+        var marca = $('#productos option:selected').attr("data-marca");
+        var modelo = $('#productos option:selected').attr("data-modelo");
+        var precio = $('#productos option:selected').attr("data-precio");
+        var foto = $('#productos option:selected').attr("data-foto");
+        var nombre_sucursal = $('#productos option:selected').attr("data-sucursal");
+        var id_sucursal = $('#productos option:selected').attr("data-suc");
+        var cantidad_suc = $('#productos option:selected').attr("data-cantidad");
         var bandera = 0;
 
         /VERIFICAR SI LA TABLA TIENE FILAS/
@@ -529,43 +531,42 @@
             /EVALUAR SI ESXISTE EL PRODUCTO AGREGADO EN LA TABLA/
             $("#responsive-table tbody tr").each(function(index_tr) {
                 if (bandera == 0) {
-                    var t_idcatalogo = ($(this).attr("data-id_catalogo"));
+                    var t_idsucursal = ($(this).attr("data-id_sucursal"));
                     var t_idproducto = ($(this).attr("data-id_producto"));
                     /SI EL PRODUCTO EXISTE, LO ACTUALIZA/
-                    if (id_catalogo == t_idcatalogo && id_producto == t_idproducto) {
+                    if (id_sucursal == t_idsucursal && id_producto == t_idproducto) {
                         //var t_cantidad = $(this).attr("data-cantidad");
                         var t_cantidad = document.getElementById("cant").value;
                         cantidad = parseInt(t_cantidad) + parseInt(cantidad);
                         alert(t_cantidad);
                         bandera = 1;
                         $(this).attr('data-cantidad', cantidad);
-                        $(this).attr('data-total', parseInt(cantidad) * parseInt(precio_compra));
+                        $(this).attr('data-total', parseInt(cantidad) * parseInt(precio));
                         //$(this).dataset.cantidad = cantidad;
                         $(this).html("");
                         /LIMPIA EL CONTENIDO DE TR PARA EVITAR DUPLICADOS/
                         var tr = '<td data-th="Producto"><span class="bt-content">' + nombre_producto + '</span></td>' +
-                            '<td data-th="Proveedor"><span class="bt-content">' + nombre_proveedor + '</span></td>' +
                             '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input  class="col-9" style="padding-left:0px;" step="1" min="1" type="number" id="cant" name="cant" value="' + cantidad + '" ></div></span></td>' +
-                            '<td data-th="Precio unitario"><span class="bt-content">' + precio_compra + '</span></td>' +
-                            '<td data-th="Total"><span class="bt-content">' + parseInt(cantidad) * parseInt(precio_compra) + '</span></td>' +
+                            '<td data-th="Precio unitario"><span class="bt-content">' + precio + '</span></td>' +
+                            '<td data-th="Total"><span class="bt-content">' + parseInt(cantidad) * parseInt(precio) + '</span></td>' +
                             '<td data-th="Acciones"><span class="bt-content text-center">' +
                             '<button class="btn btn-danger remove"' +
                             'type="button">Eliminar</button>' +
                             '</td>';
                         $(this).append(tr);
                         var total = $('#total_final').val();
-                        var total_final = total - (parseInt(t_cantidad) * parseInt(precio_compra));
-                        total_final = total_final + (parseInt(cantidad) * parseInt(precio_compra));
+                        var total_final = total - (parseInt(t_cantidad) * parseInt(precio));
+                        total_final = total_final + (parseInt(cantidad) * parseInt(precio));
                         document.getElementById("total_final").value = total_final;
 
                         /ACTUALIZAR ARREGLO/
                         productos = productos.map(function(objeto) {
-                            return objeto.id_producto == id_producto && objeto.catalogo == id_catalogo ? {
+                            return objeto.id_producto == id_producto && objeto.id_sucursal == sucursal ? {
                                 "id_producto": objeto.id_producto,
                                 "cantidad_producto": cantidad,
                                 "precio_unidad": objeto.precio_unidad,
                                 "total": parseInt(cantidad) * parseInt(objeto.precio_unidad),
-                                "catalogo": id_catalogo
+                                "id_sucursal": objeto.id_sucursal
                             } : objeto;
                         });
 
@@ -576,27 +577,26 @@
             if (bandera == 0) {
                 alert("nueva fila");
                 // Nueva fila dentro de tbody.
-                $('#table').append(`<tr id="R${++rowIdx}" data-id_catalogo="${id_catalogo}" data-id_producto="${id_producto}" data-precio="${precio_compra}" data-producto="${nombre_producto}"  data-proveedor="${nombre_proveedor}" data-total="${parseInt(cantidad) * parseInt(precio_compra)}" data-cantidad="${cantidad}">` +
+                $('#table').append(`<tr id="R${++rowIdx}" data-id_sucursal="${id_sucursal}" data-id_producto="${id_producto}" data-precio="${precio}" data-producto="${nombre_producto}"  data-total="${parseInt(cantidad) * parseInt(precio)}" data-cantidad="${cantidad}">` +
                     '<td data-th="Producto"><span class="bt-content">' + nombre_producto + '</span></td>' +
-                    '<td data-th="Proveedor"><span class="bt-content">' + nombre_proveedor + '</span></td>' +
                     '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input class="col-9" style="padding-left:0px;" type="number" step="1" min="1" id="cant" name="cant" value="' + cantidad + '" ></div></span></td>' +
-                    '<td data-th="Precio unitario"><span class="bt-content">' + precio_compra + '</span></td>' +
-                    '<td data-th="Total"><span class="bt-content">' + parseInt(cantidad) * parseInt(precio_compra) + '</span></td>' +
+                    '<td data-th="Precio unitario"><span class="bt-content">' + precio + '</span></td>' +
+                    '<td data-th="Total"><span class="bt-content">' + parseInt(cantidad) * parseInt(precio) + '</span></td>' +
                     '<td data-th="Acciones"><span class="bt-content text-center">' +
                     '<button class="btn btn-danger remove"' +
                     'type="button">Eliminar</button>' +
                     '</td>' +
                     '</tr>');
                 var total = $('#total_final').val();
-                var total_final = parseInt(total) + (parseInt(cantidad) * parseInt(precio_compra));
+                var total_final = parseInt(total) + (parseInt(cantidad) * parseInt(precio));
                 document.getElementById("total_final").value = total_final;
                 /INSERTA EN OBJETO Y AÑADE A ARREGLO/
                 var producto = {
                     "id_producto": id_producto,
                     "cantidad_producto": cantidad,
-                    "precio_unidad": precio_compra,
-                    "total": parseInt(cantidad) * parseInt(precio_compra),
-                    "catalogo": id_catalogo
+                    "precio_unidad": precio,
+                    "total": parseInt(cantidad) * parseInt(precio),
+                    "id_sucursal": id_sucursal
                 };
                 productos.push(producto);
 
@@ -609,46 +609,43 @@
 
             alert(typeof(id_producto));
 
-            $('#table').append(`<tr id="R${++rowIdx}" data-id_catalogo="${id_catalogo}" data-id_producto="${id_producto}" data-precio="${precio_compra}" data-producto="${nombre_producto}"  data-proveedor="${nombre_proveedor}" data-total="${parseInt(cantidad) * parseInt(precio_compra)}" data-cantidad="${cantidad}" >` +
+            $('#table').append(`<tr id="R${++rowIdx}" data-id_sucursal="${id_sucursal}" data-id_producto="${id_producto}" data-precio="${precio}" data-producto="${nombre_producto}"  data-total="${parseInt(cantidad) * parseInt(precio)}" data-cantidad="${cantidad}">` +
                 '<td data-th="Producto"><span class="bt-content">' + nombre_producto + '</span></td>' +
-                '<td data-th="Proveedor"><span class="bt-content">' + nombre_proveedor + '</span></td>' +
                 '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input class="col-9" style="padding-left:0px;" type="number" step="1" min="1" id="cant" name="cant" value="' + cantidad + '" ></div></span></td>' +
-                '<td data-th="Precio unitario"><span class="bt-content">' + precio_compra + '</span></td>' +
-                '<td data-th="Total"><span class="bt-content">' + parseInt(cantidad) * parseInt(precio_compra) + '</span></td>' +
+                '<td data-th="Precio unitario"><span class="bt-content">' + precio + '</span></td>' +
+                '<td data-th="Total"><span class="bt-content">' + parseInt(cantidad) * parseInt(precio) + '</span></td>' +
                 '<td data-th="Acciones"><span class="bt-content text-center">' +
                 '<button class="btn btn-danger remove"' +
                 'type="button">Eliminar</button>' +
                 '</td>' +
                 '</tr>');
             var total = $('#total_final').val();
-            var total_final = parseInt(total) + (parseInt(cantidad) * parseInt(precio_compra));
+            var total_final = parseInt(total) + (parseInt(cantidad) * parseInt(precio));
             document.getElementById("total_final").value = total_final;
             /INSERTA EN OBJETO Y AÑADE A ARREGLO/
             var producto = {
                 "id_producto": id_producto,
                 "cantidad_producto": cantidad,
-                "precio_unidad": precio_compra,
-                "total": parseInt(cantidad) * parseInt(precio_compra),
-                "catalogo": id_catalogo
+                "precio_unidad": precio,
+                "total": parseInt(cantidad) * parseInt(precio),
+                "id_sucursal": id_sucursal
             };
             productos.push(producto);
 
-            console.log(id_producto);
             console.log(productos);
         }
     }
 
-    /Actualizar fila al cambiar valor del input cantidad/
+    /*Actualizar fila al cambiar valor del input cantidad*/
 
     $('#table').on('change', '#cant', function(index) {
         var valores = "";
         $(this).parents("tr").each(function(index2) {
-            var proveedor = $(this).attr("data-proveedor");
-            var producto = $(this).attr("data-producto");
+            var id_sucursal = $(this).attr("data-id_sucursal");
             var id_producto = $(this).attr("data-id_producto");
-            var id_catalogo = $(this).attr("data-id_catalogo");
-            var cantidad = $(this).find("#cant").val();
             var precio_compra = $(this).attr("data-precio");
+            var producto = $(this).attr("data-producto");
+            var cantidad = $(this).find("#cant").val();
             var cantidad_anterior = $(this).attr("data-cantidad");
             var total = parseInt($(this).find("#cant").val()) * parseInt($(this).attr("data-precio"));
 
@@ -656,7 +653,6 @@
 
             $(this).html("");
             var tr = '<td data-th="Producto"><span class="bt-content">' + producto + '</span></td>' +
-                '<td data-th="Proveedor"><span class="bt-content">' + proveedor + '</span></td>' +
                 '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input class="col-9" style="padding-left:0px;" type="number" step="1" min="1" id="cant" name="cant" value="' + cantidad + '" ></div></span></td>' +
                 '<td data-th="Precio unitario"><span class="bt-content">' + precio_compra + '</span></td>' +
                 '<td data-th="Total"><span class="bt-content">' + total + '</span></td>' +
@@ -672,14 +668,14 @@
             total_final = total_final + total;
             document.getElementById("total_final").value = total_final;
 
-            /ACTUALIZAR ARREGLO/
+            /*ACTUALIZAR ARREGLO*/
             productos = productos.map(function(objeto) {
-                return objeto.id_producto == id_producto && objeto.catalogo == id_catalogo ? {
+                return objeto.id_producto == id_producto && objeto.id_sucursal == id_sucursal ? {
                     "id_producto": objeto.id_producto,
                     "cantidad_producto": cantidad,
                     "precio_unidad": objeto.precio_unidad,
                     "total": parseInt(cantidad) * parseInt(objeto.precio_unidad),
-                    "catalogo": id_catalogo
+                    "id_sucursal": id_sucursal
                 } : objeto;
             });
 
@@ -687,54 +683,53 @@
     });
 
 
-    /------------------------------------------------------------------------------------------------------------------------------/
+    /*------------------------------------------------------------------------------------------------------------------------------*/
 
-    /
-    ELIMINAR UNA FILA DE LA TABLA /
+    /*ELIMINAR UNA FILA DE LA TABLA*/
 
-        $('#table').on('click', '.remove', function() {
+    $('#table').on('click', '.remove', function() {
 
-            $(this).parents("tr").each(function(index2) {
-                var precio_compra = $(this).attr("data-precio");
-                var cantidad_anterior = $(this).attr("data-cantidad");
-                var id_producto = $(this).attr("data-id_producto");
-                var id_catalogo = $(this).attr("data-id_catalogo");
-                var total2 = $('#total_final').val();
-                var total_final = parseInt(total2) - parseInt(cantidad_anterior) * parseInt(precio_compra);
-                document.getElementById("total_final").value = total_final;
-                productos = productos.filter(objeto => (objeto.id_producto != id_producto && objeto.id_catalogo != id_catalogo));
-            });
-
-            // Getting all the rows next to the row
-            // containing the clicked button
-            var child = $(this).closest('tr').nextAll();
-
-            // Iterating across all the rows 
-            // obtained to change the index
-            child.each(function() {
-
-                // Getting <tr> id.
-                var id = $(this).attr('id');
-
-                // Getting the <p> inside the .row-index class.
-                var idx = $(this).children('.row-index').children('p');
-
-                // Gets the row number from <tr> id.
-                var dig = parseInt(id.substring(1));
-
-                // Modifying row index.
-                idx.html(`Row ${dig - 1}`);
-
-                // Modifying row id.
-                $(this).attr('id', `R${dig - 1}`);
-            });
-
-            // Removing the current row.
-            $(this).closest('tr').remove();
-
-            // Decreasing total number of rows by 1.
-            rowIdx--;
+        $(this).parents("tr").each(function(index2) {
+            var precio_compra = $(this).attr("data-precio");
+            var cantidad_anterior = $(this).attr("data-cantidad");
+            var id_producto = $(this).attr("data-id_producto");
+            var id_sucursal = $(this).attr("data-id_sucursal");
+            var total2 = $('#total_final').val();
+            var total_final = parseInt(total2) - parseInt(cantidad_anterior) * parseInt(precio_compra);
+            document.getElementById("total_final").value = total_final;
+            productos = productos.filter(objeto => (objeto.id_producto != id_producto && objeto.id_sucursal != id_sucursal));
         });
+
+        // Getting all the rows next to the row
+        // containing the clicked button
+        var child = $(this).closest('tr').nextAll();
+
+        // Iterating across all the rows 
+        // obtained to change the index
+        child.each(function() {
+
+            // Getting <tr> id.
+            var id = $(this).attr('id');
+
+            // Getting the <p> inside the .row-index class.
+            var idx = $(this).children('.row-index').children('p');
+
+            // Gets the row number from <tr> id.
+            var dig = parseInt(id.substring(1));
+
+            // Modifying row index.
+            idx.html(`Row ${dig - 1}`);
+
+            // Modifying row id.
+            $(this).attr('id', `R${dig - 1}`);
+        });
+
+        // Removing the current row.
+        $(this).closest('tr').remove();
+
+        // Decreasing total number of rows by 1.
+        rowIdx--;
+    });
 
     //alert( $('#R1').attr("data-id_catalogo"));
 
@@ -742,29 +737,119 @@
         var sucursal = $('#sucursal').val();
         console.log("sucursal :" + sucursal);
         console.log(productos);
-
-        var total_venta = 0;
-        for (var t = 0; t < productos.length; t++) {
-            total_venta += parseInt(productos[t]['total']);
+        let metodo_pago = $('input[name="pago"]:checked').val();
+        var id_cliente = $('#cliente').val();
+        var auto = document.getElementById('auto').value;
+         var total_venta = 0;
+         for (var t = 0; t < productos.length; t++) {
+             total_venta += parseInt(productos[t]['total']);
+         }
+        
+        
+        var factura = 0;
+        var checado = document.getElementById('check_factura').checked;
+        if (checado) {
+            factura = 1;
+        } else {
+            factura=0;
         }
+        
+        console.log(total_venta);
+        console.log(metodo_pago);
+        console.log(factura);
+        console.log(id_cliente);
+        
+         
+               
+        var comentario_credito = "";
+        var fecha_credito = "";
+       
+        alert("Generando venta");
+        console.log(productos);
+
+        var memo = document.getElementsByName('factura');
+        for (i = 0; i < memo.length; i++) {
+            if (memo[i].checked) {
+                var memory = memo[i].value;
+                factura = memory;
+            }
+
+        }
+        if (metodo_pago == "3") {
+            fecha_credito = document.getElementById('fecha').value;
+            comentario_credito = document.getElementById('descripcion').value;
+        } else {
+            fecha_credito = "";
+            comentario_credito = "";
+        }
+       
 
         var token = '{{csrf_token()}}';
         var data = {
+            id_cliente: id_cliente,
+            id_metodo_pago: metodo_pago,
             total_venta: total_venta,
+            factura: factura,
             array_productos: productos,
-            sucursal: sucursal,
+            fecha: fecha_credito,
+            descripcion: comentario_credito,
+            auto:auto,
             _token: token
         };
-
+        console.log(data);
         $.ajax({
             type: "POST",
-            url: "/insertar_pedido_proveedor",
+            url: "/insertar_venta",
             data: data,
             success: function(msg) {
+               
                 alert(msg);
-                location.href = "/mostrar_pedido_proveedor"
+                location.href = "/mostrar_venta";
             }
         });
+    }
+
+    function enviar_datos() {
+        var nombre = document.getElementById("nombre").value;
+        var sucursal = document.getElementById("sucursales").value;
+        var telefono = document.getElementById("telefono").value;
+        var correo = document.getElementById("correo").value;
+        //var habitual = document.getElementById("habitual").value;
+
+        let habitual = $('input[name="habitual"]:checked').val();
+        
+        document.getElementById("telefono_cliente").innerHTML = "";
+        document.getElementById("correo_cliente").innerHTML = "";
+
+        var token = '{{csrf_token()}}';
+        var data = {
+            nombre: nombre,
+            sucursal: sucursal,
+            telefono: telefono,
+            correo: correo,
+            habitual: habitual,
+            _token: token
+        };
+        $.ajax({
+            type: "POST",
+            url: "/agregar_clientes",
+            data: data,
+            success: function(msg) {
+                var datos = JSON.parse(msg);
+                
+                alert("CLiente registrado correctamente");
+                datos.forEach(objeto => {
+                        $('#cliente').append('<option  value="' + objeto.id_cliente + '"data-correo="' + objeto.correo_electronico + '" data-telefono="' + objeto.telefono + '">' + objeto.nombre_completo + '</option>');
+                        $("#cliente").selectpicker("refresh");
+                });
+            }
+        });
+    }
+    
+    function mostrar_formulario_credito()
+    {
+         document.getElementById("fecha_ultima").innerHTML = '<input type="date" name="fecha" id="fecha">';
+        document.getElementById("comentario").innerHTML='<textarea class="form-control" id="descripcion" name="descripcion" required placeholder="Descripción"></textarea>'
     }
 
 </script>

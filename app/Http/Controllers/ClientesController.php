@@ -13,6 +13,7 @@ class ClientesController extends Controller
     {
         $clientes=DB::select('select clientes.id_cliente as id_cliente, clientes.fecha_registro as fecha, clientes.nombre_completo as nombre_completo, clientes.telefono as telefono,clientes.correo_electronico as correo,sucursal.sucursal as sucursal,clientes.cliente_habitual  from clientes inner join sucursal on sucursal.id_sucursal=clientes.id_sucursal');
         $sucursal_usuario= Session::get('sucursal_usuario');
+         
 		return view('/Administrador/clientes/index',compact('clientes','sucursal_usuario'));
     }
     
@@ -38,8 +39,9 @@ class ClientesController extends Controller
         
         //INSERT INTO clientes(id_cliente, fecha_registro, nombre_completo, telefono,correo_electronico, id_sucursal, cliente_habitual) VALUES (1, '12/04/2021', 'Maximiliano Gabriel', '123456','max@gmail.com',2,1);
 
-        //CALL insertar_servicio_universal (1,'alineación', 8000.00, 'alineación', 'se hacen un montón de cosas')
-         return redirect()->action('ClientesController@mostrar_clientes')->withInput();
+        $clientes=DB::select("SELECT * FROM clientes WHERE clientes.nombre_completo='".$nombre_cliente."' or clientes.correo_electronico='".$correo."' or clientes.telefono='".$telefono."'");
+        $json=json_encode($clientes);
+		return response()->json($json);
       }
     
     public function eliminar_Cliente(Request $input)

@@ -90,7 +90,9 @@ Route::post('/mostrar_productos','InventarioController@mostrar_productos_sucursa
 /*Mostrar ventas*/
 Route::get('/mostrar_venta','VentasController@mostrar_ventas_realizadas')->middleware('admin:1')->name('mostrar_venta');
 /*Mostrar Formulario de generar venta*/
-Route::get('/agregar_venta','VentasController@mostrar_productos_ventas')->middleware('admin:1')->name('agregar_venta');
+Route::get('/agregar_venta','VentasController@mostrar_vista')->middleware('admin:1')->name('agregar_venta');
+/*MOSTRAR PRODUCTOS PARA VENDER*/
+Route::post('/mostrar_productos_ventas','VentasController@mostrar_productos_ventas')->name('mostrar_productos_ventas');
 /*INSERTR VENTA*/
 Route::post('/insertar_venta', 'VentasController@insertar_venta')->name('insertar_venta');
 
