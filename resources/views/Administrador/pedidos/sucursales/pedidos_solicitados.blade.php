@@ -474,7 +474,8 @@
                 var solicitados = @json($solicitados);
                 var aceptados = @json($aceptados);
                 var llenado = "";
-                //console.log(datos.length);
+                console.log(datos.length);
+                
                 if (datos.length == 1) {
                     solicitados.forEach(objeto => {
                             llenado += '<option value="'+objeto.id_status+'">'+objeto.status+' </option>';  

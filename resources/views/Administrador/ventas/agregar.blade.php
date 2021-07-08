@@ -214,8 +214,8 @@
                                                     <div class="my-1" id="correo_cliente">
 
                                                     </div>
-                                                     <div class="my-1" >
-                                                         <input type="text" class="form-control mr-3" placeholder="Tipo de auto" id="auto" name="auto">
+                                                    <div class="my-1">
+                                                        <input type="text" class="form-control mr-3" placeholder="Tipo de auto" id="auto" name="auto">
                                                     </div>
                                                     <div class="my-1" id="fecha_ultima">
 
@@ -289,43 +289,41 @@
 
                                                     <div>
                                                         <div autocomplete="off" class="p-2 p-sm-3 bgc-secondary-l4 radius-1 btn-group btn-group-toggle mx-n3 mx-sm-0" data-toggle="buttons">
-                                                            <div role="button" class="mr-1 p-3 border-2 btn btn-brc-tp shadow-sm btn-light btn-text-blue btn-h-lighter-blue btn-a-light-blue bgc-white" title="Efectivo">
+                                                            <div role="button" class="mr-1 p-3 border-2 btn btn-brc-tp shadow-sm btn-light btn-text-blue btn-h-lighter-blue btn-a-light-blue bgc-white" title="Efectivo" onclick="limpiar()">
                                                                 <input type="radio" name="pago" id="pago" value="2">
-                                                                <i class="far fa-money-bill-alt fa-4x text-150 text-blue-d1 w-4 mx-2" ></i>
+                                                                <i class="far fa-money-bill-alt fa-4x text-150 text-blue-d1 w-4 mx-2"></i>
                                                             </div>
 
-                                                            <div role="button" class="mr-1 p-3 border-2 btn btn-brc-tp shadow-sm btn-text-purple btn-light btn-h-lighter-purple btn-a-light-purple bgc-white" title="Tarjeta de crédito">
+                                                            <div role="button" class="mr-1 p-3 border-2 btn btn-brc-tp shadow-sm btn-text-purple btn-light btn-h-lighter-purple btn-a-light-purple bgc-white" title="Tarjeta de crédito" onclick="limpiar()">
                                                                 <input type="radio" name="pago" id="pago" value="1">
-                                                                <i class="far fa-credit-card d-block text-150 text-purple-d1 w-4 mx-2" ></i>
+                                                                <i class="far fa-credit-card d-block text-150 text-purple-d1 w-4 mx-2"></i>
                                                             </div>
 
                                                             <div role="button" class="p-3 border-2 btn btn-brc-tp shadow-sm btn-light btn-text-orange btn-h-lighter-orange btn-a-light-orange bgc-white" title="Llantimax crédito" onclick="mostrar_formulario_credito()">
                                                                 <input type="radio" name="pago" id="pago" value="3">
-                                                                <i class="fas fa-clipboard-list text-150 text-orange-d3 w-4 mx-2" ></i>
+                                                                <i class="fas fa-clipboard-list text-150 text-orange-d3 w-4 mx-2"></i>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-12 col-sm-5 text-dark-l1 text-90 order-first order-sm-last">
-                                                <!-- <div class="row my-3 align-items-center bgc-green-d3 p-2 radius-1 mr-4 ml-1">
-                                                    <div class="col-7 col-md-5  text-white text-115 justify-content-start">
-                                                        Total:
-                                                    </div>
-                                                    <div class="col-5 col-md-5 justify-content-center">-->
-                                                <!--<span class="text-115 text-white" id="total_final">
-                                                            0
-                                                        </span>
-                                                        
-                                                        <input type="text" value="0" disabled="" id="total_final" name="total_final" class="form-control border-0 bgc-green-d3 text-115 text-white">
-                                                    </div>
-                                                </div>-->
+
+                                                <div class="row my-2 align-content-center" id="subtotal">
+
+                                                </div>
+
+                                                <div class="row my-2" id="total_extra">
+
+                                                </div>
+
                                                 <div class="input-group mb-2">
                                                     <div class="input-group-prepend">
                                                         <div class="input-group-text bgc-green-d3 text-white">$</div>
                                                     </div>
                                                     <input type="text" disabled class="form-control bgc-green-d3 text-white mr-3" id="total_final" name="total_final" value="0">
                                                 </div>
+
                                                 <div class="row my-2 align-items-center">
                                                     <div class="col-5 col-lg-7 col-sm-8 text-left">
                                                         Requiere Factura
@@ -507,11 +505,16 @@
         });
     }
 
+    let pago = $('input[name="pago"]:checked').val();
 
     function mostrar_tabla() {
         /Value tiene el valor del producto/
         /*OBTENER LOS VALORES DE LOS OTROS DATA */
         // var datos=$('#productos option:selected').attr("data-value2");
+        var canti = document.getElementById("cantidad").value;
+        if (canti == "") {
+            document.getElementById("cantidad").value = "1";
+        }
         var cantidad = document.getElementById("cantidad").value;
         var sucursal = $('#sucursal').val();
         var id_producto = $('#productos').val()[0];
@@ -525,6 +528,8 @@
         var id_sucursal = $('#productos option:selected').attr("data-suc");
         var cantidad_suc = $('#productos option:selected').attr("data-cantidad");
         var bandera = 0;
+        let pago = $('input[name="pago"]:checked').val();
+        alert("Imprimo valor de pago: " + pago + "tipo de pago " + typeof(pago));
 
         /VERIFICAR SI LA TABLA TIENE FILAS/
         if ($("#responsive-table tbody tr").length != 0) {
@@ -539,6 +544,7 @@
                         var t_cantidad = document.getElementById("cant").value;
                         cantidad = parseInt(t_cantidad) + parseInt(cantidad);
                         alert(t_cantidad);
+                        alert(cantidad);
                         bandera = 1;
                         $(this).attr('data-cantidad', cantidad);
                         $(this).attr('data-total', parseInt(cantidad) * parseInt(precio));
@@ -554,22 +560,33 @@
                             'type="button">Eliminar</button>' +
                             '</td>';
                         $(this).append(tr);
+
                         var total = $('#total_final').val();
                         var total_final = total - (parseInt(t_cantidad) * parseInt(precio));
                         total_final = total_final + (parseInt(cantidad) * parseInt(precio));
                         document.getElementById("total_final").value = total_final;
-
-                        /ACTUALIZAR ARREGLO/
+                        /*ACTUALIZAR ARREGLO*/
                         productos = productos.map(function(objeto) {
-                            return objeto.id_producto == id_producto && objeto.id_sucursal == sucursal ? {
+                            return objeto.id_producto == id_producto && objeto.id_sucursal == id_sucursal ? {
                                 "id_producto": objeto.id_producto,
                                 "cantidad_producto": cantidad,
                                 "precio_unidad": objeto.precio_unidad,
                                 "total": parseInt(cantidad) * parseInt(objeto.precio_unidad),
-                                "id_sucursal": objeto.id_sucursal
+                                "id_sucursal": id_sucursal
                             } : objeto;
                         });
+                        console.log("ANTES DEL IF ");
+                        console.log(productos);
 
+                        if (pago == undefined || pago == "2" || pago == "1") {
+                            alert("no es llantimax");
+
+                            limpiar();
+                        } else {
+                            alert("es llantimax");
+
+                            mostrar_formulario_credito();
+                        }
                     }
                 }
             });
@@ -602,6 +619,16 @@
 
                 console.log(productos);
 
+                if (pago == undefined || pago == "2" || pago == "1") {
+                    alert("no es llantimax");
+
+                    limpiar();
+                } else {
+                    alert("es llantimax");
+
+                    mostrar_formulario_credito();
+                }
+
 
             }
         } else {
@@ -633,12 +660,23 @@
             productos.push(producto);
 
             console.log(productos);
+
+            if (pago == undefined || pago == "2" || pago == "1") {
+                alert("no es llantimax");
+
+                limpiar();
+            } else {
+                alert("es llantimax");
+
+                mostrar_formulario_credito();
+            }
         }
     }
 
     /*Actualizar fila al cambiar valor del input cantidad*/
 
     $('#table').on('change', '#cant', function(index) {
+       let pago = $('input[name="pago"]:checked').val();
         var valores = "";
         $(this).parents("tr").each(function(index2) {
             var id_sucursal = $(this).attr("data-id_sucursal");
@@ -667,7 +705,6 @@
             var total_final = parseInt(total2) - parseInt(cantidad_anterior) * parseInt(precio_compra);
             total_final = total_final + total;
             document.getElementById("total_final").value = total_final;
-
             /*ACTUALIZAR ARREGLO*/
             productos = productos.map(function(objeto) {
                 return objeto.id_producto == id_producto && objeto.id_sucursal == id_sucursal ? {
@@ -679,17 +716,27 @@
                 } : objeto;
             });
 
+            if (pago == undefined || pago == "2" || pago == "1") {
+                alert("no es llantimax");
+
+                limpiar();
+            } else {
+                alert("es llantimax");
+
+                mostrar_formulario_credito();
+            }
+
         });
     });
 
 
     /*------------------------------------------------------------------------------------------------------------------------------*/
 
-    /*ELIMINAR UNA FILA DE LA TABLA*/
+     /*ELIMINAR UNA FILA DE LA TABLA*/
 
     $('#table').on('click', '.remove', function() {
-
         $(this).parents("tr").each(function(index2) {
+            
             var precio_compra = $(this).attr("data-precio");
             var cantidad_anterior = $(this).attr("data-cantidad");
             var id_producto = $(this).attr("data-id_producto");
@@ -698,6 +745,8 @@
             var total_final = parseInt(total2) - parseInt(cantidad_anterior) * parseInt(precio_compra);
             document.getElementById("total_final").value = total_final;
             productos = productos.filter(objeto => (objeto.id_producto != id_producto && objeto.id_sucursal != id_sucursal));
+            
+           
         });
 
         // Getting all the rows next to the row
@@ -740,30 +789,30 @@
         let metodo_pago = $('input[name="pago"]:checked').val();
         var id_cliente = $('#cliente').val();
         var auto = document.getElementById('auto').value;
-         var total_venta = 0;
-         for (var t = 0; t < productos.length; t++) {
-             total_venta += parseInt(productos[t]['total']);
-         }
-        
-        
+        var total_venta = 0;
+        for (var t = 0; t < productos.length; t++) {
+            total_venta += parseInt(productos[t]['total']);
+        }
+
+
         var factura = 0;
         var checado = document.getElementById('check_factura').checked;
         if (checado) {
             factura = 1;
         } else {
-            factura=0;
+            factura = 0;
         }
-        
+
         console.log(total_venta);
         console.log(metodo_pago);
         console.log(factura);
         console.log(id_cliente);
-        
-         
-               
+
+
+
         var comentario_credito = "";
         var fecha_credito = "";
-       
+
         alert("Generando venta");
         console.log(productos);
 
@@ -782,18 +831,19 @@
             fecha_credito = "";
             comentario_credito = "";
         }
-       
+
 
         var token = '{{csrf_token()}}';
         var data = {
             id_cliente: id_cliente,
+            id_sucursal: sucursal,
             id_metodo_pago: metodo_pago,
             total_venta: total_venta,
             factura: factura,
             array_productos: productos,
             fecha: fecha_credito,
             descripcion: comentario_credito,
-            auto:auto,
+            auto: auto,
             _token: token
         };
         console.log(data);
@@ -802,8 +852,8 @@
             url: "/insertar_venta",
             data: data,
             success: function(msg) {
-               
-                alert(msg);
+
+                console.log(msg);
                 location.href = "/mostrar_venta";
             }
         });
@@ -817,7 +867,7 @@
         //var habitual = document.getElementById("habitual").value;
 
         let habitual = $('input[name="habitual"]:checked').val();
-        
+
         document.getElementById("telefono_cliente").innerHTML = "";
         document.getElementById("correo_cliente").innerHTML = "";
 
@@ -836,20 +886,74 @@
             data: data,
             success: function(msg) {
                 var datos = JSON.parse(msg);
-                
+
                 alert("CLiente registrado correctamente");
                 datos.forEach(objeto => {
-                        $('#cliente').append('<option  value="' + objeto.id_cliente + '"data-correo="' + objeto.correo_electronico + '" data-telefono="' + objeto.telefono + '">' + objeto.nombre_completo + '</option>');
-                        $("#cliente").selectpicker("refresh");
+                    $('#cliente').append('<option  value="' + objeto.id_cliente + '"data-correo="' + objeto.correo_electronico + '" data-telefono="' + objeto.telefono + '">' + objeto.nombre_completo + '</option>');
+                    $("#cliente").selectpicker("refresh");
                 });
             }
         });
     }
-    
-    function mostrar_formulario_credito()
-    {
-         document.getElementById("fecha_ultima").innerHTML = '<input type="date" name="fecha" id="fecha">';
-        document.getElementById("comentario").innerHTML='<textarea class="form-control" id="descripcion" name="descripcion" required placeholder="Descripción"></textarea>'
+
+    function mostrar_formulario_credito() {
+
+        document.getElementById("fecha_ultima").innerHTML = "";
+        document.getElementById("comentario").innerHTML = "";
+        document.getElementById("fecha_ultima").innerHTML = '<input type="date" name="fecha" id="fecha">';
+        document.getElementById("comentario").innerHTML = '<textarea class="form-control" id="descripcion" name="descripcion" required placeholder="Descripción"></textarea>'
+        //var total = $('#total_final').val();
+        var total_venta = 0;
+        for (var t = 0; t < productos.length; t++) {
+            total_venta += parseInt(productos[t]['total']);
+        }
+        var comision = parseInt(total_venta) * 0.03;
+        alert(comision + "    " + total_venta);
+        var total_extra = parseInt(total_venta) + comision;
+        document.getElementById("total_extra").innerHTML = "";
+        document.getElementById("total_extra").innerHTML = '<div class="col-6 text-left">' +
+            'Comisión (3%)' +
+            '</div>' +
+
+            '<div class="col-5" style=" padding-left: 0px;">' +
+            '<span class="text-125 text-secondary-d3 float-left  ">' +
+            '$' + comision +
+            '</span>' +
+            '</div>';
+
+        document.getElementById("subtotal").innerHTML = "";
+        document.getElementById("subtotal").innerHTML = '<div class="col-4 text-left">' +
+            'SubTotal' +
+            '</div>' +
+            '<div class="col-5 align-content-center">' +
+            '<span class="text-125 text-secondary-d3 float-right">' +
+            '$' + total_venta +
+            '</span>' +
+            '</div>';
+        document.getElementById("total_final").value = total_extra;
+    }
+
+    function limpiar() {
+
+        var total_venta = 0;
+        for (var t = 0; t < productos.length; t++) {
+            total_venta += parseInt(productos[t]['total']);
+        }
+        document.getElementById("fecha_ultima").innerHTML = '';
+        document.getElementById("comentario").innerHTML = '';
+        document.getElementById("total_extra").innerHTML = "";
+        document.getElementById("subtotal").innerHTML = "";
+        document.getElementById("subtotal").innerHTML = '<div class="col-4 text-left">' +
+            'SubTotal' +
+            '</div>' +
+            '<div class="col-5 align-content-center">' +
+            '<span class="text-125 text-secondary-d3 float-right">' +
+            '$' + total_venta +
+            '</span>' +
+            '</div>';
+        alert(total_venta);
+        document.getElementById("total_final").value = total_venta;
+
     }
 
 </script>

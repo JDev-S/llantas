@@ -6,7 +6,7 @@
 <div class="page-content container container-plus">
     <div class="page-header">
         <h1 class="page-title text-primary-d2">
-            Créditos
+            Creditos
             <!--<small class="page-info text-secondary-d2">
                 <i class="fa fa-angle-double-right text-80"></i>
                 extended tables plugin
@@ -26,7 +26,8 @@
                     }
 
                 </style>
-
+                <!----- BOTON DE AGREGAR--->
+                <button class="text-blue " data-target="#modalNuevo" data-toggle="modal" type="button" style="margin-right:20px; border:0px;"><i class="fa fa-plus-circle fa-2x" aria-hidden="true"></i></button>
             </div>
             <table class="table text-dark-m2 text-95 bgc-white ml-n1px" id="table">
                 <!-- table -->
@@ -35,319 +36,209 @@
     </div>
 </div>
 
-<!--Modal detalle General-->
-<!--Modal detalle del producto-->
-<?php
-foreach($creditos as $credito)
-{
-echo'<div class="modal fade modal-lg" id="modalDetalle_'.$credito-> id_venta.'_'.$credito->id_credito.'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable" role="document">
+<!--MODAL AGREGAR CLIENTE -->
+
+<div class="modal fade" id="modalNuevo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header" style="background:#2470bd;">
-                <h5 class="modal-title" id="exampleModalLabel2" style="color:white;">
-                    DETALLE DEL CRÉDITO
-                </h5>
-
+                <h5 class="modal-title" id="exampleModalLabel" style="color:white;">Ingresar cliente</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-
             <div class="modal-body">
-                <div class="card-body p-0">
-                   
-                  <div role="main" class="main-content">
-
-          <div class="page-content container container-plus">
-            <div class="container px-0">
-
-              <div class="row mt-0">
-                <div class="col-12 col-lg-10 offset-lg-1 col-xl-12 offset-xl-0">
-
-                  <div class="page-header border-0 mb-0">
-                    <h1 class="page-title text-dark-l3 text-115">
-                      DETALLE VENTA
-                      <i class="fa fa-angle-right text-80 ml-1"></i>
-                      <small class="page-info text-dark-m3">'.
-                       
-                      '</small>
-                    </h1>
-
-                    <div class="page-tools">
-                      <div class="action-buttons">';
-                        $id_ticket="'".$credito-> id_venta."'";
-                        echo'<a class="btn bg-white btn-light mx-1px text-95 shadow-sm" href="javascript:mostrar_ticket(' .$id_ticket. ')" data-title="Print">
-                          <i class="mr-1 fa fa-print text-primary text-120 w-2"></i>
-                          Imprimir
-                        </a>';
-                        echo'<a class="btn bg-white btn-light mx-1px text-95 shadow-sm" href="javascript:mostrar_ticket(' .$id_ticket. ')" data-title="PDF">
-                          <i class="mr-1 far fa-file-pdf text-danger text-120 w-2"></i>
-                          Exportar
-                        </a>
-                      </div>
+                <div class="ccard h-100 d-flex flex-column mx-2 px-2 py-3">
+                    <div class="form-row col-md-12">
+                        <div class="form-group col-md-6">
+                            <label for="codigo_llanta">Nombre completo del cliente</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre completo del cliente">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="modelo">Telefono</label>
+                            <input type="text" class="form-control mb-2" id="telefono" name="telefono" placeholder="Telefono">
+                        </div>
                     </div>
-                  </div>
 
-
-                  <div class="card dcard mb-4">
-                    <div class="card-body px-4 px-lg-5">
-
-                      <div class="text-center">
-                        <i class="fa fa-leaf text-200 text-green-m1 mr-1 ml-n4"></i>
-                        <span class="text-dark-m3 text-140">
-                        Llantimax
-                    </span>
-                        <br>
-                        <span class="text-dark-l2 text-90">
-                        Sucursal: '.$credito-> sucursal_usuario.'
-                    </span>
-                      </div>
-
-                      <div class="row mt-4">
-                        <div class="col-sm-6">
-                          <div>
-                            <div class="text-100 text-grey-m1 align-middle">
-                                <div class="mt-1 mb-2 text-secondary-d1 text-600 text-125">
-                              Cliente
-                            </div>
-                            </div>
-
-                            <div class="text-600 text-100 text-primary mt-2">
-                              '.$credito-> nombre_cliente.'
-                            </div>
-
-                            <div class="text-dark-l1">
-                              <div class="my-1">
-                                Teléfono: '.$credito-> telefono.'
-                              </div>
-                              <div class="my-1">
-                                Correo: '.$credito-> correo_electronico.'
-                              </div>
-                            </div>
-                          </div>
-                        </div><!-- /.col -->
-
-
-                        <div class="col-sm-6 align-self-start d-sm-flex justify-content-end text-95">
-                          <hr class="d-sm-none">
-                          <div class="text-dark-l1">
-                            <div class="mt-1 mb-2 text-secondary-d1 text-600 text-125">
-                              Ticket
-                            </div>
-
-                            <div class="my-2">
-                              <i class="fa fa-circle text-blue-m2 text-xs mr-1"></i>
-                              <span class="text-600 text-90">
-                                    ID:
-                                </span>
-                              '.$credito-> id_venta.'
-                            </div>
-
-                            <div class="my-2">
-                              <i class="fa fa-circle text-blue-m2 text-xs mr-1"></i>
-                              <span class="text-600 text-90">
-                                    Fecha:
-                                </span>
-                              '.$credito-> fecha_venta.'
-                            </div>
-                          </div>
-                        </div><!-- /.col -->
-                      </div><!-- /.قخص -->
-                      <div class="mt-4">
-                        <div class="row text-600 text-95 text-secondary-d3 brc-green-l1 py-25 border-y-2">
-                          <div class="col-7 col-sm-5">
-                            Código
-                          </div>
-
-                          <div class="d-none d-sm-block col-4 col-sm-2">
-                            Cant.
-                          </div>
-
-                          <div class="d-none d-sm-block col-sm-2">
-                            Precio
-                          </div>
-
-                          <div class="col-5 col-sm-2">
-                            Total
-                          </div>
+                    <div class="form-row align-items-center col-md-12">
+                        <div class="form-group col-md-6">
+                            <label for="rin">Correo eléctronico</label>
+                            <input type="email" class="form-control" id="correo" name="correo" placeholder="Email">
                         </div>
 
-                        <div class="text-95 text-dark-m3">';
-                            for($a=0;$a<count($detalles);$a++)
-                        {
-                            if($detalles[$a]->id_venta==$credito->id_venta)
-                            {
-                                 echo '<div class="row mb-2 mb-sm-0 py-25">
-                                    <div class="col-7 col-sm-5">'.$detalles[$a]->nombre.'</div>
-                                   <div class="d-none d-sm-block col-1">'.$detalles[$a]->cantidad_producto.'</div>
-                                    <div class="d-none d-sm-block col-3 text-95">';
-                                     $valor1=  $detalles[$a]->precio_unidad;
-                                    if ($valor1<0) return "-".formato_moneda(-$valor1);
-                                    echo '$' . number_format($valor1, 2);
-                                echo'</div>
-                                    <div class="col-5 col-sm-3 text-secondary-d3 text-600">';
-                                    $valor2=$detalles[$a]->total; 
-                                    if ($valor2<0) return "-".formato_moneda(-$valor2);
-                                    echo '$' . number_format($valor2, 2);
-                                echo'</div>   
-                                    </div>';
-                            }
-                        }
+                    </div>
 
-                        echo'</div>   
-                        <div class="row border-b-2 brc-green-l1"></div>
-                        <div class="row mt-4">
-                          <div class="col-10 col-sm-5 text-dark-l1 text-90 order-first order-sm-last" style="
-                          padding-left: 30px; padding-right: 0px;">
-                               <div class="row my-2 align-items-center bgc-green-d3 p-2 radius-1">
-                              <div class="col-6 text-right text-white text-100">
-                                Monto Total:
-                              </div>
-                              <div class="col-6">
-                                <span class="text-100 text-white">';
-                                $valor=$credito-> total_venta;
-                                if ($valor<0) return "-".formato_moneda(-$valor);
-                                    echo '$' . number_format($valor, 2);
-                               echo '
-                                    </span>
-                              </div>
+                    <div class="form-group col-md-12">
+                        <label for="indice_velocidad">Sucursal</label>
+                        <?php
+                            $query2 = "select * from sucursal ";
+                            $data2=DB::select($query2);      
+                        ?>
+                        <select id="sucursal" name="sucursal" class="form-control">
+                            @foreach($data2 as $item)
+                            <option value="{{ $item->id_sucursal }}"> {{ $item->sucursal }} </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="form-row align-items-center col-md-12">
+                        <div class="form-group col-md-6">
+                            <label for="id-form-field-1" class="mb-0">
+                                Cliente habitual
+                            </label>
+
+                            <div class="radio-custom radio-default radio-inline">
+                                <label for="inputBasicMale">Sí</label>
+                                <input type="radio" id="habitual" name="habitual" value="1">
+
                             </div>
-                          </div>
+                            <div class="radio-custom radio-default radio-inline">
+                                <label for="inputBasicFemale">No</label>
+                                <input type="radio" id="habitual" name="habitual" value="0">
+
+                            </div>
                         </div>
 
-                        <hr class="brc-secondary-l3 border-t-2 mb-5">';
-        echo '
-    <h1 class="page-title text-dark-l3 text-115">
-                      HISTORIAL DE ABONOS
-                      <small class="page-info text-dark-m3">'.
-                       
-                      '</small>
-                    </h1>
-    <div class="table-responsive row  text-95 text-secondary-d3 py-25 border-y-2" style=" margin-right: 0px; margin-left: 0px;">
-                        <table class="table table-striped table-borderless border-0 border-b-2 brc-default-l1">
-                            <thead class="bg-none " style="background-color:#309b74;">
-                                <tr class="text-white">
-                                    <th><b>Folio del abono</b></th>
-                                    <th><b>Folio de crédito</b></th>
-                                    <th><b>Fecha</b></th>
-                                    <th><b>Monto</b></th>
-                                    <th><b>Comentario</b></th>
-                                </tr>
-                            </thead>
-                            <tbody class="text-95 ">';
-
-                           for($a=0;$a<count($abonos);$a++)
-                            {
-                                   if($abonos[$a]->id_credito==$credito->id_credito)
-                                  {
-                                    $valor=$abonos[$a]->monto;
-                                    if ($valor<0) return "-".formato_moneda(-$valor);
-                                        //echo '$' . number_format($valor1, 2);
-                                echo '<tr >
-                                    <td >'.$abonos[$a]->id_abono_credito.'</td>
-                                    <td >'.$abonos[$a]->id_credito.'</td>
-                                    <td >' .$abonos[$a]->fecha.'</td>
-                                    <td > $' . number_format($valor, 2).'</td>
-                                    <td >'. $abonos[$a]->comentario.'</td>
-                                </tr>';
-                                }
-                            }
-                           echo' </tbody>
-                        </table>
-                       </div>
-                      </div>
                     </div>
-                  </div>
+
                 </div>
-              </div>
             </div>
-          </div>
-        </div>
-        </div>
-     </div>';
+            <div class="modal-footer">
 
-            echo'<div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">
                     Cerrar
+                </button>
+                <button type="submit" class="btn btn-primary" onclick="enviar_datos();">
+                    Aceptar
                 </button>
             </div>
         </div>
     </div>
-</div>';
-}
-?>
-<!--FIN MODAL DETALLE -->
-<!--FIN MODAL DETALLE -->
-<!--MODAL AGREGAR ABONO -->
-<?php
-foreach($creditos as $credito)
-{
-echo'
-    <div class="modal fade" id="modalNuevo_'.$credito->id_credito.'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable" role="document">
-            <div class="modal-content">
-                <div class="modal-header" style="background:#2470bd;">
-                    <h5 class="modal-title" id="exampleModalLabel2" style="color:white">
-                        Registrar abono
-                    </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="card-body p-0">
-                        <div class="card acard mt-2 mt-lg-3">
-                            <div class="card-body px-3 pb-1">
-
-                                <div class="form-group row">
-                                    <div class="col-sm-3 col-form-label text-sm-right pr-0">
-                                        <label for="id-form-field-1" class="mb-0">
-                                            Monto a pagar
-                                        </label>
-                                    </div>
-                                    <div class="col-sm-9">
-                                    <input type="text" class="form-control col-sm-8 col-md-10" name="monto" id="monto">
-                                    <input id="id_credito" name="id_credito" type="hidden" value="'.$credito->id_credito.'">
-                                    <input id="id_cliente" name="id_cliente" type="hidden" value="'.$credito->id_cliente.'">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                <div class="col-sm-3 col-form-label text-sm-right pr-0">
-                                    <label for="id-form-field-1" class="mb-0">
-                                        Comentario
-                                    </label>
-                                </div>
-                                <div class="col-sm-9">
-                                    <textarea  class="form-control" id="comentario" name="comentario">
-                                    </textarea>
-                                </div>
-                            </div>
-                            </div><!-- /.card-body -->
+</div>
+<!--FIN MODAL AGREGAR CLIENTE-->
+<!--MODAL ACTUALIZAR CLIENTE -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background:#2470bd;">
+                <h5 class="modal-title" id="exampleModalLabel" style="color:white;">Actualizar cliente</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="ccard h-100 d-flex flex-column mx-2 px-2 py-3">
+                    <div class="form-row col-md-12">
+                        <div class="form-group col-md-6">
+                            <label for="codigo_llanta">Nombre del cliente</label>
+                             <input type="hidden" class="form-control col-sm-8 col-md-10" id="update_id_cliente" name="update_id_cliente">
+                                   
+                            <input type="text" class="form-control" id="update_nombre" name="update_nombre" placeholder="Nombre del cliente">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="modelo">Teléfono</label>
+                            <input type="text" class="form-control mb-2" id="update_telefono" name="update_telefono" placeholder="Marca">
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <div style="align-content:center;">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                            Cerrar
-                        </button>
-                        <button type="submit" class="btn btn-primary" onclick="realizar_abono();">
-                            Aceptar
-                        </button>
 
+                    <div class="form-row align-items-center col-md-12">
+                        <div class="form-group col-md-6">
+                            <label for="rin">Correo</label>
+                            <input type="text" class="form-control" id="update_correo" name="update_correo" placeholder="Correo">
+                        </div>
+
+                    </div>
+
+                    <div class="form-group col-md-12">
+                        <label for="indice_velocidad">Sucursal</label>
+                        <?php
+                            $query2 = "select * from sucursal ";
+                            $data2=DB::select($query2);      
+                        ?>
+                        <select id="update_sucursal" name="update_sucursal" class="form-control">
+                            @foreach($data2 as $item)
+                            <option value="{{ $item->id_sucursal }}"> {{ $item->sucursal }} </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+
+                    <div class="form-row align-items-center col-md-12">
+                        <div class="form-group col-md-6">
+                            <label for="id-form-field-1" class="mb-0">
+                                Cliente habitual
+                            </label>
+                            <div class="radio-custom radio-default radio-inline">
+                                <label for="inputBasicMale">Sí</label>
+                                <input type="radio" id="update_habitual" name="update_habitual" value="1">
+
+                            </div>
+                            <div class="radio-custom radio-default radio-inline">
+                                <label for="inputBasicFemale">No</label>
+                                <input type="radio" id="update_habitual" name="update_habitual" value="0">
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    Cerrar
+                </button>
+                <button type="submit" class="btn btn-primary" onclick="actualizar_cliente();">
+                    Aceptar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--FIN MODAL ACTUALIZAR CLIENTE-->
+<!--MODAL ELIMINAR-->
+<div class="modal fade" data-backdrop-bg="bgc-white" id="eliminarModal" tabindex="-1" aria-labelledby="dangerModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content bgc-transparent brc-danger-m2 shadow">
+            <div class="modal-header py-2 bgc-danger-tp1 border-0  radius-t-1">
+                <h5 class="modal-title text-white-tp1 text-110 pl-2 font-bolder" id="dangerModalLabel">
+                    Advertencia!
+                </h5>
+
+                <button type="button" class="position-tr btn btn-xs btn-outline-white btn-h-yellow btn-a-yellow mt-1px mr-1px btn-brc-tp" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="text-150">×</span>
+                </button>
+            </div>
+
+
+            <div class="modal-body bgc-white-tp2 p-md-4 pl-md-5">
+                <div class="d-flex align-items-top mr-2 mr-md-5">
+                    <i class="fas fa-exclamation-triangle fa-2x text-orange-d2 float-rigt mr-4 mt-1"></i>
+                    <input type="hidden" class="form-control" id="delete_id" name="delete_id">
+                    <div class="text-secondary-d2 text-105">
+                        Esta seguro de que desea eliminarlo?
                     </div>
                 </div>
             </div>
+
+            <div class="modal-footer bgc-white-tp2 border-0">
+                <button type="button" class="btn px-4 btn-light-grey" data-dismiss="modal">
+                    No
+                </button>
+
+                <button type="button" class="btn px-4 btn-danger" id="id-danger-yes-btn" onclick="eliminar_producto()" data-dismiss="modal">
+                    Si
+                </button>
+            </div>
         </div>
-    </div>';
-}
-?>
-<!--FIN MODAL AGREGAR ABONO-->
+<!--FIN MODAL ELIMINAR-->
 
 @section('scripts')
 
 <!-- include vendor scripts used in "Bootstrap Table" page. see "/views//pages/partials/table-bootstrap/@vendor-scripts.hbs" -->
 <script src="\npm\tableexport.jquery.plugin@1.10.22\tableExport.min.js"></script>
+
+
 <script src="\npm\bootstrap-table@1.18.3\dist\bootstrap-table.min.js"></script>
 <script src="\npm\bootstrap-table@1.18.3\dist\extensions\export\bootstrap-table-export.min.js"></script>
 <script src="\npm\bootstrap-table@1.18.3\dist\extensions\print\bootstrap-table-print.min.js"></script>
@@ -639,49 +530,133 @@ echo'
 
 </script>
 <script type="text/javascript">
-    function realizar_abono() {
-        //alert("Hola"); 
-        //var monto = document.getElementById('monto').value;
-        var id_credito = document.getElementById('id_credito').value;
-        var id_cliente = document.getElementById('id_cliente').value;
-        //var comentario = document.getElementById('comentario').value;
-        //alert(monto+"   "+comentario+"  "+id_credito+"   "+id_cliente);
-        var monto = "20";
-        var comentario = "primer pago";
-        alert("Realizando pago");
+    function enviar_datos() {
+        var nombre = document.getElementById("nombre").value;
+        var sucursal = document.getElementById("sucursal").value;
+        var telefono = document.getElementById("telefono").value;
+        var correo = document.getElementById("correo").value;
+        //var habitual = document.getElementById("habitual").value;
+        
+        let habitual = $('input[name="habitual"]:checked').val();
+
         var token = '{{csrf_token()}}';
         var data = {
-            monto: monto,
-            id_credito: id_credito,
+            nombre: nombre,
+            sucursal: sucursal,
+            telefono: telefono,
+            correo: correo,
+            habitual: habitual,
+            _token: token
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/agregar_clientes",
+            data: data,
+            success: function(msg) {
+                location.href = "/mostrar_clientes"
+            }
+        });
+    }
+
+</script>
+
+<script type="text/javascript">
+     $('#eliminarModal').on('show.bs.modal', function(event) {
+        /*RECUPERAR METADATOS DEL BOTÓN*/
+        var button = $(event.relatedTarget)
+        var id_cliente = button.data('id')
+        var modal = $(this)
+        modal.find('#delete_id').val(id_cliente) 
+    });
+</script>
+
+<script type="text/javascript">
+    function eliminar_producto() {
+        var id_cliente =  document.getElementById("delete_id").value;
+        var token = '{{csrf_token()}}';
+        var data = {
             id_cliente: id_cliente,
-            comentario: comentario,
             _token: token
         };
         console.log(data);
         $.ajax({
             type: "POST",
-            url: "/insertar_abono",
+            url: "/eliminar_Cliente",
             data: data,
             success: function(msg) {
-
                 alert(msg);
-                location.href = "/mostrar_creditos";
+                location.href = "/mostrar_clientes";
             }
         });
-
     }
 
 </script>
+
 <script type="text/javascript">
-    function mostrar_ticket(ticket) {
-        //location.href="/imprimir","_blank";
-        var url = '/exportar_historial_abono/' + ticket;
-        window.open(
-            url,
-            '_blank' // <- This is what makes it open in a new window.
-        );
+    $('#editModal').on('show.bs.modal', function(event) {
+        /RECUPERAR METADATOS DEL BOTÓN/
+        var button = $(event.relatedTarget)
+        var id_cliente = button.data('id')
+        var nombre = button.data('nombre')
+        var sucursal = button.data('sucursal')
+        var id_sucursal = button.data('suc')
+        var correo = button.data('correo')
+        var habitual = button.data('habitual')
+        var telefono = button.data('telefono')
+       
+        /*ASIGNAR VALOR A LOS METADATOS DEL MODAL*/
+        var modal = $(this)
+        modal.find('#update_id_cliente').val(id_cliente)
+        modal.find('#update_nombre').val(nombre)
+        modal.find('#update_correo').val(correo)
+        modal.find('#update_telefono').val(telefono)
+        //update_habitual
+        $("input[name=update_habitual][value='"+habitual+"']").prop("checked",true);
+        $('#update_sucursal > option[value="' + id_sucursal + '"]').attr('selected', 'selected');
+    });
+
+</script>
+
+<script type="text/javascript">
+    function actualizar_cliente() {
+        var update_id_cliente = document.getElementById("update_id_cliente").value;
+        var update_nombre = document.getElementById("update_nombre").value;
+        var update_correo = document.getElementById("update_correo").value;
+        var update_telefono = document.getElementById("update_telefono").value;
+        var update_sucursal = document.getElementById("update_sucursal").value;
+        
+        let habitual = $('input[name="update_habitual"]:checked').val();
+        alert(habitual);
+        var formData = new FormData();
+        var token = '{{csrf_token()}}';
+       
+        formData.append("update_id_cliente", update_id_cliente);
+        formData.append("update_nombre", update_nombre);
+        formData.append("update_correo", update_correo);
+        formData.append("update_telefono", update_telefono);
+        formData.append("update_sucursal", update_sucursal);
+        formData.append("update_habitual", habitual);
+    
+        formData.append("_token", token);
+        console.log(formData);
+        
+
+        $.ajax({
+            type: "POST",
+            contentType: false,
+            url: "/actualizar_cliente",
+            data: formData,
+            processData: false,
+            cache: false,
+            success: function(msg) {
+                console.log(msg);
+                location.href = "/mostrar_clientes";
+            }
+        });
     }
 
 </script>
+
 @stop
 @stop

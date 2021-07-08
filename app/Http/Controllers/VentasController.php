@@ -35,6 +35,8 @@ select inventario.id_producto as id_producto, productos_llantimax.nombre as nomb
     
     public function mostrar_vista()
     {
+        $fecha_venta= VentasController::obtener_fecha_actual();
+        
         return view('/Administrador/ventas/agregar');
     }
     
@@ -42,11 +44,10 @@ select inventario.id_producto as id_producto, productos_llantimax.nombre as nomb
       /*MÉTODO PARA INSERTAR EN VENTA Y DETALLE DE LA VENTA*/
     public function insertar_venta(Request $input)
 	{
-       
         /*RECUPERAR DATOS PARA LA VENTA*/
         $id_usuario = session('id_usuario');//session
         $id_sucursal_usuario = session('id_sucursal_usuario');//session
-        $id_sucursal =session('id_sucursal_usuario');
+        $id_sucursal =$input['id_sucursal'];
        
         $id_cliente = $input ['id_cliente'];
         $id_metodo_pago = $input ['id_metodo_pago'];
@@ -56,6 +57,8 @@ select inventario.id_producto as id_producto, productos_llantimax.nombre as nomb
         $comentario_credito=$input['descripcion'];
         $fecha_ultimo_dia=$input['fecha'];
        $auto=$input['auto'];
+        print_r($input->all());
+        die();
         //$array_lista_productos = VentasController::array_productos($array_productos);
        
        //foreach($array_productos as $producto){
@@ -97,7 +100,7 @@ select inventario.id_producto as id_producto, productos_llantimax.nombre as nomb
         $fecha_venta= VentasController::obtener_fecha_actual();
        
         /*GENERAR FOLIO DE VENTA*/
-        $id_venta = VentasController::generar_folio($id_sucursal, $id_usuario."".$id_sucursal_usuario, $id_cliente."".$id_sucursal_cliente);
+        $id_venta = VentasController::generar_folio();
         
         /*INICIAR TRANSACCIÓN*/
        DB::beginTransaction();
@@ -106,10 +109,10 @@ select inventario.id_producto as id_producto, productos_llantimax.nombre as nomb
             if($id_metodo_pago==3)
             {
                 echo 'total_venta '.$total_venta;
-                $total_final=intval($total_venta)*0.30;
+                $total_final=intval($total_venta)*0.03;
                 $total_venta=intval($total_venta)+$total_final;
             }
-            echo 'total_venta_final : '.$total_venta."    30%mas    ".$total_final;
+            //echo 'total_venta_final : '.$total_venta."    30%mas    ".$total_final;
             
             
             $ingresar = DB::insert('INSERT INTO venta(id_venta, id_usuario, id_sucursal_usuario, id_sucursal, id_cliente, id_sucursal_cliente, id_metodo_pago, total_venta, fecha_venta, factura,auto) VALUES(?,?,?,?,?,?,?,?,?,?,?)', [$id_venta, $id_usuario, $id_sucursal_usuario, $id_sucursal, $id_cliente, $id_sucursal_cliente, $id_metodo_pago, $total_venta, $fecha_venta, $factura,$auto]);
@@ -121,14 +124,17 @@ select inventario.id_producto as id_producto, productos_llantimax.nombre as nomb
                 
                 /*VERIFICAR SI SE TRATA DE UN SERVICIO O NO Y SER DESCONTADO DEL INVENTARIO*/
                 $contador=DB::select("select COUNT(*) as contador from servicio_cliente WHERE id_servicio='".$propiedad['id_producto']."'");
-                if($contador==0)
+                echo $contador[0]->contador;
+                if($contador[0]->contador==0)
                 {
-                    $cantidad_inventario = DB:: select("select cantidad  from inventario where id_producto='".$propiedad['id_producto']."' and id_sucursal='".$propiedad['id_sucursal_producto']."'");
+                    echo 'Entro al if';
+                    $cantidad_inventario = DB:: select("select cantidad  from inventario where id_producto='".$propiedad['id_producto']."' and id_sucursal='".$propiedad['id_sucursal']."'");
                 
                     $cantidad=$cantidad_inventario[0]->cantidad;
                     $cantidad_final =intval($cantidad)- intval($propiedad['cantidad_producto']);
-                    $actualizar = DB::update('UPDATE inventario SET cantidad='.$cantidad_final.' WHERE id_producto=? AND id_sucursal=?', [$propiedad['id_producto'],$propiedad['id_sucursal_producto']]);    
+                    $actualizar = DB::update('UPDATE inventario SET cantidad='.$cantidad_final.' WHERE id_producto=? AND id_sucursal=?', [$propiedad['id_producto'],$propiedad['id_sucursal']]);    
                 }
+                echo 'No entro al if';
                 
             }
             if($id_metodo_pago==3)
@@ -148,9 +154,9 @@ select inventario.id_producto as id_producto, productos_llantimax.nombre as nomb
     }
     
     /*MÉTODO PARA GENERAR FOLIO*/
-    function generar_folio($id_sucursal, $id_usuario, $id_cliente)
+    function generar_folio()
     {
-        $id_venta = $id_usuario."".$id_usuario."".$id_cliente."".VentasController::generar_cadena_aleatoria();
+        $id_venta = VentasController::generar_cadena_aleatoria();
         
         return $id_venta;
     }
@@ -194,7 +200,7 @@ select inventario.id_producto as id_producto, productos_llantimax.nombre as nomb
         }
         $ventas_actuales = $query[0]->ventas;
         
-        return $cadena_random."".($ventas_actuales+1);
+        return ($ventas_actuales+1)."-".$cadena_random;
     }
     
      function generar_cadena_aleatoria_credito($longitud = 8) 

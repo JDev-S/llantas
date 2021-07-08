@@ -171,7 +171,7 @@ class PedidoController extends Controller
        INNER JOIN sucursal suc_usu_distribuidor on suc_usu_distribuidor.id_sucursal=pedido.id_sucursal_origen AND pedido.id_usuario_distribuidor=usu_solicitante.id_usuario');*/
       $pedidos_sucursales=DB::select('select pedido.id_pedido,
         suc_destino.id_sucursal as id_sucursal_destino,
-        suc_destino.sucursal as sucursal_destino,
+        suc_destino.sucursal as sucursal_destino,pedido.fecha,
         suc_origen.id_sucursal as id_sucursal_origen,suc_origen.sucursal as sucursal_origen,status.id_status,status.status,usu_origen.id_usuario as id_usuario_origen, usu_origen.nombre_completo as nombre_usuario_origen,usu_destino.id_usuario as id_usuario_destino,usu_destino.nombre_completo as nombre_usuario_destino,sucu_usu_destino.id_sucursal as id_sucursal_usuario_destino,sucu_usu_destino.sucursal as nombre_sucursal_usuario_destino, sucu_usu_origen.id_sucursal as id_sucursal_usuario_origen, sucu_usu_origen.sucursal as nombre_sucursal_usuario_origen  from pedido inner join status on status.id_status=pedido.id_status inner join sucursal suc_origen on suc_origen.id_sucursal=pedido.id_origen inner join sucursal suc_destino on suc_destino.id_sucursal=pedido.id_destino inner join usuario usu_origen on usu_origen.id_usuario=pedido.id_usuario_distribuidor and usu_origen.id_sucursal=pedido.id_sucursal_origen inner join usuario usu_destino on usu_destino.id_usuario=pedido.id_usuario_solicitante and usu_destino.id_sucursal=pedido.id_sucursal_destino inner join sucursal sucu_usu_destino on sucu_usu_destino.id_sucursal=usu_destino.id_sucursal Inner join sucursal sucu_usu_origen on sucu_usu_origen.id_sucursal=usu_origen.id_sucursal');
 
       $detalles_pedido_sucursal=DB::select('SELECT detalle_pedido.id_pedido, detalle_pedido.id_producto, productos_llantimax.nombre, detalle_pedido.cantidad, detalle_pedido.descripcion FROM detalle_pedido INNER JOIN productos_llantimax on productos_llantimax.id_productos_llantimax=detalle_pedido.id_producto');
@@ -198,6 +198,7 @@ class PedidoController extends Controller
         
         $cantidades_historial=DB::select('select * from historial_pedido where id_pedido="'.$id_pedido.'"');
         $bandera="0";
+        $id_historial=PedidoController::generar_folio_historial($id_sucursal,$id_status);
         foreach($cantidades_historial as $cantidad_historial)
         {
             if($cantidad_historial->id_status=="2")
@@ -206,7 +207,7 @@ class PedidoController extends Controller
             }
             
         }
-        $ingresar = DB::insert('INSERT INTO historial_pedido(id_pedido, id_status, fecha_evento, descripcion_evento) VALUES (?,?,?,?)', [$id_pedido, $id_status, $fecha_status , $comentario]);
+        $ingresar = DB::insert('INSERT INTO historial_pedido(id_historial,id_pedido, id_status, fecha_evento, descripcion_evento) VALUES (?,?,?,?,?)', [$id_historial,$id_pedido, $id_status, $fecha_status , $comentario]);
         
       echo"El valor de bandera es :".$bandera;
         
@@ -316,7 +317,7 @@ class PedidoController extends Controller
        DB::beginTransaction();
         try{
             /*GENERAR VENTA*/
-            $ingresar = DB::insert('INSERT INTO pedido(id_pedido, id_usuario_solicitante, id_status, descripcion, id_sucursal_origen, id_sucursal_destino, id_usuario_distribuidor, id_origen, id_destino) VALUES (?,?,?,?,?,?,?,?,?)', [$id_venta,$id_usuario_destino,1,$comentario,$id_sucursal_origen,$id_sucursal_usuario_destino,$id_usuario_origen,$id_sucursal_origen,$id_sucursal_usuario_destino]);
+            $ingresar = DB::insert('INSERT INTO pedido(id_pedido, id_usuario_solicitante, id_status, descripcion, id_sucursal_origen, id_sucursal_destino, id_usuario_distribuidor, id_origen, id_destino,fecha) VALUES (?,?,?,?,?,?,?,?,?,?)', [$id_venta,$id_usuario_destino,1,$comentario,$id_sucursal_origen,$id_sucursal_usuario_destino,$id_usuario_origen,$id_sucursal_origen,$id_sucursal_usuario_destino,$fecha_venta]);
             //INSERT INTO `pedido`(`id_pedido`, `id_usuario_solicitante`, `id_status`, `descripcion`, `id_sucursal_origen`, `id_sucursal_destino`, `id_usuario_distribuidor`, `id_origen`, `id_destino`) VALUES ([value-1],[value-2],[value-3],[value-4],[value-5],[value-6],[value-7],[value-8],[value-9])
        
             /*INSERTAR DETALLE DE LA VENTA*/
@@ -325,7 +326,8 @@ class PedidoController extends Controller
                 //INSERT INTO `detalle_pedido`(`id_pedido`, `id_producto`, `cantidad`, `descripcion`) VALUES ([value-1],[value-2],[value-3],[value-4])
             }
             $comentario_historial="Se hizo el pedido";
-            $ingresar_historial=DB::insert('INSERT INTO historial_pedido(id_pedido, id_status, fecha_evento, descripcion_evento) VALUES (?,?,?,?)',[$id_venta,1,$fecha_venta,$comentario_historial]);
+            $id_historial=PedidoController::generar_folio_historial($id_venta,1);
+            $ingresar_historial=DB::insert('INSERT INTO historial_pedido(id_historial,id_pedido, id_status, fecha_evento, descripcion_evento) VALUES (?,?,?,?,?)',[$id_historial,$id_venta,1,$fecha_venta,$comentario_historial]);
             //INSERT INTO `historial_pedido`(`id_pedido`, `id_status`, `fecha_evento`, `descripcion_evento`) VALUES ([value-1],[value-2],[value-3],[value-4])
             
             echo 'Pedido realizado, esperando indicaciones de la sucursal';
@@ -371,6 +373,35 @@ class PedidoController extends Controller
     {
         $consulta = DB::select('SELECT * FROM usuario where usuario.id_sucursal='.$id_sucursal);    
         return $id_sucursal_cliente = $consulta[0]->id_usuario;
+    }
+    
+    function generar_cadena_historial($longitud = 8) 
+    {
+        $caracteres_permitidos = '0123456789abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $longitud_caracteres = strlen($caracteres_permitidos);
+        $cadena_random = '';
+        
+        for($i = 0; $i < $longitud; $i++) {
+            $caracter_random = $caracteres_permitidos[mt_rand(0, $longitud_caracteres - 1)];
+            $cadena_random .= $caracter_random;
+        }
+        
+        /*OBTENER EL NÚMERO DE REGISTROS ACTUAL DE VENTAS*/
+        try{
+            $query = DB::select('select count(*) as pedidos from historial_pedido');    
+        } catch(Exception $e){
+            echo 'Ha ocurrido un error!';
+        }
+        $ventas_actuales = $query[0]->pedidos;
+        
+        return $cadena_random."".($ventas_actuales+1);
+    }
+    
+    function generar_folio_historial($id_sucursal, $id_usuario)
+    {
+        $id_venta = $id_usuario."".$id_usuario."".PedidoController::generar_cadena_historial();
+        
+        return $id_venta;
     }
     
    

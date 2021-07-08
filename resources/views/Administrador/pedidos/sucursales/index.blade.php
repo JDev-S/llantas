@@ -156,6 +156,7 @@
             }
             arr.push({
                 "id_pedido": objeto.id_pedido,
+                "fecha":objeto.fecha,
                 "nombre_usuario_destino": objeto.nombre_usuario_destino,
                 "nombre_sucursal_usuario_destino": objeto.nombre_sucursal_usuario_destino,
                 "nombre_usuario_origen": objeto.nombre_usuario_origen,
@@ -174,6 +175,12 @@
             columns: [{
                     field: 'id_pedido',
                     title: 'Folio pedido',
+                    align: 'center',
+                    sortable: true
+                },
+                {
+                    field: 'fecha',
+                    title: 'Fecha pedido',
                     align: 'center',
                     sortable: true
                 },

@@ -29,7 +29,7 @@ class CreditoController extends Controller
         $comentario = $input ['comentario'];
         
         $fecha_venta= CreditoController::obtener_fecha_actual();
-        $id_abono_credito = CreditoController::generar_folio($id_credito, $id_cliente);
+        $id_abono_credito = CreditoController::generar_folio();
         
          $ingresar = DB::insert('INSERT INTO abono_credito(id_abono_credito, id_credito, fecha, monto, comentario) VALUES (?,?,?,?,?)', [$id_abono_credito,$id_credito,$fecha_venta,$monto,$comentario]);
         
@@ -56,9 +56,9 @@ class CreditoController extends Controller
     }
     
     
-     function generar_folio($id_sucursal, $id_usuario)
+     function generar_folio()
     {
-        $id_venta = $id_usuario."".$id_usuario."".CreditoController::generar_cadena_aleatoria();
+        $id_venta = CreditoController::generar_cadena_aleatoria();
         
         return $id_venta;
     }
@@ -81,9 +81,9 @@ class CreditoController extends Controller
         } catch(Exception $e){
             echo 'Ha ocurrido un error!';
         }
-        $ventas_actuales = $query[0]->abonos;
+        $creditos_actuales = $query[0]->abonos;
         
-        return $cadena_random."".($ventas_actuales+1);
+        return ($creditos_actuales+1)."-".$cadena_random;
     }
     
     function obtener_suma_montos($id_credito)
