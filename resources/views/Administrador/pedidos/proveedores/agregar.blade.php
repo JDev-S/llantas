@@ -420,7 +420,11 @@
             var total2 = $('#total_final').val();
             var total_final = parseInt(total2) - parseInt(cantidad_anterior) * parseInt(precio_compra);
             document.getElementById("total_final").value = total_final;
+            console.log("productos antes")
+            console.log(productos);
             productos = productos.filter(objeto => (objeto.id_producto != id_producto && objeto.id_catalogo != id_catalogo));
+            console.log("despues productos");
+            console.log(productos);
         });
 
         // Getting all the rows next to the row

@@ -112,25 +112,6 @@
                     </div>
                 </div>
             </div>
-
-            <!--<div class="" style="margin-bottom:110px;"></div>
-            <div class="col-md-12 col-sm-9 align-middle">
-                <table class="table text-dark-m2 text-95 bgc-white ml-n1px  " id="table">
-                    <thead>
-                        <tr>
-                            <th class="align-middle"><b>Código del producto</b></th>
-                            <th class="align-middle"><b>Nombre del proveedor</b></th>
-                            <th class="align-middle"><b>Cantidad</b></th>
-                            <th class="align-middle"><b>Precio unitario</b></th>
-                            <th class="align-middle"><b>Total</b></th>
-                        </tr>
-                    </thead>
-                    
-                </table>
-            </div>-->
-
-
-
             <div class="mt-0 mt-lg-0 card dcard h-auto overflow-hidden shadow border-t-0 ml-0 mr-0">
                 <div class="col-md-12">
                     <div class="card-header t-border-1 mb-0 mt-2">
@@ -491,6 +472,9 @@
 
                 $("#responsive-table tbody tr").html("");
                 document.getElementById("cantidad").value = "";
+                 document.getElementById("total_extra").innerHTML = "";
+                document.getElementById("subtotal").innerHTML = "";
+                document.getElementById("total_final").value = 0;
 
                 productos = new Array();
 
@@ -505,7 +489,7 @@
         });
     }
 
-    let pago = $('input[name="pago"]:checked').val();
+
 
     function mostrar_tabla() {
         /Value tiene el valor del producto/
@@ -676,7 +660,7 @@
     /*Actualizar fila al cambiar valor del input cantidad*/
 
     $('#table').on('change', '#cant', function(index) {
-       let pago = $('input[name="pago"]:checked').val();
+        let pago = $('input[name="pago"]:checked').val();
         var valores = "";
         $(this).parents("tr").each(function(index2) {
             var id_sucursal = $(this).attr("data-id_sucursal");
@@ -732,11 +716,12 @@
 
     /*------------------------------------------------------------------------------------------------------------------------------*/
 
-     /*ELIMINAR UNA FILA DE LA TABLA*/
+    /*ELIMINAR UNA FILA DE LA TABLA*/
 
     $('#table').on('click', '.remove', function() {
+
         $(this).parents("tr").each(function(index2) {
-            
+
             var precio_compra = $(this).attr("data-precio");
             var cantidad_anterior = $(this).attr("data-cantidad");
             var id_producto = $(this).attr("data-id_producto");
@@ -744,9 +729,30 @@
             var total2 = $('#total_final').val();
             var total_final = parseInt(total2) - parseInt(cantidad_anterior) * parseInt(precio_compra);
             document.getElementById("total_final").value = total_final;
-            productos = productos.filter(objeto => (objeto.id_producto != id_producto && objeto.id_sucursal != id_sucursal));
-            
-           
+            console.log(precio_compra + "  " + cantidad_anterior + "  " + id_producto + "  " + id_sucursal + "  " + total2 + "   " + total_final);
+
+            console.log("productos antes")
+            console.log(productos);
+            var info = "";
+            var total_venta = 0;
+
+            console.log(info);
+            console.log("numero :" + total_venta);
+
+            productos = productos.filter(objeto => (objeto.id_producto != id_producto && objeto.id_sucursal == id_sucursal));
+            console.log("despues productos");
+            console.log(productos);
+
+            if (pago == undefined || pago == "2" || pago == "1") {
+                alert("no es llantimax");
+
+                limpiar();
+            } else {
+                alert("es llantimax");
+
+                mostrar_formulario_credito();
+            }
+
         });
 
         // Getting all the rows next to the row
@@ -847,16 +853,16 @@
             _token: token
         };
         console.log(data);
-        $.ajax({
-            type: "POST",
-            url: "/insertar_venta",
-            data: data,
-            success: function(msg) {
+         $.ajax({
+             type: "POST",
+             url: "/insertar_venta",
+             data: data,
+             success: function(msg) {
 
-                console.log(msg);
-                location.href = "/mostrar_venta";
-            }
-        });
+                 console.log(msg);
+                 location.href = "/mostrar_venta";
+             }
+         });
     }
 
     function enviar_datos() {

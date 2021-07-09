@@ -20,6 +20,7 @@ class InventarioController extends Controller
         $sucursal = $input['sucursal'];
         $cantidad = $input['cantidad'];
         $id_producto="'".$producto."'";
+         
         $query=DB::select("select inventario.cantidad from inventario where inventario.id_producto=".$id_producto." and   inventario.id_sucursal=".$sucursal);
          $cantidad_anterior=$query[0]->cantidad;
          echo $producto."    ".$sucursal."   "."   ".$cantidad."   ".$cantidad_anterior;

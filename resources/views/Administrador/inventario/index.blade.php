@@ -397,7 +397,7 @@
                                     </label>
                                 </div>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control col-sm-8 col-md-10" id="cantidad" name="cantidad">
+                                    <input type="text" class="form-control col-sm-8 col-md-10" id="nueva_cantidad" name="nueva_cantidad">
                                 </div>
                             </div>
 
@@ -472,10 +472,11 @@
     }
 
     function enviar_datos() {
-        var sucursal = document.getElementById("sucursal").value;
+        var sucursal = document.getElementById("sucursal_nueva").value;
         var producto = document.getElementById("mostrar_productos").value;
-        var cantidad = document.getElementById("cantidad").value;
-
+        var cantidad = document.getElementById("nueva_cantidad").value;
+        console.log("sucursal :"+sucursal+"  producto:"+producto+"   cantidad:"+cantidad);
+            
         var token = '{{csrf_token()}}';
         var data = {
             sucursal: sucursal,
@@ -489,6 +490,7 @@
             url: "/agregar_inventarios",
             data: data,
             success: function(msg) {
+                console.log(msg);
                 location.href = "/mostrar_inventario"
             }
         });

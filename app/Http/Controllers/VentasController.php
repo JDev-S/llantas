@@ -57,8 +57,7 @@ select inventario.id_producto as id_producto, productos_llantimax.nombre as nomb
         $comentario_credito=$input['descripcion'];
         $fecha_ultimo_dia=$input['fecha'];
        $auto=$input['auto'];
-        print_r($input->all());
-        die();
+     
         //$array_lista_productos = VentasController::array_productos($array_productos);
        
        //foreach($array_productos as $producto){
@@ -139,7 +138,7 @@ select inventario.id_producto as id_producto, productos_llantimax.nombre as nomb
             }
             if($id_metodo_pago==3)
             {
-                $id_credito=VentasController::generar_folio_credito($id_sucursal,$id_usuario."".$id_sucursal_usuario,$id_venta);
+                $id_credito=VentasController::generar_folio_credito();
                 $ingresar=DB::insert('INSERT INTO credito(id_credito, id_venta, id_usuario, id_sucursal_usuario, id_sucursal, status_credito, comentario, fecha_ultimo_dia) 
                 VALUES (?,?,?,?,?,?,?,?)', [$id_credito,$id_venta,$id_usuario,$id_sucursal_usuario,$id_sucursal,"No liquidado",$comentario_credito,$fecha_ultimo_dia]);
                 
@@ -162,7 +161,7 @@ select inventario.id_producto as id_producto, productos_llantimax.nombre as nomb
     }
     
     
-     function generar_folio_credito($id_sucursal, $id_usuario, $id_venta)
+     function generar_folio_credito()
     {
         $id_credito = $id_usuario."".$id_usuario."".$id_venta."".VentasController::generar_cadena_aleatoria_credito();
         
@@ -222,7 +221,7 @@ select inventario.id_producto as id_producto, productos_llantimax.nombre as nomb
         }
         $ventas_actuales = $query[0]->creditos;
         
-        return $cadena_random."".($ventas_actuales+1);
+        return ($ventas_actuales+1)."-".$cadena_random;
     }
     
     
