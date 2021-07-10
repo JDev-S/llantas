@@ -84,6 +84,8 @@ Route::get('/agregar_inventario','InventarioController@mostrar_formulario')->mid
 Route::post('/agregar_inventarios', 'InventarioController@agregar_inventario')->name('agregar_inventarios');
 /*Mostrar productos en el formulario de inventario*/
 Route::post('/mostrar_productos','InventarioController@mostrar_productos_sucursal_inventario')->name('mostrar_productos');
+/*Eliminar producto del inventario*/
+Route::post('/eliminar_producto_inventario','InventarioController@eliminar_producto_inventario')->name('eliminar_producto_inventario');
 
 /*  Ventas*/
 /* Vista para hacer la venta */

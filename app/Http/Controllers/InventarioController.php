@@ -675,4 +675,19 @@ class InventarioController extends Controller
 
         return $aProducto_baterias;
      }
+    
+    function eliminar_producto_inventario(Request $input)
+    {
+        $sucursal=$input['sucursal'];
+        $id_producto=$input['id_producto'];
+        $cantidad_vieja=$input['cantidad_anterior'];
+        $cantidad_nueva=$input['cantidad_nueva'];
+        
+        $query=DB::select('select id_sucursal from sucursal where sucursal.sucursal="'.$sucursal.'"');
+        $id_sucursal=$query[0]->id_sucursal; 
+        
+        $cantidad_restante=intval($cantidad_vieja)-intval($cantidad_nueva);
+        
+         $query2=DB::update("update  inventario set cantidad='$cantidad_restante' where inventario.id_producto=? and inventario.id_sucursal=? ",[$id_producto,$id_sucursal]);
+    }
 }

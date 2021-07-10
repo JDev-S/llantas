@@ -36,32 +36,19 @@
             </div>
 
             <div class="card-body px-3 pb-1">
-
-                <!-- 
+                <form id="reporte_form">
                     <div class="form-group row">
-                    <div class="col-sm-3 col-form-label text-sm-right pr-0">
-                      Relative sizing
-                    </div>
-
-                    <div class="col-sm-9">
-                      <input type="text" class="form-control form-control-lg col-md-4 d-inline-block mb-1 mb-md-0" placeholder=".form-control-lg">
-                      <input type="text" class="form-control col-md-3 d-inline-block mb-1 mb-md-0" placeholder=".form-control">
-                      <input type="text" class="form-control form-control-sm col-md-2 d-inline-block" placeholder=".form-control-sm">
-                    </div>
-                  </div>
-                -->
-
-                <div class="form-group row">
                         <div class="col-sm-3 col-form-label text-sm-right pr-0">
                             Fecha de inicio
                         </div>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control col-md-3 d-inline-block mb-1 mb-md-0" id="id-date-1" name="id-date-1">
+                            <input type="text" class="form-control col-md-3 d-inline-block mb-1 mb-md-0" id="id-date-1" name="id-date-1" required>
                             <label class=" col-sm-3 col-form-label text-sm-right pr-3"> Fecha final</label>
-                            <input type="text" class="form-control col-md-3 d-inline-block mb-1 mb-md-0" id="id-date-2" name="id-date-2">
+                            <input type="text" class="form-control col-md-3 d-inline-block mb-1 mb-md-0" id="id-date-2" name="id-date-2" required>
                         </div>
 
-                </div>
+                    </div>
+                </form>
 
                 <div class="mt-5 border-t-1 bgc-secondary-l4 brc-secondary-l2 py-35 mx-n25">
                     <div class="offset-md-3 col-md-9 text-nowrap">
@@ -161,222 +148,239 @@
     var llenado = "";
     var productos = new Array();
     var total = 0;
-    
+
     function mostrar_ventas() {
-        var arr = [];
-        var $_bsTable = $('#table')
-        var inicio = document.getElementById("id-date-1").value;
-        var fin = document.getElementById("id-date-2").value;
-        alert(inicio + "      " + fin);
-        console.log(inicio);
-        console.log(fin);
-        var principal = new Date(inicio); // M-D-YYYY
-        var d = principal.getDate();
-        var m = principal.getMonth() + 1;
-        var y = principal.getFullYear();
-        alert(y + "  " + "  " + m + "  " + d);
-        var fecha_inicio = y + '-' + (m <= 9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
-        var final = new Date(fin); // M-D-YYYY
-        var d = final.getDate();
-        var m = final.getMonth() + 1;
-        var y = final.getFullYear();
-        var fecha_fin = y + '-' + (m <= 9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
-        alert(fecha_inicio + "   " + fecha_fin);
-        var token = '{{csrf_token()}}';
-        var data = {
-            fecha_inicio: fecha_inicio,
-            fecha_fin: fecha_fin,
-            _token: token
-        };
-        $.ajax({
-            type: "POST",
-            url: "/mostrar_reportes_ventas",
-            data: data,
-            success: function(msg) {
-                jQuery(function($) {
-                    var datos = JSON.parse(msg);
-                    datos.forEach(objeto => {
-                        //let tmp =[] ;
-                        var myNumeral = numeral(objeto.venta);
-                        var currencyString = myNumeral.format('$0,0.00');
-                        arr.push({
-                            "sucursal": objeto.sucursal,
-                            "venta": currencyString,
-                            "fecha": fecha_inicio + '<span style="color:blue; font-size:20px;"> - </span>' + fecha_fin
+        if ($("#reporte_form")[0].checkValidity()) {
+            event.preventDefault();
+            var arr = [];
+            var $_bsTable = $('#table')
+            var inicio = document.getElementById("id-date-1").value;
+            var fin = document.getElementById("id-date-2").value;
+            alert(inicio + "      " + fin);
+            console.log(inicio);
+            console.log(fin);
+            var principal = new Date(inicio); // M-D-YYYY
+            var d = principal.getDate();
+            var m = principal.getMonth() + 1;
+            var y = principal.getFullYear();
+            alert(y + "  " + "  " + m + "  " + d);
+            var fecha_inicio = y + '-' + (m <= 9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
+            var final = new Date(fin); // M-D-YYYY
+            var d = final.getDate();
+            var m = final.getMonth() + 1;
+            var y = final.getFullYear();
+            var fecha_fin = y + '-' + (m <= 9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
+            alert(fecha_inicio + "   " + fecha_fin);
+            var token = '{{csrf_token()}}';
+            var data = {
+                fecha_inicio: fecha_inicio,
+                fecha_fin: fecha_fin,
+                _token: token
+            };
+            $.ajax({
+                type: "POST",
+                url: "/mostrar_reportes_ventas",
+                data: data,
+                success: function(msg) {
+                    jQuery(function($) {
+                        var datos = JSON.parse(msg);
+                        datos.forEach(objeto => {
+                            //let tmp =[] ;
+                            var myNumeral = numeral(objeto.venta);
+                            var currencyString = myNumeral.format('$0,0.00');
+                            arr.push({
+                                "sucursal": objeto.sucursal,
+                                "venta": currencyString,
+                                "fecha": fecha_inicio + '<span style="color:blue; font-size:20px;"> - </span>' + fecha_fin
 
-                        }, );
-                        //arr.push(tmp);
-                        //console.log(arr);
-                    });
-                    console.log(arr)
-                     $_bsTable.bootstrapTable('destroy')
+                            }, );
+                            //arr.push(tmp);
+                            //console.log(arr);
+                        });
+                        console.log(arr)
+                        $_bsTable.bootstrapTable('destroy')
 
-                   
-                    $_bsTable.bootstrapTable({
-                        data: arr,
-                        columns: [{
-                                field: 'sucursal',
-                                title: 'Sucursal',
-                                align: 'center',
-                                sortable: true
+
+                        $_bsTable.bootstrapTable({
+                            data: arr,
+                            columns: [{
+                                    field: 'sucursal',
+                                    title: 'Sucursal',
+                                    align: 'center',
+                                    sortable: true
+                                },
+                                /*{
+                                    field: 'categoria',
+                                    title: 'Categoria',
+                                    align: 'center',
+                                    sortable: true
+                                },*/
+                                {
+                                    field: 'venta',
+                                    title: 'Total',
+                                    align: 'center',
+                                    sortable: true
+                                },
+                                {
+                                    field: 'fecha',
+                                    title: 'Fechas',
+                                    align: 'center',
+                                    sortable: true
+                                },
+                            ],
+                            icons: {
+                                columns: 'fa-th-list text-orange-d1',
+                                detailOpen: 'fa-plus text-blue',
+                                detailClose: 'fa-minus text-blue',
+                                export: 'fa-download text-blue',
+                                print: 'fa-print text-purple-d1',
+                                fullscreen: 'fa fa-expand',
+
+                                search: 'fa-search text-blue'
                             },
-                            /*{
-                                field: 'categoria',
-                                title: 'Categoria',
-                                align: 'center',
-                                sortable: true
-                            },*/
-                            {
-                                field: 'venta',
-                                title: 'Total',
-                                align: 'center',
-                                sortable: true
+                            toolbar: "#table-toolbar",
+                            //theadClasses: "bgc-white text-grey text-uppercase text-80 sticky",
+                            theadClasses: "thead-blue",
+                            clickToSelect: true,
+                            checkboxHeader: true,
+                            search: true,
+                            searchAlign: "left",
+                            //showSearchButton: true,
+                            sortable: true,
+                            detailView: false,
+                            detailFormatter: "detailFormatter",
+                            pagination: true,
+                            paginationLoop: false,
+                            buttonsClass: "outline-default bgc-white btn-h-light-primary btn-a-outline-primary py-1 px-25 text-95",
+                            showExport: true,
+                            showPrint: true,
+                            showColumns: true,
+                            showFullscreen: true,
+                            mobileResponsive: true,
+                            checkOnInit: true,
+                            printPageBuilder: function(table) {
+
+                                hoy = new Date();
+                                return '<html>' +
+                                    '<head>' +
+                                    '<style type="text/css" media="print">' +
+                                    ' @page {' +
+                                    'size: auto;' +
+                                    'margin: 25px 0 25px 0;' +
+                                    '}' +
+                                    '</style>' +
+                                    '<style type="text/css" media="all">' +
+                                    'table {' +
+                                    'border-collapse: collapse;' +
+                                    'font-size: 12px;' +
+                                    '}' +
+                                    'table, th, td {' +
+                                    'border: 1px solid grey;' +
+                                    '}' +
+                                    'th, td {' +
+                                    'text-align: center;' +
+                                    'vertical-align: middle;' +
+                                    '}' +
+                                    ' p {' +
+                                    'font-weight: bold;' +
+                                    'margin-left:20px;' +
+                                    'margin-left:3%;' +
+                                    'margin-right:3%;' +
+                                    '}' +
+                                    'table {' +
+                                    'width:94%;' +
+                                    'margin-left:3%;' +
+                                    'margin-right:3%;' +
+                                    '}' +
+                                    'div.bs-table-print {' +
+                                    'text-align:center;' +
+                                    '}' +
+                                    '</style>' +
+                                    '</head>' +
+                                    '<title>Imprimir inventario</title>' +
+                                    '<body>' +
+                                    '<div style="text-align:center;">' +
+                                    '<p style="font-size:20px;">Reporte de ventas' + '</p>' +
+                                    '</div>' +
+                                    '<div >' +
+                                    '<span style="float:left; margin-left:50px; margin-bottom:15px; ">LLANTIMAX Sucusal:' + @json($sucursal_usuario) + '</span>' +
+                                    '<span style="float:right;  margin-right:50px;  margin-bottom:15px">Fecha de impresion:' + hoy.toLocaleDateString() + '</span>' +
+                                    '</div>' +
+
+                                    '<div class="bs-table-print">' + table + '</div>' +
+                                    '</body>' +
+                                    '</html>'
                             },
-                            {
-                                field: 'fecha',
-                                title: 'Fechas',
-                                align: 'center',
-                                sortable: true
+                            formatFullscreen: function() {
+                                return 'Pantalla completa'
                             },
-                        ],
-                        icons: {
-                            columns: 'fa-th-list text-orange-d1',
-                            detailOpen: 'fa-plus text-blue',
-                            detailClose: 'fa-minus text-blue',
-                            export: 'fa-download text-blue',
-                            print: 'fa-print text-purple-d1',
-                            fullscreen: 'fa fa-expand',
+                            formatExport: function() {
+                                return 'Exportar datos'
+                            },
+                            formatPrint: function() {
+                                return 'Imprimir'
+                            },
+                            formatColumns: function() {
+                                return 'Columnas'
+                            },
+                            formatSearch: function() {
+                                return 'Buscar'
+                            },
+                            formatShowingRows: function(pageFrom, pageTo, totalRows) {
+                                return 'Mostrando: ' + totalRows + ' Resultados';
+                            },
+                            formatRecordsPerPage: function(pageNumber) {
+                                return pageNumber + ' Filas por página';
+                            },
+                            formatNoMatches: function() {
+                                return 'Resultado no encontrado';
+                            },
 
-                            search: 'fa-search text-blue'
-                        },
-                        toolbar: "#table-toolbar",
-                        //theadClasses: "bgc-white text-grey text-uppercase text-80 sticky",
-                        theadClasses: "thead-blue",
-                        clickToSelect: true,
-                        checkboxHeader: true,
-                        search: true,
-                        searchAlign: "left",
-                        //showSearchButton: true,
-                        sortable: true,
-                        detailView: false,
-                        detailFormatter: "detailFormatter",
-                        pagination: true,
-                        paginationLoop: false,
-                        buttonsClass: "outline-default bgc-white btn-h-light-primary btn-a-outline-primary py-1 px-25 text-95",
-                        showExport: true,
-                        showPrint: true,
-                        showColumns: true,
-                        showFullscreen: true,
-                        mobileResponsive: true,
-                        checkOnInit: true,
-            printPageBuilder: function(table) {
-                
-                hoy=new Date();
-                return '<html>' +
-                '<head>' +
-                '<style type="text/css" media="print">' +
-                ' @page {' +
-                'size: auto;' +
-                'margin: 25px 0 25px 0;' +
-                '}' +
-                '</style>' +
-                '<style type="text/css" media="all">' +
-                'table {' +
-                'border-collapse: collapse;' +
-                'font-size: 12px;' +
-                '}' +
-                'table, th, td {' +
-                'border: 1px solid grey;' +
-                '}' +
-                'th, td {' +
-                'text-align: center;' +
-                'vertical-align: middle;' +
-                '}' +
-                ' p {' +
-                'font-weight: bold;' +
-                'margin-left:20px;' +
-                'margin-left:3%;'+
-                'margin-right:3%;'+
-                '}' +
-                'table {' +
-                'width:94%;' +
-                'margin-left:3%;' +
-                'margin-right:3%;' +
-                '}' +
-                'div.bs-table-print {' +
-                'text-align:center;' +
-                '}' +
-                '</style>' +
-                '</head>' +
-                '<title>Imprimir inventario</title>' +
-                '<body>' +
-                '<div style="text-align:center;">'+
-                '<p style="font-size:20px;">Reporte de ventas'+'</p>'+
-                '</div>'+
-                '<div >'+
-                '<span style="float:left; margin-left:50px; margin-bottom:15px; ">LLANTIMAX Sucusal:'+ @json($sucursal_usuario)+'</span>'+
-                '<span style="float:right;  margin-right:50px;  margin-bottom:15px">Fecha de impresion:'+hoy.toLocaleDateString() +'</span>'+
-                '</div>'+
-                
-                '<div class="bs-table-print">'+table+'</div>' +
-                '</body>' +
-               '</html>'
-            },
-                        formatSearch: function() {
-                            return 'Buscar'
-                        },
-                        formatShowingRows: function(pageFrom, pageTo, totalRows) {
-                            return 'Mostrando: ' + totalRows + ' Resultados';
-                        },
-                        formatRecordsPerPage: function(pageNumber) {
-                            return pageNumber + ' Filas por página';
-                        },
-                        formatNoMatches: function() {
-                            return 'Resultado no encontrado';
-                        },
+                        })
 
-                    })
-
-                    function formatTableCellActions(value, row, index, field) {
-                        var eliminar = "'" + row.id_llanta + "'";
-                        return '<div class="action-buttons">' +
-                            //'<button class="text-blue mx-1" data-target="#modalLlanta_' + row.id_llanta + '" data-toggle="modal">' +
-                            //  '<i class="fa fa-search-plus text-105"></i>' +
-                            //    '</button>' +
-                            // '<a class="text-success mx-1" href="#">\
-                            //<i class="fa fa-pencil-alt text-105"></i>\
-                            //</a>'+
-                            //  '<a class="text-danger-m1 mx-1"  href="javascript:eliminar_producto(' + eliminar + ')">' +
-                            //    '<i class="fa fa-trash-alt text-105"></i>' +
-                            //  '</a>' +
-                            '</div>'
-                    }
-                    // enable/disable 'remove' button
-                    var $removeBtn = $('#remove-btn')
-                    $_bsTable
-                        .on('check.bs.table uncheck.bs.table check-all.bs.table uncheck-all.bs.table', function() {
-                            $removeBtn.prop('disabled', !$_bsTable.bootstrapTable('getSelections').length)
+                        function formatTableCellActions(value, row, index, field) {
+                            var eliminar = "'" + row.id_llanta + "'";
+                            return '<div class="action-buttons">' +
+                                //'<button class="text-blue mx-1" data-target="#modalLlanta_' + row.id_llanta + '" data-toggle="modal">' +
+                                //  '<i class="fa fa-search-plus text-105"></i>' +
+                                //    '</button>' +
+                                // '<a class="text-success mx-1" href="#">\
+                                //<i class="fa fa-pencil-alt text-105"></i>\
+                                //</a>'+
+                                //  '<a class="text-danger-m1 mx-1"  href="javascript:eliminar_producto(' + eliminar + ')">' +
+                                //    '<i class="fa fa-trash-alt text-105"></i>' +
+                                //  '</a>' +
+                                '</div>'
+                        }
+                        // enable/disable 'remove' button
+                        var $removeBtn = $('#remove-btn')
+                        $_bsTable
+                            .on('check.bs.table uncheck.bs.table check-all.bs.table uncheck-all.bs.table', function() {
+                                $removeBtn.prop('disabled', !$_bsTable.bootstrapTable('getSelections').length)
+                            })
+                        // remove an item
+                        $removeBtn.on('click', function() {
+                            var ids = $.map($_bsTable.bootstrapTable('getSelections'), function(row) {
+                                return row.id
+                            })
+                            $_bsTable.bootstrapTable('remove', {
+                                field: 'id',
+                                values: ids
+                            })
+                            $removeBtn.prop('disabled', true)
                         })
-                    // remove an item
-                    $removeBtn.on('click', function() {
-                        var ids = $.map($_bsTable.bootstrapTable('getSelections'), function(row) {
-                            return row.id
-                        })
-                        $_bsTable.bootstrapTable('remove', {
-                            field: 'id',
-                            values: ids
-                        })
-                        $removeBtn.prop('disabled', true)
-                    })
-                    // change caret of "X" rows per page button
-                    $('.fixed-table-pagination .caret').addClass('fa fa-caret-down')
-                    $_bsTable.on('page-change.bs.table', function() {
+                        // change caret of "X" rows per page button
                         $('.fixed-table-pagination .caret').addClass('fa fa-caret-down')
-                    })
+                        $_bsTable.on('page-change.bs.table', function() {
+                            $('.fixed-table-pagination .caret').addClass('fa fa-caret-down')
+                        })
 
-                })
-            }
-        });
+                    })
+                }
+            });
+        } else {
+            $("#reporte_form")[0].reportValidity();
+        }
     }
 
 </script>

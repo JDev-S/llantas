@@ -245,6 +245,45 @@
     </div>
 </div>
 <!--FIN MODAL BATERIA -->
+<!--MODAL ELIMINAR-->
+<div class="modal fade" data-backdrop-bg="bgc-white" id="eliminarModal" tabindex="-1" aria-labelledby="dangerModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content bgc-transparent brc-danger-m2 shadow">
+            <div class="modal-header py-2 bgc-danger-tp1 border-0  radius-t-1">
+                <h5 class="modal-title text-white-tp1 text-110 pl-2 font-bolder" id="dangerModalLabel">
+                    Advertencia!
+                </h5>
+                <button type="button" class="position-tr btn btn-xs btn-outline-white btn-h-yellow btn-a-yellow mt-1px mr-1px btn-brc-tp" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="text-150">×</span>
+                </button>
+            </div>
+            <div class="modal-body bgc-white-tp2 p-md-4 pl-md-5">
+                <form id="eliminar_inventario_form">
+                <div class="d-flex align-items-top mr-2 mr-md-5">
+                    <i class="fas fa-exclamation-triangle fa-2x text-orange-d2 float-rigt mr-4 mt-1"></i>
+                    <input type="hidden" class="form-control" id="delete_id" name="delete_id">
+                    <input type="hidden" class="form-control" id="delete_id_sucursal" name="delete_id_sucursal">
+                    <input type="hidden" class="form-control" id="delete_cantidad" name="delete_cantidad">
+                    <div class="text-secondary-d2 text-105">
+                        Cantidad de producto a eliminar?
+                        <input type="number" id="delete_cant_nueva" name="delete_cant_nueva" placeholder="0" min="1" step="1" required>
+                    </div>
+                </div>
+                </form>
+            </div>
+            <div class="modal-footer bgc-white-tp2 border-0">
+                <button type="button" class="btn px-4 btn-light-grey" data-dismiss="modal">
+                    No
+                </button>
+                <button type="button" class="btn px-4 btn-danger" id="id-danger-yes-btn" onclick="eliminar_producto()" >
+                    Si
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--FIN MODAL ELIMINAR-->
+
 
 <!--Modal REFACCION-->
 <div class="modal fade" id="modalRefaccion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -304,9 +343,9 @@
                     <div class="form-row align-items-center">
                         <div class="form-group col-md-12">
                             <label for="modelo">Descripción</label>
-                            <textarea  class="form-control" id="descripcion" name="descripcion" disabled></textarea>
+                            <textarea class="form-control" id="descripcion" name="descripcion" disabled></textarea>
                         </div>
-                        
+
                     </div>
 
 
@@ -351,6 +390,7 @@
                 </button>
             </div>
             <div class="modal-body">
+                <form id="agregar_inventario_form">
                 <div class="card-body p-0">
                     <div class="card acard mt-2 mt-lg-3">
                         <div class="card-body px-3 pb-1">
@@ -361,11 +401,11 @@
                         ?>
                                 <div class="col-sm-3 col-form-label text-sm-right pr-0">
                                     <label for="id-form-field-1" class="mb-0">
-                                        Marca
+                                        Sucursal
                                     </label>
                                 </div>
                                 <div class="col-sm-9">
-                                    <select class="form-control col-sm-8 col-md-10" id="sucursal_nueva" name="sucursal" onChange="javascript:obtener_valor()">
+                                    <select class="form-control col-sm-8 col-md-10" id="sucursal_nueva" name="sucursal" onChange="javascript:obtener_valor()" required>
 
                                         <option value="0">Elige una sucursal</option>
                                         @foreach($data2 as $item)
@@ -385,7 +425,7 @@
                                     </label>
                                 </div>
                                 <div class="col-sm-9">
-                                    <select class="form-control col-sm-8 col-md-10" id="mostrar_productos" required name="producto">
+                                    <select class="form-control col-sm-8 col-md-10" id="mostrar_productos"  name="producto" required>
 
                                     </select>
                                 </div>
@@ -397,14 +437,16 @@
                                     </label>
                                 </div>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control col-sm-8 col-md-10" id="nueva_cantidad" name="nueva_cantidad">
+                                    <input type="text" class="form-control col-sm-8 col-md-10" id="nueva_cantidad" name="nueva_cantidad" required>
                                 </div>
                             </div>
 
                         </div><!-- /.card-body -->
                     </div>
                 </div>
+                </form>
             </div>
+
             <div class="modal-footer">
                 <div style="align-content:center;">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">
@@ -472,29 +514,35 @@
     }
 
     function enviar_datos() {
-        var sucursal = document.getElementById("sucursal_nueva").value;
-        var producto = document.getElementById("mostrar_productos").value;
-        var cantidad = document.getElementById("nueva_cantidad").value;
-        console.log("sucursal :"+sucursal+"  producto:"+producto+"   cantidad:"+cantidad);
-            
-        var token = '{{csrf_token()}}';
-        var data = {
-            sucursal: sucursal,
-            cantidad: cantidad,
-            producto: producto,
-            _token: token
-        };
+        if ($("#agregar_inventario_form")[0].checkValidity()) {
+             event.preventDefault();
+            var sucursal = document.getElementById("sucursal_nueva").value;
+            var producto = document.getElementById("mostrar_productos").value;
+            var cantidad = document.getElementById("nueva_cantidad").value;
+            console.log("sucursal :" + sucursal + "  producto:" + producto + "   cantidad:" + cantidad);
 
-        $.ajax({
-            type: "POST",
-            url: "/agregar_inventarios",
-            data: data,
-            success: function(msg) {
-                console.log(msg);
-                location.href = "/mostrar_inventario"
+            var token = '{{csrf_token()}}';
+            var data = {
+                sucursal: sucursal,
+                cantidad: cantidad,
+                producto: producto,
+                _token: token
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "/agregar_inventarios",
+                data: data,
+                success: function(msg) {
+                    console.log(msg);
+                    location.href = "/mostrar_inventario"
+                }
+            });
+
+        } else 
+            {
+                $("#agregar_inventario_form")[0].reportValidity();    
             }
-        });
-
 
     }
 
@@ -740,6 +788,18 @@
                     '</body>' +
                     '</html>'
             },
+            formatFullscreen: function() {
+                return 'Pantalla completa'
+            },
+            formatExport: function() {
+                return 'Exportar datos'
+            },
+            formatPrint: function() {
+                return 'Imprimir'
+            },
+            formatColumns: function() {
+                return 'Columnas'
+            },
             formatSearch: function() {
                 return 'Buscar'
             },
@@ -760,39 +820,31 @@
             var id_producto = row.id_productos_llantimax;
             var eliminar = row.id_productos_llantimax;
             var botones = "";
+            var cantidad = row.cantidad;
+            var boton_eliminar = "";
+            if (cantidad > 0) {
+                boton_eliminar = '<button type="button" class="text-danger mx-1 "   data-cantidad="' + row.cantidad + '" data-id="' + row.id_productos_llantimax + '" data-suc="' + row.sucursal + '"  data-toggle="modal" data-target="#eliminarModal">' +
+                    '<i class="fa fa-trash-alt text-105"></i>' +
+                    '</button>';
+            }
 
             if (categoria == "Llantas") {
                 botones = '<div class="action-buttons">' +
                     '<button class="text-blue mx-1" data-target="#modalLlanta" data-toggle="modal"data-id="' + row.id_productos_llantimax + '" data-cantidad="' + row.cantidad + '" data-sucursal="' + row.sucursal + '" data-categoria="' + row.categoria + '" data-nombre="' + row.nombre + '" data-medida="' + row.medida + '" data-foto="' + row.foto + '" data-marca="' + row.marca + '" data-modelo="' + row.modelo + '" data-precio="' + row.precio + '" data-marc="' + row.id_marca + '" data-capacidad="' + row.capacidad_carga + '" data-indice="' + row.indice_velocidad + '" data-rin="' + row.numero_rin + '" ><i class="fa fa-search-plus text-105"></i></button>' +
-                    //'<a class="text-success mx-1" href="#">\
-                    //<i class="fa fa-pencil-alt text-105"></i>\
-                    //</a>\
-                    //<a class="text-danger-m1 mx-1" href="#">\
-                    //  <i class="fa fa-trash-alt text-105"></i>\
-                    //</a>\
+                    boton_eliminar +
                     '</div>';
             } else
             if (categoria == "Refacción") {
                 botones = '<div class="action-buttons">' +
-                    '<button class="text-blue mx-1" data-target="#modalRefaccion" data-toggle="modal"data-id="' + row.id_productos_llantimax + '" data-foto="' + row.photo + '" data-nombre="' + row.nombre + '" data-marca="' + row.marca + '" data-modelo="' + row.modelo + '" data-cantidad="' + row.cantidad + '" data-sucursal="' + row.sucursal + '" data-categoria="' + row.categoria + '" data-descripcion="' + row.descripcion + '" data-precio="' + row.precio + '" ><i class="fa fa-search-plus text-105"></i></button>'
-                //'<a class="text-success mx-1" href="#">\
-                //<i class="fa fa-pencil-alt text-105"></i>\
-                //</a>\
-                //<a class="text-danger-m1 mx-1" href="#">\
-                //  <i class="fa fa-trash-alt text-105"></i>\
-                //</a>\
-                '</div>';
+                    '<button class="text-blue mx-1" data-target="#modalRefaccion" data-toggle="modal"data-id="' + row.id_productos_llantimax + '" data-foto="' + row.photo + '" data-nombre="' + row.nombre + '" data-marca="' + row.marca + '" data-modelo="' + row.modelo + '" data-cantidad="' + row.cantidad + '" data-sucursal="' + row.sucursal + '" data-categoria="' + row.categoria + '" data-descripcion="' + row.descripcion + '" data-precio="' + row.precio + '" ><i class="fa fa-search-plus text-105"></i></button>' +
+                    boton_eliminar +
+                    '</div>';
             } else
             if (categoria == "Bateria") {
                 botones = '<div class="action-buttons">' +
-                    '<button class="text-blue mx-1" data-target="#modalBateria" data-toggle="modal"data-id="' + row.id_productos_llantimax + '" data-nombre="' + row.nombre + '" data-marca="' + row.marca + '" data-modelo="' + row.modelo + '" data-cantidad="' + row.cantidad + '" data-sucursal="' + row.sucursal + '" data-categoria="' + row.categoria + '" data-medidas="' + row.medidas + '" data-voltaje="' + row.voltaje + '" data-capacidad="' + row.capacidad_arranque + '" data-frio="' + row.capacidad_arranque_frio + '" data-peso="' + row.peso + '" data-foto="' + row.foto + '" data-tamanio="' + row.tamanio + '" data-precio="' + row.precio + '" ><i class="fa fa-search-plus text-105"></i></button>'
-                //'<a class="text-success mx-1" href="#">\
-                //<i class="fa fa-pencil-alt text-105"></i>\
-                //</a>\
-                //<a class="text-danger-m1 mx-1" href="#">\
-                //  <i class="fa fa-trash-alt text-105"></i>\
-                //</a>\
-                '</div>';
+                    '<button class="text-blue mx-1" data-target="#modalBateria" data-toggle="modal"data-id="' + row.id_productos_llantimax + '" data-nombre="' + row.nombre + '" data-marca="' + row.marca + '" data-modelo="' + row.modelo + '" data-cantidad="' + row.cantidad + '" data-sucursal="' + row.sucursal + '" data-categoria="' + row.categoria + '" data-medidas="' + row.medidas + '" data-voltaje="' + row.voltaje + '" data-capacidad="' + row.capacidad_arranque + '" data-frio="' + row.capacidad_arranque_frio + '" data-peso="' + row.peso + '" data-foto="' + row.foto + '" data-tamanio="' + row.tamanio + '" data-precio="' + row.precio + '" ><i class="fa fa-search-plus text-105"></i></button>' +
+                    boton_eliminar +
+                    '</div>';
             }
             return botones;
         }
@@ -942,6 +994,60 @@
         modal.find('#descripcion').val(descripcion)
 
     });
+
+</script>
+<script type="text/javascript">
+    $('#eliminarModal').on('show.bs.modal', function(event) {
+        /*RECUPERAR METADATOS DEL BOTÓN*/
+        var button = $(event.relatedTarget)
+        var id_servicio = button.data('id')
+        var id_sucursal = button.data('suc')
+        var cantidad = button.data('cantidad')
+
+        var modal = $(this)
+        modal.find('#delete_id').val(id_servicio)
+        modal.find('#delete_id_sucursal').val(id_sucursal)
+        modal.find('#delete_cantidad').val(cantidad)
+    });
+
+</script>
+
+<script type="text/javascript">
+    function eliminar_producto() {
+        if ($("#eliminar_inventario_form")[0].checkValidity())
+        {
+            event.preventDefault();
+            var id_producto = document.getElementById("delete_id").value;
+            var id_sucursal = document.getElementById("delete_id_sucursal").value;
+            var cantidad_anterior = document.getElementById("delete_cantidad").value;
+            var cantidad_nueva = document.getElementById("delete_cant_nueva").value;
+
+
+            alert(id_producto + "  " + id_sucursal + "   " + cantidad_anterior + "  " + cantidad_nueva);
+            var token = '{{csrf_token()}}';
+            var data = {
+                id_producto: id_producto,
+                sucursal: id_sucursal,
+                cantidad_anterior: cantidad_anterior,
+                cantidad_nueva: cantidad_nueva,
+                _token: token
+            };
+            console.log(data);
+            $.ajax({
+                type: "POST",
+                url: "/eliminar_producto_inventario",
+                data: data,
+                success: function(msg) {
+                    alert(msg);
+                    location.href = "/mostrar_inventario";
+                }
+            });
+        }else
+        {
+            $("#eliminar_inventario_form")[0].reportValidity();
+        }
+       
+    }
 
 </script>
 @stop

@@ -61,7 +61,7 @@ class LlantasController extends Controller
                   $oProducto_llanta->marca = $producto->marca;
                   $oProducto_llanta->id_marca = $producto->id_marca;
                   $oProducto_llanta->modelo = $producto->modelo;
-                  $oProducto_llanta->precio =  LlantasController::formato_moneda($producto->precio);
+                  $oProducto_llanta->precio = $producto->precio; //LlantasController::formato_moneda($producto->precio);
                   $oProducto_llanta->cantidad = $producto->cantidad;
                   $oProducto_llanta->fotografia_miniatura = $producto->fotografia_miniatura;
                   //$oProducto_llanta->sucursal=$producto->sucursal;

@@ -48,53 +48,53 @@
             </div>
             <div class="modal-body">
                 <div class="ccard h-100 d-flex flex-column mx-2 px-2 py-3">
-                    <div class="form-row col-md-12">
-                        <div class="form-group col-md-6">
-                            <label for="codigo_llanta">Nombre de la empresa</label>
-                            <input type="text" class="form-control" id="nombre_empresa" name="nombre_empresa" placeholder="Nombre de la empresa">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="modelo">Teléfono</label>
-                            <input type="text" class="form-control mb-2" id="telefono" name="telefono" placeholder="Teléfono">
-                        </div>
-                    </div>
-
-                    <div class="form-row align-items-center col-md-12">
-                        <div class="form-group col-md-6">
-                            <label for="rin">Dirección</label>
-                            <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Dirección">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="modelo">Nombre de proveedor</label>
-                            <input type="text" class="form-control mb-2" id="nombre_contacto" name="nombre_contacto" placeholder="Nombre de proveedor">
+                    <form id="agregar_proveedor_form">
+                        <div class="form-row col-md-12">
+                            <div class="form-group col-md-6">
+                                <label for="codigo_llanta">Nombre de la empresa</label>
+                                <input type="text" class="form-control" id="nombre_empresa" name="nombre_empresa" placeholder="Nombre de la empresa" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="modelo">Teléfono</label>
+                                <input type="text" class="form-control mb-2" id="telefono" name="telefono" placeholder="Teléfono" required>
+                            </div>
                         </div>
 
-                    </div>
+                        <div class="form-row align-items-center col-md-12">
+                            <div class="form-group col-md-6">
+                                <label for="rin">Dirección</label>
+                                <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Dirección" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="modelo">Nombre de proveedor</label>
+                                <input type="text" class="form-control mb-2" id="nombre_contacto" name="nombre_contacto" placeholder="Nombre de proveedor" required>
+                            </div>
 
-                    <div class="form-row align-items-center col-md-12">
-                        <div class="form-group col-md-6">
-                            <label for="rin">Correo</label>
-                            <input type="text" class="form-control" id="correo" name="correo" placeholder="Email">
                         </div>
 
+                        <div class="form-row align-items-center col-md-12">
+                            <div class="form-group col-md-6">
+                                <label for="rin">Correo</label>
+                                <input type="email" class="form-control" id="correo" name="correo" placeholder="Email" required>
+                            </div>
 
-                    </div>
 
-                    <div class="form-group col-md-12">
-                        <label for="indice_velocidad">Sucursal</label>
-                        <?php
+                        </div>
+
+                        <div class="form-group col-md-12">
+                            <label for="indice_velocidad">Sucursal</label>
+                            <?php
                             $query2 = "select * from sucursal ";
                             $data2=DB::select($query2);      
                         ?>
-                        <select id="sucursal" name="sucursal" class="form-control">
-                            <option value="0">General</option>
-                            @foreach($data2 as $item)
-                            <option value="{{ $item->id_sucursal }}"> {{ $item->sucursal }} </option>
-                            @endforeach
-                        </select>
-                    </div>
-
-
+                            <select id="sucursal" name="sucursal" class="form-control" required>
+                                <option value="0">General</option>
+                                @foreach($data2 as $item)
+                                <option value="{{ $item->id_sucursal }}"> {{ $item->sucursal }} </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </form>
                 </div>
             </div>
             <div class="modal-footer">
@@ -123,54 +123,54 @@
             </div>
             <div class="modal-body">
                 <div class="ccard h-100 d-flex flex-column mx-2 px-2 py-3">
-                    <div class="form-row col-md-12">
-                        <div class="form-group col-md-6">
-                            <label for="codigo_llanta">Nombre de la empresa</label>
-                             <input type="hidden" class="form-control" id="update_id_proveedor" name="update_id_proveedor" >
-                            <input type="text" class="form-control" id="update_empresa" name="update_empresa" placeholder="Nombre de la empresa">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="modelo">Teléfono</label>
-                            <input type="text" class="form-control mb-2" id="update_telefono" name="update_telefono" placeholder="Teléfono">
-                        </div>
-                    </div>
-
-                    <div class="form-row align-items-center col-md-12">
-                        <div class="form-group col-md-6">
-                            <label for="rin">Dirección</label>
-                            <input type="text" class="form-control" id="update_direccion" name="update_direccion" placeholder="Dirección">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="modelo">Nombre de proveedor</label>
-                            <input type="text" class="form-control mb-2" id="update_nombre" name="update_nombre" placeholder="Nombre de proveedor">
+                    <form id="actualizar_proveedor_form">
+                        <div class="form-row col-md-12">
+                            <div class="form-group col-md-6">
+                                <label for="codigo_llanta">Nombre de la empresa</label>
+                                <input type="hidden" class="form-control" id="update_id_proveedor" name="update_id_proveedor">
+                                <input type="text" class="form-control" id="update_empresa" name="update_empresa" placeholder="Nombre de la empresa" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="modelo">Teléfono</label>
+                                <input type="text" class="form-control mb-2" id="update_telefono" name="update_telefono" placeholder="Teléfono" required>
+                            </div>
                         </div>
 
-                    </div>
+                        <div class="form-row align-items-center col-md-12">
+                            <div class="form-group col-md-6">
+                                <label for="rin">Dirección</label>
+                                <input type="text" class="form-control" id="update_direccion" name="update_direccion" placeholder="Dirección" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="modelo">Nombre de proveedor</label>
+                                <input type="text" class="form-control mb-2" id="update_nombre" name="update_nombre" placeholder="Nombre de proveedor" required>
+                            </div>
 
-                    <div class="form-row align-items-center col-md-12">
-                        <div class="form-group col-md-6">
-                            <label for="rin">Correo</label>
-                            <input type="text" class="form-control" id="update_correo" name="update_correo" placeholder="Email">
                         </div>
 
+                        <div class="form-row align-items-center col-md-12">
+                            <div class="form-group col-md-6">
+                                <label for="rin">Correo</label>
+                                <input type="email" class="form-control" id="update_correo" name="update_correo" placeholder="Email">
+                            </div>
 
-                    </div>
 
-                    <div class="form-group col-md-12">
-                        <label for="indice_velocidad">Sucursal</label>
-                        <?php
+                        </div>
+
+                        <div class="form-group col-md-12">
+                            <label for="indice_velocidad">Sucursal</label>
+                            <?php
                             $query2 = "select * from sucursal ";
                             $data2=DB::select($query2);      
                         ?>
-                        <select id="update_sucursal" name="update_sucursal" class="form-control">
-                             <option value="0"> General </option>
-                            @foreach($data2 as $item)
-                            <option value="{{ $item->id_sucursal }}"> {{ $item->sucursal }} </option>
-                            @endforeach
-                        </select>
-                    </div>
-
-
+                            <select id="update_sucursal" name="update_sucursal" class="form-control" required>
+                                <option value="0"> General </option>
+                                @foreach($data2 as $item)
+                                <option value="{{ $item->id_sucursal }}"> {{ $item->sucursal }} </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </form>
                 </div>
             </div>
             <div class="modal-footer">
@@ -434,32 +434,41 @@
 </script>
 <script type="text/javascript">
     function enviar_datos() {
-        var nombre_empresa = document.getElementById("nombre_empresa").value;
-        var sucursal = document.getElementById("sucursal").value;
-        var telefono = document.getElementById("telefono").value;
-        var direccion = document.getElementById("direccion").value;
-        var nombre_contacto = document.getElementById("nombre_contacto").value;
-        var correo = document.getElementById("correo").value;
+        if ($("#agregar_proveedor_form")[0].checkValidity()) {
+            event.preventDefault();
+            var nombre_empresa = document.getElementById("nombre_empresa").value;
+            var sucursal = document.getElementById("sucursal").value;
+            var telefono = document.getElementById("telefono").value;
+            var direccion = document.getElementById("direccion").value;
+            var nombre_contacto = document.getElementById("nombre_contacto").value;
+            var correo = document.getElementById("correo").value;
 
-        var token = '{{csrf_token()}}';
-        var data = {
-            nombre_empresa: nombre_empresa,
-            sucursal: sucursal,
-            telefono: telefono,
-            direccion: direccion,
-            nombre_contacto: nombre_contacto,
-            correo: correo,
-            _token: token
-        };
+            var token = '{{csrf_token()}}';
+            var data = {
+                nombre_empresa: nombre_empresa,
+                sucursal: sucursal,
+                telefono: telefono,
+                direccion: direccion,
+                nombre_contacto: nombre_contacto,
+                correo: correo,
+                _token: token
+            };
 
-        $.ajax({
-            type: "POST",
-            url: "/agregar_proveedores",
-            data: data,
-            success: function(msg) {
-                location.href = "/mostrar_proveedores"
-            }
-        });
+            $.ajax({
+                type: "POST",
+                url: "/agregar_proveedores",
+                data: data,
+                success: function(msg) {
+                    location.href = "/mostrar_proveedores"
+                }
+            });
+
+        } else {
+
+            //SI HAY ERROR DE VALIDACIÓN, ENVÍA EL MENSAJE DE ERROR
+            $("#agregar_proveedor_form")[0].reportValidity();
+        }
+
     }
 
 </script>
@@ -496,7 +505,7 @@
         var empresa = button.data('empresa')
         var telefono = button.data('telefono')
         var direccion = button.data('direccion')
-       
+
         /*ASIGNAR VALOR A LOS METADATOS DEL MODAL*/
         var modal = $(this)
         modal.find('#update_id_proveedor').val(id_proveedor)
@@ -505,47 +514,53 @@
         modal.find('#update_telefono').val(telefono)
         modal.find('#update_empresa').val(empresa)
         modal.find('#update_direccion').val(direccion)
-                
+
         $('#update_sucursal > option[value="' + id_sucursal + '"]').attr('selected', 'selected');
     });
 
 </script>
 <script type="text/javascript">
     function actualizar_proveedor() {
-        var update_id_proveedor = document.getElementById("update_id_proveedor").value;
-        var update_nombre = document.getElementById("update_nombre").value;
-        var update_correo = document.getElementById("update_correo").value;
-        var update_telefono = document.getElementById("update_telefono").value;
-        var update_empresa = document.getElementById("update_empresa").value;
-        var update_direccion = document.getElementById("update_direccion").value;
-        var update_sucursal = document.getElementById("update_sucursal").value;
-        
-        var formData = new FormData();
-        var token = '{{csrf_token()}}';
-       
-        formData.append("update_id_proveedor", update_id_proveedor);
-        formData.append("update_nombre", update_nombre);
-        formData.append("update_correo", update_correo);
-        formData.append("update_telefono", update_telefono);
-        formData.append("update_sucursal", update_sucursal);
-        formData.append("update_empresa", update_empresa);
-        formData.append("update_direccion", update_direccion);
-        formData.append("_token", token);
-        console.log(formData);
-        
+        if ($("#actualizar_proveedor_form")[0].checkValidity()) {
+            event.preventDefault();
+            var update_id_proveedor = document.getElementById("update_id_proveedor").value;
+            var update_nombre = document.getElementById("update_nombre").value;
+            var update_correo = document.getElementById("update_correo").value;
+            var update_telefono = document.getElementById("update_telefono").value;
+            var update_empresa = document.getElementById("update_empresa").value;
+            var update_direccion = document.getElementById("update_direccion").value;
+            var update_sucursal = document.getElementById("update_sucursal").value;
 
-        $.ajax({
-            type: "POST",
-            contentType: false,
-            url: "/actualizar_proveedor",
-            data: formData,
-            processData: false,
-            cache: false,
-            success: function(msg) {
-                console.log(msg);
-                location.href = "/mostrar_proveedores";
-            }
-        });
+            var formData = new FormData();
+            var token = '{{csrf_token()}}';
+
+            formData.append("update_id_proveedor", update_id_proveedor);
+            formData.append("update_nombre", update_nombre);
+            formData.append("update_correo", update_correo);
+            formData.append("update_telefono", update_telefono);
+            formData.append("update_sucursal", update_sucursal);
+            formData.append("update_empresa", update_empresa);
+            formData.append("update_direccion", update_direccion);
+            formData.append("_token", token);
+            console.log(formData);
+
+            alert("TODO ESTA BIEN");
+            $.ajax({
+                type: "POST",
+                contentType: false,
+                url: "/actualizar_proveedor",
+                data: formData,
+                processData: false,
+                cache: false,
+                success: function(msg) {
+                    console.log(msg);
+                    location.href = "/mostrar_proveedores";
+                }
+            });
+        } else {
+            //SI HAY ERROR DE VALIDACIÓN, ENVÍA EL MENSAJE DE ERROR
+            $("#actualizar_proveedor_form")[0].reportValidity();
+        }
     }
 
 </script>

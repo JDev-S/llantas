@@ -59,6 +59,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <form>
                     <div class="card-body p-0">
                         <div class="card acard mt-2 mt-lg-3">
                             <div class="card-body px-3 pb-1">
@@ -70,7 +71,7 @@
                                         </label>
                                     </div>
                                     <div class="col-sm-9">
-                                    <input type="text" class="form-control col-sm-8 col-md-10" name="monto" id="monto">
+                                    <input type="number" class="form-control col-sm-8 col-md-10" name="monto" id="monto" required>
                                     <input id="new_id_credito" name="id_credito" type="hidden">
                                     <input id="new_id_cliente" name="id_cliente" type="hidden">
                                     </div>
@@ -82,13 +83,13 @@
                                     </label>
                                 </div>
                                 <div class="col-sm-9">
-                                    <textarea  class="form-control" id="comentario" name="comentario">
-                                    </textarea>
+                                    <textarea  class="form-control" id="comentario" name="comentario" required></textarea>
                                 </div>
                             </div>
                             </div><!-- /.card-body -->
                         </div>
                     </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <div style="align-content:center;">

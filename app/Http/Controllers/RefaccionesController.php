@@ -89,7 +89,7 @@ class RefaccionesController extends Controller
         if($input->hasFile('fotografia_miniatura'))
         {
             $file=$input->file('fotografia_miniatura');
-            $name=time()."_".$nombre_llanta;
+            $name=time()."_".$nombre_refaccion;
             $file->move(public_path().'/img/',$name);
             $foto=$name;
             

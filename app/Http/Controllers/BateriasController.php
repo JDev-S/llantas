@@ -64,7 +64,7 @@ class BateriasController extends Controller
                   $oProducto_bateria->marca = $producto->marca;
                   $oProducto_bateria->id_marca = $producto->id_marca;
                   $oProducto_bateria->modelo = $producto->modelo;
-                  $oProducto_bateria->precio = BateriasController::formato_moneda($producto->precio);
+                  $oProducto_bateria->precio = $producto->precio;//BateriasController::formato_moneda($producto->precio);
                   $oProducto_bateria->cantidad = $producto->cantidad;
                   $oProducto_bateria->fotografia_miniatura = $producto->fotografia_miniatura;
                   //$oProducto_bateria->sucursal=$producto->sucursal;
