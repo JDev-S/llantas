@@ -76,42 +76,44 @@
                 </div>
                 <div class="card-body p-0 table-responsive-xl mt-4 mb-4">
                     <div class="col-md-12 mt-2">
-                        <div class="row mb-2">
-                            <div class="form-row col-md-12 justify-content-center">
-                                <div class="form-group col-md-2 ml-2 justify-content-center">
-                                    <select class="form-control selectpicker form-control" title="-- Sucursal --" data-size="5" data-header="Seleccione sucursal" data-style="btn-primary" id="sucursal" name="sucursal" onchange="javascript:uso_sucursal()" data-container="body">
-                                        <option data-divider="true"></option>
-                                        <?php
+                        <div class="row mb-2 " >
+                            <form id="agregar_catalogo_form" class= " form-row col-md-12 justify-content-center" >
+                                <div class="form-row col-md-12 justify-content-center">
+                                    <div class="form-group col-md-2 ml-2 justify-content-center">
+                                        <select class="form-control selectpicker form-control" title="-- Sucursal --" data-size="5" data-header="Seleccione sucursal" data-style="btn-primary" id="sucursal" name="sucursal" onchange="javascript:uso_sucursal()" data-container="body" required>
+                                            <option data-divider="true"></option>
+                                            <?php
                                             $query = "select * from sucursal ";
                                             $sucursales=DB::select($query);
                                         ?>
-                                        <option value="0">General</option>
-                                        @foreach($sucursales as $sucursal)
-                                        <option data-tokens="{{$sucursal->id_sucursal}}" value="{{$sucursal->id_sucursal}}">{{$sucursal->sucursal}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-2 ml-2 justify-content-center" id="mostrar_categorias" name="mostrar_categorias">
-                                    <!-- SELECT DE CATEGORIAS -->
-                                </div>
-                                <div class="form-group col-md-2 ml-2 justify-content-center">
-                                    <select class="form-control selectpicker form-control" multiple data-max-options="1" title="-- Proveedores--" data-size="5" data-header="Seleccione un proveedor" data-style="btn-primary" id="mostrar_proveedores" name="mostrar_proveedores" data-container="body">
-                                        <option data-divider="true"></option>
-
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-4 ml-2">
-                                    <select class="form-control selectpicker " multiple data-max-options="1" data-live-search="true" title="-- Productos --" data-size="4" data-header="Selecciona un producto" data-style="btn-primary" id="productos" name="productos" data-container="body">
-                                        <optgroup label="los chidos">
+                                            <option value="0">General</option>
+                                            @foreach($sucursales as $sucursal)
+                                            <option data-tokens="{{$sucursal->id_sucursal}}" value="{{$sucursal->id_sucursal}}">{{$sucursal->sucursal}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-2 ml-2 justify-content-center" id="mostrar_categorias" name="mostrar_categorias">
+                                        <!-- SELECT DE CATEGORIAS -->
+                                    </div>
+                                    <div class="form-group col-md-2 ml-2 justify-content-center">
+                                        <select class="form-control selectpicker form-control" multiple data-max-options="1" title="-- Proveedores--" data-size="5" data-header="Seleccione un proveedor" data-style="btn-primary" id="mostrar_proveedores" name="mostrar_proveedores" data-container="body" required>
                                             <option data-divider="true"></option>
 
-                                        </optgroup>
-                                    </select>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4 ml-2">
+                                        <select class="form-control selectpicker " multiple data-max-options="1" data-live-search="true" title="-- Productos --" data-size="4" data-header="Selecciona un producto" data-style="btn-primary" id="productos" name="productos" data-container="body" required>
+                                            <optgroup label="los chidos">
+                                                <option data-divider="true"></option>
+
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-1 ml-2">
+                                        <input class="form-control" min="1" step="1" type="number" placeholder="Precio" style="border-color:#2470BD" id="precio" name="precio" required>
+                                    </div>
                                 </div>
-                                <div class="form-group col-md-1 ml-2">
-                                    <input class="form-control" min="1" step="1" type="number" placeholder="Precio" style="border-color:#2470BD" id="precio" name="precio">
-                                </div>
-                            </div>
+                            </form>
                         </div>
                         <div class="row">
                             <div class="form-row col-md-12 justify-content-center">
@@ -207,7 +209,7 @@
         if (sucursal != 0) {
             console.log("No se eligio general");
             document.getElementById('mostrar_categorias').innerHTML = "";
-            var categorias2 = '<select class="form-control selectpicker form-control" title="-- Categorías --" data-size="5" data-header="Seleccione categoria" data-style="btn-primary" id="categoria" name="categoria" data-container="body">' +
+            var categorias2 = '<select class="form-control selectpicker form-control" title="-- Categorías --" data-size="5" data-header="Seleccione categoria" data-style="btn-primary" id="categoria" name="categoria" data-container="body" required>' +
                 '<option  data-divider="true"></option>' +
                 '</select>';
             document.getElementById('mostrar_categorias').innerHTML = categorias2;
@@ -216,7 +218,7 @@
         } else {
             console.log("Es una sucursal general");
             document.getElementById('mostrar_categorias').innerHTML = "";
-            var categorias = '<select class="form-control selectpicker form-control" title="-- Categorías --" data-size="5" data-header="Seleccione categoria" data-style="btn-primary" id="categoria" name="categoria" onChange="javascript:uso_categoria()" data-container="body">' +
+            var categorias = '<select class="form-control selectpicker form-control" title="-- Categorías --" data-size="5" data-header="Seleccione categoria" data-style="btn-primary" id="categoria" name="categoria" onChange="javascript:uso_categoria()" data-container="body" required>' +
                 '<option data-divider="true"></option>' +
 
                 '</select>';
@@ -229,9 +231,9 @@
         }
         var categoria = document.getElementById("categoria").value;
         console.log("Imprimir valor del la categoria " + categoria);
-         $("#responsive-table tbody tr").html("");
-         document.getElementById("precio").value = "";       
-         productos = new Array();
+        $("#responsive-table tbody tr").html("");
+        document.getElementById("precio").value = "";
+        productos = new Array();
 
         /*Limpiar productos*/
         $('#productos').selectpicker('selectAll');
@@ -306,8 +308,8 @@
         console.log("Muestro la categoria :" + categoria);
         console.log("Muestro el id_sucursal en ajax :" + id_sucursal);
         $("#responsive-table tbody tr").html("");
-         document.getElementById("precio").value = "";       
-         productos = new Array();
+        document.getElementById("precio").value = "";
+        productos = new Array();
         /*Limpiar productos*/
         $('#productos').selectpicker('selectAll');
         var selected = [];
@@ -372,63 +374,95 @@
 
 
     function mostrar_tabla() {
-        /*Value tiene el valor del producto*/
-        /*OBTENER LOS VALORES DE LOS OTROS DATA */
-        // var datos=$('#productos option:selected').attr("data-value2");
-        var cantidad = document.getElementById("precio").value;
-        var sucursal = $('#sucursal').val();
-        var id_producto = $('#productos').val()[0];
-        var id_proveedor = $('#mostrar_proveedores').val()[0];
-        var nombre_producto = $('#productos option:selected').attr("data-producto");
-        var nombre_proveedor=$('#mostrar_proveedores option:selected').attr("data-nombre");
-        var marca = $('#productos option:selected').attr("data-marca");
-        var modelo = $('#productos option:selected').attr("data-modelo");
-        var bandera = 0;
+        //agregar_catalogo_form
+        if ($("#agregar_catalogo_form")[0].checkValidity()) {
+            event.preventDefault();
+            /*Value tiene el valor del producto*/
+            /*OBTENER LOS VALORES DE LOS OTROS DATA */
+            // var datos=$('#productos option:selected').attr("data-value2");
+            var cantidad = document.getElementById("precio").value;
+            var sucursal = $('#sucursal').val();
+            var id_producto = $('#productos').val()[0];
+            var id_proveedor = $('#mostrar_proveedores').val()[0];
+            var nombre_producto = $('#productos option:selected').attr("data-producto");
+            var nombre_proveedor = $('#mostrar_proveedores option:selected').attr("data-nombre");
+            var marca = $('#productos option:selected').attr("data-marca");
+            var modelo = $('#productos option:selected').attr("data-modelo");
+            var bandera = 0;
 
-        /VERIFICAR SI LA TABLA TIENE FILAS/
-        if ($("#responsive-table tbody tr").length != 0) {
-            /EVALUAR SI ESXISTE EL PRODUCTO AGREGADO EN LA TABLA/
-            $("#responsive-table tbody tr").each(function(index_tr) {
-                if (bandera == 0) {
-                    var t_idproveedor = ($(this).attr("data-id_proveedor"));
-                    var t_idproducto = ($(this).attr("data-id_producto"));
-                    /*SI EL PRODUCTO EXISTE, LO ACTUALIZA*/
-                    if (id_proveedor == t_idproveedor && id_producto == t_idproducto) {
-                        //var t_cantidad = $(this).attr("data-cantidad");
-                        var t_cantidad = document.getElementById("precio").value;
-                        cantidad = t_cantidad;
-                        alert(t_cantidad);
-                        bandera = 1;
-                        $(this).attr('data-precio', cantidad);
-                        $(this).html(""); /*LIMPIA EL CONTENIDO DE TR PARA EVITAR DUPLICADOS*/
-                        var tr = '<td data-th="Producto"><span class="bt-content">' + nombre_producto + '</span></td>' +
-                            '<td data-th="Marca"><span class="bt-content">' + marca + '</span></td>' +
-                            '<td data-th="Modelo"><span class="bt-content">' + modelo + '</span></td>' +
-                            '<td data-th="Proveedor"><span class="bt-content">' + nombre_proveedor + '</span></td>' +
-                            '<td data-th="Precio"><span class="bt-content"><div class="col-9"><input  class="col-9" style="padding-left:0px;" step="1" min="1" type="number" id="cant" name="cant" value="' + cantidad + '" ></div></span></td>' +
-                            '<td data-th="Acciones"><span class="bt-content text-center">' +
-                            '<button class="btn btn-danger remove"' +
-                            'type="button">Eliminar</button>' +
-                            '</td>';
-                        $(this).append(tr);
-                       
+            /VERIFICAR SI LA TABLA TIENE FILAS/
+            if ($("#responsive-table tbody tr").length != 0) {
+                /EVALUAR SI ESXISTE EL PRODUCTO AGREGADO EN LA TABLA/
+                $("#responsive-table tbody tr").each(function(index_tr) {
+                    if (bandera == 0) {
+                        var t_idproveedor = ($(this).attr("data-id_proveedor"));
+                        var t_idproducto = ($(this).attr("data-id_producto"));
+                        /*SI EL PRODUCTO EXISTE, LO ACTUALIZA*/
+                        if (id_proveedor == t_idproveedor && id_producto == t_idproducto) {
+                            //var t_cantidad = $(this).attr("data-cantidad");
+                            var t_cantidad = document.getElementById("precio").value;
+                            cantidad = t_cantidad;
+                            alert(t_cantidad);
+                            bandera = 1;
+                            $(this).attr('data-precio', cantidad);
+                            $(this).html(""); /*LIMPIA EL CONTENIDO DE TR PARA EVITAR DUPLICADOS*/
+                            var tr = '<td data-th="Producto"><span class="bt-content">' + nombre_producto + '</span></td>' +
+                                '<td data-th="Marca"><span class="bt-content">' + marca + '</span></td>' +
+                                '<td data-th="Modelo"><span class="bt-content">' + modelo + '</span></td>' +
+                                '<td data-th="Proveedor"><span class="bt-content">' + nombre_proveedor + '</span></td>' +
+                                '<td data-th="Precio"><span class="bt-content"><div class="col-9"><input  class="col-9" style="padding-left:0px;" step="1" min="1" type="number" id="cant" name="cant" value="' + cantidad + '" ></div></span></td>' +
+                                '<td data-th="Acciones"><span class="bt-content text-center">' +
+                                '<button class="btn btn-danger remove"' +
+                                'type="button">Eliminar</button>' +
+                                '</td>';
+                            $(this).append(tr);
 
-                        /*ACTUALIZAR ARREGLO*/
-                        productos = productos.map(function(objeto) {
-                            return objeto.id_producto == id_producto && objeto.id_proveedor == id_proveedor ? {
-                                "id_producto": objeto.id_producto,
-                                "precio": t_cantidad,
-                                "id_proveedor": id_proveedor
-                            } : objeto;
-                        });
 
+                            /*ACTUALIZAR ARREGLO*/
+                            productos = productos.map(function(objeto) {
+                                return objeto.id_producto == id_producto && objeto.id_proveedor == id_proveedor ? {
+                                    "id_producto": objeto.id_producto,
+                                    "precio": t_cantidad,
+                                    "id_proveedor": id_proveedor
+                                } : objeto;
+                            });
+
+                        }
                     }
+                });
+                /*SI NO EXISTE EL ELEMENTO, ENTONCES LO INSERTA*/
+                if (bandera == 0) {
+                    alert("nueva fila");
+                    // Nueva fila dentro de tbody.
+                    $('#table').append(`<tr id="R${++rowIdx}" data-id_proveedor="${id_proveedor}" data-id_producto="${id_producto}" data-marca="${marca}" data-modelo="${modelo}" data-producto="${nombre_producto}" data-proveedor="${nombre_proveedor}" data-precio="${cantidad}">` +
+                        '<td data-th="Producto"><span class="bt-content">' + nombre_producto + '</span></td>' +
+                        '<td data-th="Marca"><span class="bt-content">' + marca + '</span></td>' +
+                        '<td data-th="Modelo"><span class="bt-content">' + modelo + '</span></td>' +
+                        '<td data-th="Proveedor"><span class="bt-content">' + nombre_proveedor + '</span></td>' +
+                        '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input class="col-9" style="padding-left:0px;" type="number" step="1" min="1" id="cant" name="cant" value="' + cantidad + '" ></div></span></td>' +
+                        '<td data-th="Acciones"><span class="bt-content text-center">' +
+                        '<button class="btn btn-danger remove"' +
+                        'type="button">Eliminar</button>' +
+                        '</td>' +
+                        '</tr>');
+
+                    /*INSERTA EN OBJETO Y AÑADE A ARREGLO*/
+                    var producto = {
+                        "id_producto": id_producto,
+                        "precio": cantidad,
+                        "id_proveedor": id_proveedor
+                    };
+                    productos.push(producto);
+
+                    console.log(productos);
+
+
                 }
-            });
-            /*SI NO EXISTE EL ELEMENTO, ENTONCES LO INSERTA*/
-            if (bandera == 0) {
-                alert("nueva fila");
+            } else {
                 // Nueva fila dentro de tbody.
+
+                alert(typeof(id_producto));
+
                 $('#table').append(`<tr id="R${++rowIdx}" data-id_proveedor="${id_proveedor}" data-id_producto="${id_producto}" data-marca="${marca}" data-modelo="${modelo}" data-producto="${nombre_producto}" data-proveedor="${nombre_proveedor}" data-precio="${cantidad}">` +
                     '<td data-th="Producto"><span class="bt-content">' + nombre_producto + '</span></td>' +
                     '<td data-th="Marca"><span class="bt-content">' + marca + '</span></td>' +
@@ -440,7 +474,7 @@
                     'type="button">Eliminar</button>' +
                     '</td>' +
                     '</tr>');
-               
+
                 /*INSERTA EN OBJETO Y AÑADE A ARREGLO*/
                 var producto = {
                     "id_producto": id_producto,
@@ -450,39 +484,13 @@
                 productos.push(producto);
 
                 console.log(productos);
-
-
             }
         } else {
-            // Nueva fila dentro de tbody.
-
-            alert(typeof(id_producto));
-
-            $('#table').append(`<tr id="R${++rowIdx}" data-id_proveedor="${id_proveedor}" data-id_producto="${id_producto}" data-marca="${marca}" data-modelo="${modelo}" data-producto="${nombre_producto}" data-proveedor="${nombre_proveedor}" data-precio="${cantidad}">` +
-                    '<td data-th="Producto"><span class="bt-content">' + nombre_producto + '</span></td>' +
-                    '<td data-th="Marca"><span class="bt-content">' + marca + '</span></td>' +
-                    '<td data-th="Modelo"><span class="bt-content">' + modelo + '</span></td>' +
-                    '<td data-th="Proveedor"><span class="bt-content">' + nombre_proveedor + '</span></td>' +
-                    '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input class="col-9" style="padding-left:0px;" type="number" step="1" min="1" id="cant" name="cant" value="' + cantidad + '" ></div></span></td>' +
-                    '<td data-th="Acciones"><span class="bt-content text-center">' +
-                    '<button class="btn btn-danger remove"' +
-                    'type="button">Eliminar</button>' +
-                    '</td>' +
-                    '</tr>');
-               
-                /*INSERTA EN OBJETO Y AÑADE A ARREGLO*/
-                var producto = {
-                    "id_producto": id_producto,
-                    "precio": cantidad,
-                    "id_proveedor": id_proveedor
-                };
-                productos.push(producto);
-
-                console.log(productos);
+            $("#agregar_catalogo_form")[0].reportValidity();
         }
     }
-    
-     /*Actualizar fila al cambiar valor del input cantidad*/
+
+    /*Actualizar fila al cambiar valor del input cantidad*/
 
     $('#table').on('change', '#cant', function(index) {
         var valores = "";
@@ -511,7 +519,7 @@
                 '</td>';
             $(this).attr('data-precio', total);
             $(this).append(tr);
-           
+
             /*ACTUALIZAR ARREGLO*/
             productos = productos.map(function(objeto) {
                 return objeto.id_producto == id_producto && objeto.id_proveedor == id_proveedor ? {
@@ -524,7 +532,7 @@
         });
     });
 
-    
+
     /*------------------------------------------------------------------------------------------------------------------------------*/
 
     /*ELIMINAR UNA FILA DE LA TABLA*/
@@ -533,11 +541,14 @@
 
         $(this).parents("tr").each(function(index2) {
 
-            
+            console.log("PRODUCTOS ANTES");
+            console.log(productos);
             var id_producto = $(this).attr("data-id_producto");
             var id_proveedor = $(this).attr("data-id_proveedor");
-           
-            productos = productos.filter(objeto => (objeto.id_producto != id_producto && objeto.id_proveedorid_proveedor != id_proveedor));
+
+            productos = productos.filter(objeto => ((objeto.id_producto != id_producto && objeto.id_proveedor != id_proveedor)||(objeto.id_producto != id_producto && objeto.id_proveedor == id_proveedor)));
+            console.log("PRODUCTOS DEspues");
+            console.log(productos);
         });
 
         // Getting all the rows next to the row
@@ -572,27 +583,32 @@
     });
 
     //alert( $('#R1').attr("data-id_catalogo"));
-    
+
     function generar_pedido() {
-       
         console.log(productos);
+        if (productos.length > 0) {
+            alert("TODO ESTA BIEN");
+            var token = '{{csrf_token()}}';
+            var data = {
+                array_productos: productos,
+                _token: token
+            };
+            console.log(data);
+            $.ajax({
+                type: "POST",
+                url: "/agregar_producto_catalogo",
+                data: data,
+                success: function(msg) {
 
-        var token = '{{csrf_token()}}';
-        var data = {
-            array_productos: productos,
-            _token: token
-        };
-        console.log(data);
-        $.ajax({
-            type: "POST",
-            url: "/agregar_producto_catalogo",
-            data: data,
-            success: function(msg) {
+                    alert(msg);
+                    //location.href = "/mostrar_proveedores";
+                }
+            });
+        } else {
+            alert("No ha seleccionado proveedores y productos")
+        }
 
-                alert(msg);
-                //location.href = "/mostrar_proveedores";
-            }
-        });
+
     }
 
 </script>

@@ -97,6 +97,8 @@ Route::get('/agregar_venta','VentasController@mostrar_vista')->middleware('admin
 Route::post('/mostrar_productos_ventas','VentasController@mostrar_productos_ventas')->name('mostrar_productos_ventas');
 /*INSERTR VENTA*/
 Route::post('/insertar_venta', 'VentasController@insertar_venta')->name('insertar_venta');
+/*ELIMINAR VENTA*/
+Route::post('/eliminar_venta','VentasController@eliminar_venta')->name('eliminar_venta');
 
 /*PEDIDOS A PROVEEDORES*/
 /*Mostrar pedidos a proveedores*/
@@ -108,6 +110,9 @@ Route::get('/pedido_proveedor','PedidoController@mostrar_catalogo_proveedores')-
 Route::post('/mostrar_catalogo_sucursal','PedidoController@mostrar_catalogo_sucursal')->name('mostrar_catalogo_sucursal');
 /*Agregar un pedido en el proveedor*/
 Route::post('/insertar_pedido_proveedor','PedidoController@generar_pedido_proveedor')->name('insertar_pedido_proveedor');
+/*ELIMINAR CLIENTE*/
+Route::post('/eliminar_compra', 'PedidoController@eliminar_compra')->name('eliminar_compra');
+
 
 /*PEDIDOS A SUCURSALES*/
 /*MOSTRAR PEDIDOS A SUCURSALES*/
@@ -122,12 +127,13 @@ Route::post('/mostrar_productos_pedidos', 'PedidoController@obtener_productos_su
 Route::post('/insertar_pedido_sucursal','PedidoController@agregar_pedidos_sucursales')->name('insertar_pedido_sucursal');
 /*MANDAR HISTORIAL DEL PEDIDO*/
 Route::post('/obtener_historiales','PedidoController@obtener_historiales')->name('obtener_historiales');
-
 /*MOSTRAR PEDIDOS SOLICITADOS*/
 Route::get('/mostrar_pedido_solicitado','PedidoController@mostrar_pedidos_solicitados')->middleware('admin:1')
 ->name('mostrar_pedido_solicitado');
 /*ACTUALIZAR STATUS DEL PEDIDO*/
 Route::post('/actualizar_status_pedido','PedidoController@actualizar_status_pedido')->name('actualizar_status_pedido');
+/*ELIMINAR PEDIDO A SUCURSAL*/
+Route::post('/eliminar_pedido_sucursal','PedidoController@eliminar_pedido_sucursal')->name('eliminar_pedido_sucursal');
 
 /*Creditos a clientes*/
 /*Mostrar creditos a clientes*/

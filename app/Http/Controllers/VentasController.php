@@ -347,4 +347,10 @@ select inventario.id_producto as id_producto, productos_llantimax.nombre as nomb
         //return view('/documentos/historial_abonos', compact('abonos','detalles','id_venta','vendedor','sucursal','cliente','telefono','correo','total_venta','metodo_pago','fecha_venta','credito'));
         
     }
+    
+    function eliminar_venta(Request $input)
+    {
+        $id_venta = $input['id_venta'];
+        $query=DB::update("DELETE FROM venta where id_venta=?",[$id_venta]);
+    }
 }

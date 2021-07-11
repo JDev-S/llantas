@@ -46,25 +46,23 @@
             </div>
             <div class="modal-body">
                 <div class="ccard h-100 d-flex flex-column mx-2 px-2 py-3">
-
-
-
-                    <div class="form-group col-md-12">
-                        <label for="indice_velocidad">Status del pedido</label>
-                        <input type="hidden" class="form-control col-sm-8 col-md-10" id="update_id_pedido" name="update_id_pedido">
-                        <input type="hidden" id="update_sucursal" name="update_sucursal" >
-
-                        <select class="form-control col-sm-8 col-md-10" id="update_status"  name="update_status" class="form-control">
-                        </select>
-                    </div>
-
-                    <div class="form-row align-items-center col-md-12">
+                    <form id="actualizar_status_form">
                         <div class="form-group col-md-12">
-                            <label for="rin">Descripcion</label>
-                            <textarea class="form-control" id="update_descripcion" name="update_descripcion">
-                                    </textarea>
+                            <label for="indice_velocidad">Status del pedido</label>
+                            <input type="hidden" class="form-control col-sm-8 col-md-10" id="update_id_pedido" name="update_id_pedido">
+                            <input type="hidden" id="update_sucursal" name="update_sucursal">
+
+                            <select class="form-control col-sm-8 col-md-10" id="update_status" name="update_status" class="form-control" required>
+                            </select>
                         </div>
-                    </div>
+
+                        <div class="form-row align-items-center col-md-12">
+                            <div class="form-group col-md-12">
+                                <label for="rin">Descripcion</label>
+                                <textarea class="form-control" id="update_descripcion" name="update_descripcion" required></textarea>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
             <div class="modal-footer">
@@ -139,6 +137,44 @@
     </div>
 </div>
 <!--FIN MODAL DETALLE -->
+<!--MODAL ELIMINAR-->
+<div class="modal fade" data-backdrop-bg="bgc-white" id="eliminarModal" tabindex="-1" aria-labelledby="dangerModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content bgc-transparent brc-danger-m2 shadow">
+            <div class="modal-header py-2 bgc-danger-tp1 border-0  radius-t-1">
+                <h5 class="modal-title text-white-tp1 text-110 pl-2 font-bolder" id="dangerModalLabel">
+                    Advertencia!
+                </h5>
+
+                <button type="button" class="position-tr btn btn-xs btn-outline-white btn-h-yellow btn-a-yellow mt-1px mr-1px btn-brc-tp" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="text-150">×</span>
+                </button>
+            </div>
+
+
+            <div class="modal-body bgc-white-tp2 p-md-4 pl-md-5">
+                <div class="d-flex align-items-top mr-2 mr-md-5">
+                    <i class="fas fa-exclamation-triangle fa-2x text-orange-d2 float-rigt mr-4 mt-1"></i>
+                    <input type="hidden" class="form-control" id="delete_id" name="delete_id">
+                    <div class="text-secondary-d2 text-105">
+                        Esta seguro de que desea eliminarlo?
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer bgc-white-tp2 border-0">
+                <button type="button" class="btn px-4 btn-light-grey" data-dismiss="modal">
+                    No
+                </button>
+
+                <button type="button" class="btn px-4 btn-danger" id="id-danger-yes-btn" onclick="eliminar_producto()" data-dismiss="modal">
+                    Si
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--FIN MODAL ELIMINAR-->
 @section('scripts')
 <!-- include vendor scripts used in "Bootstrap Table" page. see "/views//pages/partials/table-bootstrap/@vendor-scripts.hbs" -->
 <script src="\npm\tableexport.jquery.plugin@1.10.22\tableExport.min.js"></script>
@@ -373,7 +409,6 @@
         })
 
         function formatTableCellActions(value, row, index, field) {
-            var eliminar = "'" + row.id_cliente + "'";
             return '<div class="action-buttons">' +
                 //<button class="text-blue mx-1" data-target="#modalLlanta_' + row.id_llanta + '" data-toggle="modal">' +
                 //  '<i class="fa fa-search-plus text-105"></i>' +
@@ -382,9 +417,9 @@
                 //<i class="fa fa-search-plus text-105"></i>\
                 //</a>'+
                 '<button class="text-blue mx-1" data-toggle="modal" data-target="#modalDetalle" data-id="' + row.id_pedido + '" ><i class="fa fa-search-plus text-105"></i></button>' +
-                '<a class="text-danger-m1 mx-1"  href="javascript:eliminar_cliente(' + eliminar + ')">' +
+                '<button type="button" class="text-danger mx-1 " data-id="' + row.id_pedido + '"  data-toggle="modal" data-target="#eliminarModal">' +
                 '<i class="fa fa-trash-alt text-105"></i>' +
-                '</a>' +
+                '</button>' +
                 '</div>'
         }
 
@@ -453,7 +488,7 @@
         /RECUPERAR METADATOS DEL BOTÓN/
         var button = $(event.relatedTarget)
         var id_pedido = button.data('id')
-        var id_sucursal=button.data('sucursal')
+        var id_sucursal = button.data('sucursal')
         var modal = $(this)
         modal.find('#update_id_pedido').val(id_pedido)
         modal.find('#update_sucursal').val(id_sucursal)
@@ -475,57 +510,92 @@
                 var aceptados = @json($aceptados);
                 var llenado = "";
                 console.log(datos.length);
-                
+
                 if (datos.length == 1) {
                     solicitados.forEach(objeto => {
-                            llenado += '<option value="'+objeto.id_status+'">'+objeto.status+' </option>';  
+                        llenado += '<option value="' + objeto.id_status + '">' + objeto.status + ' </option>';
                     });
                 } else {
-                    aceptados.forEach(objeto => { 
-                            llenado += '<option value="'+objeto.id_status+'">'+objeto.status+' </option>';  
+                    aceptados.forEach(objeto => {
+                        llenado += '<option value="' + objeto.id_status + '">' + objeto.status + ' </option>';
                     });
                 }
                 document.getElementById('update_status').innerHTML = llenado;
             }
         });
     });
+
 </script>
 
 <script type="text/javascript">
-function cambiar_status() {
-        var id_pedido = document.getElementById('update_id_pedido').value;
-        var id_status = document.getElementById("update_status").value;
-        var comentario = document.getElementById('update_descripcion').value;
-        var sucursal=document.getElementById('update_sucursal').value;
+    function cambiar_status() {
+        if ($("#actualizar_status_form")[0].checkValidity()) {
+            event.preventDefault();
+            var id_pedido = document.getElementById('update_id_pedido').value;
+            var id_status = document.getElementById("update_status").value;
+            var comentario = document.getElementById('update_descripcion').value;
+            var sucursal = document.getElementById('update_sucursal').value;
 
-        if(comentario.length==0)
-        {
-            comentario="Sin comentarios";        
+            console.log("Id: " + id_pedido + " Status:" + id_status + " Comentario:" + comentario + " sucursal:" + sucursal);
+
+            alert("Cambiando status del pedido");
+            var token = '{{csrf_token()}}';
+            var data = {
+                id_pedido: id_pedido,
+                id_status: id_status,
+                sucursal: sucursal,
+                comentario: comentario,
+                _token: token
+            };
+            console.log(data);
+            $.ajax({
+                type: "POST",
+                url: "/actualizar_status_pedido",
+                data: data,
+                success: function(msg) {
+
+                    alert(msg);
+                    location.href = "/mostrar_pedido_solicitado";
+                }
+            });
+        } else {
+
+            $("#actualizar_status_form")[0].reportValidity();
         }
-        
-         console.log("Id: "+id_pedido+" Status:"+id_status+" Comentario:"+comentario+ " sucursal:"+sucursal);
 
-        alert("Cambiando status del pedido");
-       var token = '{{csrf_token()}}';
+
+    }
+
+</script>
+<script type="text/javascript">
+    $('#eliminarModal').on('show.bs.modal', function(event) {
+        /*RECUPERAR METADATOS DEL BOTÓN*/
+        var button = $(event.relatedTarget)
+        var id_pedido = button.data('id')
+        var modal = $(this)
+        modal.find('#delete_id').val(id_pedido)
+    });
+
+</script>
+
+<script type="text/javascript">
+    function eliminar_producto() {
+        var id_pedido = document.getElementById("delete_id").value;
+        var token = '{{csrf_token()}}';
         var data = {
             id_pedido: id_pedido,
-            id_status: id_status,
-            sucursal:sucursal,
-            comentario: comentario,
             _token: token
         };
         console.log(data);
         $.ajax({
             type: "POST",
-            url: "/actualizar_status_pedido",
+            url: "/eliminar_pedido_sucursal",
             data: data,
             success: function(msg) {
-
                 alert(msg);
                 location.href = "/mostrar_pedido_solicitado";
             }
         });
-
     }
 
 </script>

@@ -404,5 +404,18 @@ class PedidoController extends Controller
         return $id_venta;
     }
     
+     public function eliminar_compra(Request $input)
+	{
+        $id_pedido = $input['id_pedido'];
+        $query=DB::update("DELETE FROM pedido_proveedor where id_pedido=?",[$id_pedido]);
+        
+    }
+    
+    public function eliminar_pedido_sucursal(Request $input)
+    {
+        $id_pedido = $input['id_pedido'];
+        $query=DB::update("DELETE FROM pedido where id_pedido=?",[$id_pedido]);
+        
+    }
    
 }

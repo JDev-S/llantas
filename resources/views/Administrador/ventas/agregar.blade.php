@@ -77,30 +77,32 @@
                 <div class="card-body p-0 table-responsive-xl mt-4 mb-4">
                     <div class="col-md-12 mt-2">
                         <div class="row mb-2">
-                            <div class="form-row col-md-12 justify-content-center">
-                                <div class="form-group col-md-2 ml-2 justify-content-center">
-                                    <select class="form-control selectpicker form-control" title="-- Sucursal --" data-size="5" data-header="Seleccione sucursal" data-style="btn-primary" onChange="javascript:mostrar_productos_sucursal()" id="sucursal" name="sucursal" data-container="body">
-                                        <?php
+                            <form id="agregar_ventas_form" class="form-row col-md-12 justify-content-center">
+                                <div class="form-row col-md-12 justify-content-center">
+                                    <div class="form-group col-md-2 ml-2 justify-content-center">
+                                        <select class="form-control selectpicker form-control" title="-- Sucursal --" data-size="5" data-header="Seleccione sucursal" data-style="btn-primary" onChange="javascript:mostrar_productos_sucursal()" id="sucursal" name="sucursal" data-container="body" required>
+                                            <?php
                                         $query2 = "select * from sucursal ";
                                         $data2=DB::select($query2);      
                                         ?>
-                                        @foreach($data2 as $item)
-                                        <option data-tokens="Sucursal" data-sucur="{{$item->sucursal}}" value="{{$item->id_sucursal}}">{{$item->sucursal}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-4 ml-2">
-                                    <select class="form-control selectpicker form-control" multiple data-max-options="1" data-live-search="true" title="-- Producto --" data-size="4" data-header="Selecciona una producto" data-style="btn-primary" id="productos" name="productos" data-container="body">
-                                        <optgroup label="los chidos">
+                                            @foreach($data2 as $item)
+                                            <option data-tokens="Sucursal" data-sucur="{{$item->sucursal}}" value="{{$item->id_sucursal}}">{{$item->sucursal}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4 ml-2">
+                                        <select class="form-control selectpicker form-control" multiple data-max-options="1" data-live-search="true" title="-- Producto --" data-size="4" data-header="Selecciona una producto" data-style="btn-primary" id="productos" name="productos" data-container="body" required>
+                                            <optgroup label="los chidos">
 
-                                        </optgroup>
+                                            </optgroup>
 
-                                    </select>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-1 ml-2">
+                                        <input class="form-control" min="1" max="9999" step="1" type="number" placeholder="Cantidad" style="border-color:#2470BD" id="cantidad" name="cantidad">
+                                    </div>
                                 </div>
-                                <div class="form-group col-md-1 ml-2">
-                                    <input class="form-control" min="1" max="9999" step="1" type="number" placeholder="Cantidad" style="border-color:#2470BD" id="cantidad" name="cantidad">
-                                </div>
-                            </div>
+                            </form>
                         </div>
                         <div class="row">
                             <div class="form-row col-md-12 justify-content-center">
@@ -170,7 +172,7 @@
                                                 </div>
                                                 <div class="row mt-2">
                                                     <div class="form-group col-7 col-lg-8 col-md-7 justify-content-center pl-2 mt-2 ml-2 mb-1">
-                                                        <select class="form-control selectpicker form-control" title="-- Cliente --" data-size="5" data-header="" data-style="btn-primary" onChange="javascript:mostrar_info()" id="cliente" name="cliente" data-container="body">
+                                                        <select class="form-control selectpicker form-control" title="-- Cliente --" data-size="5" data-header="" data-style="btn-primary" onChange="javascript:mostrar_info()" id="cliente" name="cliente" data-container="body" required>
                                                             <option data-divider="true"></option>
                                                             <?php
                                                                 $query2 = "select * from clientes";
@@ -271,17 +273,17 @@
                                                     <div>
                                                         <div autocomplete="off" class="p-2 p-sm-3 bgc-secondary-l4 radius-1 btn-group btn-group-toggle mx-n3 mx-sm-0" data-toggle="buttons">
                                                             <div role="button" class="mr-1 p-3 border-2 btn btn-brc-tp shadow-sm btn-light btn-text-blue btn-h-lighter-blue btn-a-light-blue bgc-white" title="Efectivo" onclick="limpiar()">
-                                                                <input type="radio" name="pago" id="pago" value="2">
+                                                                <input type="radio" name="pago" id="pago" value="2" required>
                                                                 <i class="far fa-money-bill-alt fa-4x text-150 text-blue-d1 w-4 mx-2"></i>
                                                             </div>
 
                                                             <div role="button" class="mr-1 p-3 border-2 btn btn-brc-tp shadow-sm btn-text-purple btn-light btn-h-lighter-purple btn-a-light-purple bgc-white" title="Tarjeta de crédito" onclick="limpiar()">
-                                                                <input type="radio" name="pago" id="pago" value="1">
+                                                                <input type="radio" name="pago" id="pago" value="1" required>
                                                                 <i class="far fa-credit-card d-block text-150 text-purple-d1 w-4 mx-2"></i>
                                                             </div>
 
                                                             <div role="button" class="p-3 border-2 btn btn-brc-tp shadow-sm btn-light btn-text-orange btn-h-lighter-orange btn-a-light-orange bgc-white" title="Llantimax crédito" onclick="mostrar_formulario_credito()">
-                                                                <input type="radio" name="pago" id="pago" value="3">
+                                                                <input type="radio" name="pago" id="pago" value="3" required>
                                                                 <i class="fas fa-clipboard-list text-150 text-orange-d3 w-4 mx-2"></i>
                                                             </div>
                                                         </div>
@@ -350,58 +352,59 @@
             </div>
             <div class="modal-body">
                 <div class="ccard h-100 d-flex flex-column mx-2 px-2 py-3">
-                    <div class="form-row col-md-12">
-                        <div class="form-group col-md-6">
-                            <label for="codigo_llanta">Nombre completo del cliente</label>
-                            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre completo del cliente">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="modelo">Telefono</label>
-                            <input type="text" class="form-control mb-2" id="telefono" name="telefono" placeholder="Telefono">
-                        </div>
-                    </div>
-
-                    <div class="form-row align-items-center col-md-12">
-                        <div class="form-group col-md-6">
-                            <label for="rin">Correo eléctronico</label>
-                            <input type="email" class="form-control" id="correo" name="correo" placeholder="Email">
+                    <form id="agregar_cliente_form">
+                        <div class="form-row col-md-12">
+                            <div class="form-group col-md-6">
+                                <label for="codigo_llanta">Nombre completo del cliente</label>
+                                <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre completo del cliente" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="modelo">Telefono</label>
+                                <input type="text" class="form-control mb-2" id="telefono" name="telefono" placeholder="Telefono" required>
+                            </div>
                         </div>
 
-                    </div>
+                        <div class="form-row align-items-center col-md-12">
+                            <div class="form-group col-md-6">
+                                <label for="rin">Correo eléctronico</label>
+                                <input type="email" class="form-control" id="correo" name="correo" placeholder="Email" required>
+                            </div>
 
-                    <div class="form-group col-md-12">
-                        <label for="indice_velocidad">Sucursal</label>
-                        <?php
+                        </div>
+
+                        <div class="form-group col-md-12">
+                            <label for="indice_velocidad">Sucursal</label>
+                            <?php
                             $query2 = "select * from sucursal ";
                             $data2=DB::select($query2);      
                         ?>
-                        <select id="sucursales" name="sucursales" class="form-control">
-                            @foreach($data2 as $item)
-                            <option value="{{ $item->id_sucursal }}"> {{ $item->sucursal }} </option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="form-row align-items-center col-md-12">
-                        <div class="form-group col-md-6">
-                            <label for="id-form-field-1" class="mb-0">
-                                Cliente habitual
-                            </label>
-
-                            <div class="radio-custom radio-default radio-inline">
-                                <label for="inputBasicMale">Sí</label>
-                                <input type="radio" id="habitual" name="habitual" value="1">
-
-                            </div>
-                            <div class="radio-custom radio-default radio-inline">
-                                <label for="inputBasicFemale">No</label>
-                                <input type="radio" id="habitual" name="habitual" value="0">
-
-                            </div>
+                            <select id="sucursal" name="sucursal" class="form-control" required>
+                                @foreach($data2 as $item)
+                                <option value="{{ $item->id_sucursal }}"> {{ $item->sucursal }} </option>
+                                @endforeach
+                            </select>
                         </div>
 
-                    </div>
+                        <div class="form-row align-items-center col-md-12">
+                            <div class="form-group col-md-6">
+                                <label for="id-form-field-1" class="mb-0">
+                                    Cliente habitual
+                                </label>
 
+                                <div class="radio-custom radio-default radio-inline">
+                                    <label for="inputBasicMale">Sí</label>
+                                    <input type="radio" id="habitual" name="habitual" value="1" required>
+
+                                </div>
+                                <div class="radio-custom radio-default radio-inline">
+                                    <label for="inputBasicFemale">No</label>
+                                    <input type="radio" id="habitual" name="habitual" value="0" required>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
                 </div>
             </div>
             <div class="modal-footer">
@@ -472,7 +475,7 @@
 
                 $("#responsive-table tbody tr").html("");
                 document.getElementById("cantidad").value = "";
-                 document.getElementById("total_extra").innerHTML = "";
+                document.getElementById("total_extra").innerHTML = "";
                 document.getElementById("subtotal").innerHTML = "";
                 document.getElementById("total_final").value = 0;
 
@@ -492,92 +495,137 @@
 
 
     function mostrar_tabla() {
-        /Value tiene el valor del producto/
-        /*OBTENER LOS VALORES DE LOS OTROS DATA */
-        // var datos=$('#productos option:selected').attr("data-value2");
-        var canti = document.getElementById("cantidad").value;
-        if (canti == "") {
-            document.getElementById("cantidad").value = "1";
-        }
-        var cantidad = document.getElementById("cantidad").value;
-        var sucursal = $('#sucursal').val();
-        var id_producto = $('#productos').val()[0];
-        var nombre_producto = $('#productos option:selected').attr("data-producto");
-        var categoria = $('#productos option:selected').attr("data-categoria");
-        var marca = $('#productos option:selected').attr("data-marca");
-        var modelo = $('#productos option:selected').attr("data-modelo");
-        var precio = $('#productos option:selected').attr("data-precio");
-        var foto = $('#productos option:selected').attr("data-foto");
-        var nombre_sucursal = $('#productos option:selected').attr("data-sucursal");
-        var id_sucursal = $('#productos option:selected').attr("data-suc");
-        var cantidad_suc = $('#productos option:selected').attr("data-cantidad");
-        var bandera = 0;
-        let pago = $('input[name="pago"]:checked').val();
-        alert("Imprimo valor de pago: " + pago + "tipo de pago " + typeof(pago));
 
-        /VERIFICAR SI LA TABLA TIENE FILAS/
-        if ($("#responsive-table tbody tr").length != 0) {
-            /EVALUAR SI ESXISTE EL PRODUCTO AGREGADO EN LA TABLA/
-            $("#responsive-table tbody tr").each(function(index_tr) {
-                if (bandera == 0) {
-                    var t_idsucursal = ($(this).attr("data-id_sucursal"));
-                    var t_idproducto = ($(this).attr("data-id_producto"));
-                    /SI EL PRODUCTO EXISTE, LO ACTUALIZA/
-                    if (id_sucursal == t_idsucursal && id_producto == t_idproducto) {
-                        //var t_cantidad = $(this).attr("data-cantidad");
-                        var t_cantidad = document.getElementById("cant").value;
-                        cantidad = parseInt(t_cantidad) + parseInt(cantidad);
-                        alert(t_cantidad);
-                        alert(cantidad);
-                        bandera = 1;
-                        $(this).attr('data-cantidad', cantidad);
-                        $(this).attr('data-total', parseInt(cantidad) * parseInt(precio));
-                        //$(this).dataset.cantidad = cantidad;
-                        $(this).html("");
-                        /LIMPIA EL CONTENIDO DE TR PARA EVITAR DUPLICADOS/
-                        var tr = '<td data-th="Producto"><span class="bt-content">' + nombre_producto + '</span></td>' +
-                            '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input  class="col-9" style="padding-left:0px;" step="1" min="1" type="number" id="cant" name="cant" value="' + cantidad + '" ></div></span></td>' +
-                            '<td data-th="Precio unitario"><span class="bt-content">' + precio + '</span></td>' +
-                            '<td data-th="Total"><span class="bt-content">' + parseInt(cantidad) * parseInt(precio) + '</span></td>' +
-                            '<td data-th="Acciones"><span class="bt-content text-center">' +
-                            '<button class="btn btn-danger remove"' +
-                            'type="button">Eliminar</button>' +
-                            '</td>';
-                        $(this).append(tr);
+        if ($("#agregar_ventas_form")[0].checkValidity()) {
+            event.preventDefault();
+            /Value tiene el valor del producto/
+            /*OBTENER LOS VALORES DE LOS OTROS DATA */
+            // var datos=$('#productos option:selected').attr("data-value2");
+            var canti = document.getElementById("cantidad").value;
+            if (canti == "") {
+                document.getElementById("cantidad").value = "1";
+            }
+            var cantidad = document.getElementById("cantidad").value;
+            var sucursal = $('#sucursal').val();
+            var id_producto = $('#productos').val()[0];
+            var nombre_producto = $('#productos option:selected').attr("data-producto");
+            var categoria = $('#productos option:selected').attr("data-categoria");
+            var marca = $('#productos option:selected').attr("data-marca");
+            var modelo = $('#productos option:selected').attr("data-modelo");
+            var precio = $('#productos option:selected').attr("data-precio");
+            var foto = $('#productos option:selected').attr("data-foto");
+            var nombre_sucursal = $('#productos option:selected').attr("data-sucursal");
+            var id_sucursal = $('#productos option:selected').attr("data-suc");
+            var cantidad_suc = $('#productos option:selected').attr("data-cantidad");
+            var bandera = 0;
+            let pago = $('input[name="pago"]:checked').val();
+            alert("Imprimo valor de pago: " + pago + "tipo de pago " + typeof(pago));
 
-                        var total = $('#total_final').val();
-                        var total_final = total - (parseInt(t_cantidad) * parseInt(precio));
-                        total_final = total_final + (parseInt(cantidad) * parseInt(precio));
-                        document.getElementById("total_final").value = total_final;
-                        /*ACTUALIZAR ARREGLO*/
-                        productos = productos.map(function(objeto) {
-                            return objeto.id_producto == id_producto && objeto.id_sucursal == id_sucursal ? {
-                                "id_producto": objeto.id_producto,
-                                "cantidad_producto": cantidad,
-                                "precio_unidad": objeto.precio_unidad,
-                                "total": parseInt(cantidad) * parseInt(objeto.precio_unidad),
-                                "id_sucursal": id_sucursal
-                            } : objeto;
-                        });
-                        console.log("ANTES DEL IF ");
-                        console.log(productos);
+            /VERIFICAR SI LA TABLA TIENE FILAS/
+            if ($("#responsive-table tbody tr").length != 0) {
+                /EVALUAR SI ESXISTE EL PRODUCTO AGREGADO EN LA TABLA/
+                $("#responsive-table tbody tr").each(function(index_tr) {
+                    if (bandera == 0) {
+                        var t_idsucursal = ($(this).attr("data-id_sucursal"));
+                        var t_idproducto = ($(this).attr("data-id_producto"));
+                        /SI EL PRODUCTO EXISTE, LO ACTUALIZA/
+                        if (id_sucursal == t_idsucursal && id_producto == t_idproducto) {
+                            //var t_cantidad = $(this).attr("data-cantidad");
+                            var t_cantidad = document.getElementById("cant").value;
+                            cantidad = parseInt(t_cantidad) + parseInt(cantidad);
+                            alert(t_cantidad);
+                            alert(cantidad);
+                            bandera = 1;
+                            $(this).attr('data-cantidad', cantidad);
+                            $(this).attr('data-total', parseInt(cantidad) * parseInt(precio));
+                            //$(this).dataset.cantidad = cantidad;
+                            $(this).html("");
+                            /LIMPIA EL CONTENIDO DE TR PARA EVITAR DUPLICADOS/
+                            var tr = '<td data-th="Producto"><span class="bt-content">' + nombre_producto + '</span></td>' +
+                                '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input  class="col-9" style="padding-left:0px;" step="1" min="1" type="number" id="cant" name="cant" value="' + cantidad + '" ></div></span></td>' +
+                                '<td data-th="Precio unitario"><span class="bt-content">' + precio + '</span></td>' +
+                                '<td data-th="Total"><span class="bt-content">' + parseInt(cantidad) * parseInt(precio) + '</span></td>' +
+                                '<td data-th="Acciones"><span class="bt-content text-center">' +
+                                '<button class="btn btn-danger remove"' +
+                                'type="button">Eliminar</button>' +
+                                '</td>';
+                            $(this).append(tr);
 
-                        if (pago == undefined || pago == "2" || pago == "1") {
-                            alert("no es llantimax");
+                            var total = $('#total_final').val();
+                            var total_final = total - (parseInt(t_cantidad) * parseInt(precio));
+                            total_final = total_final + (parseInt(cantidad) * parseInt(precio));
+                            document.getElementById("total_final").value = total_final;
+                            /*ACTUALIZAR ARREGLO*/
+                            productos = productos.map(function(objeto) {
+                                return objeto.id_producto == id_producto && objeto.id_sucursal == id_sucursal ? {
+                                    "id_producto": objeto.id_producto,
+                                    "cantidad_producto": cantidad,
+                                    "precio_unidad": objeto.precio_unidad,
+                                    "total": parseInt(cantidad) * parseInt(objeto.precio_unidad),
+                                    "id_sucursal": id_sucursal
+                                } : objeto;
+                            });
+                            console.log("ANTES DEL IF ");
+                            console.log(productos);
 
-                            limpiar();
-                        } else {
-                            alert("es llantimax");
+                            if (pago == undefined || pago == "2" || pago == "1") {
+                                alert("no es llantimax");
 
-                            mostrar_formulario_credito();
+                                limpiar();
+                            } else {
+                                alert("es llantimax");
+
+                                mostrar_formulario_credito();
+                            }
                         }
                     }
+                });
+                /SI NO EXISTE EL ELEMENTO, ENTONCES LO INSERTA/
+                if (bandera == 0) {
+                    alert("nueva fila");
+                    // Nueva fila dentro de tbody.
+                    $('#table').append(`<tr id="R${++rowIdx}" data-id_sucursal="${id_sucursal}" data-id_producto="${id_producto}" data-precio="${precio}" data-producto="${nombre_producto}"  data-total="${parseInt(cantidad) * parseInt(precio)}" data-cantidad="${cantidad}">` +
+                        '<td data-th="Producto"><span class="bt-content">' + nombre_producto + '</span></td>' +
+                        '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input class="col-9" style="padding-left:0px;" type="number" step="1" min="1" id="cant" name="cant" value="' + cantidad + '" ></div></span></td>' +
+                        '<td data-th="Precio unitario"><span class="bt-content">' + precio + '</span></td>' +
+                        '<td data-th="Total"><span class="bt-content">' + parseInt(cantidad) * parseInt(precio) + '</span></td>' +
+                        '<td data-th="Acciones"><span class="bt-content text-center">' +
+                        '<button class="btn btn-danger remove"' +
+                        'type="button">Eliminar</button>' +
+                        '</td>' +
+                        '</tr>');
+                    var total = $('#total_final').val();
+                    var total_final = parseInt(total) + (parseInt(cantidad) * parseInt(precio));
+                    document.getElementById("total_final").value = total_final;
+                    /INSERTA EN OBJETO Y AÑADE A ARREGLO/
+                    var producto = {
+                        "id_producto": id_producto,
+                        "cantidad_producto": cantidad,
+                        "precio_unidad": precio,
+                        "total": parseInt(cantidad) * parseInt(precio),
+                        "id_sucursal": id_sucursal
+                    };
+                    productos.push(producto);
+
+                    console.log(productos);
+
+                    if (pago == undefined || pago == "2" || pago == "1") {
+                        alert("no es llantimax");
+
+                        limpiar();
+                    } else {
+                        alert("es llantimax");
+
+                        mostrar_formulario_credito();
+                    }
+
+
                 }
-            });
-            /SI NO EXISTE EL ELEMENTO, ENTONCES LO INSERTA/
-            if (bandera == 0) {
-                alert("nueva fila");
+            } else {
                 // Nueva fila dentro de tbody.
+
+                alert(typeof(id_producto));
+
                 $('#table').append(`<tr id="R${++rowIdx}" data-id_sucursal="${id_sucursal}" data-id_producto="${id_producto}" data-precio="${precio}" data-producto="${nombre_producto}"  data-total="${parseInt(cantidad) * parseInt(precio)}" data-cantidad="${cantidad}">` +
                     '<td data-th="Producto"><span class="bt-content">' + nombre_producto + '</span></td>' +
                     '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input class="col-9" style="padding-left:0px;" type="number" step="1" min="1" id="cant" name="cant" value="' + cantidad + '" ></div></span></td>' +
@@ -612,48 +660,9 @@
 
                     mostrar_formulario_credito();
                 }
-
-
             }
         } else {
-            // Nueva fila dentro de tbody.
-
-            alert(typeof(id_producto));
-
-            $('#table').append(`<tr id="R${++rowIdx}" data-id_sucursal="${id_sucursal}" data-id_producto="${id_producto}" data-precio="${precio}" data-producto="${nombre_producto}"  data-total="${parseInt(cantidad) * parseInt(precio)}" data-cantidad="${cantidad}">` +
-                '<td data-th="Producto"><span class="bt-content">' + nombre_producto + '</span></td>' +
-                '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input class="col-9" style="padding-left:0px;" type="number" step="1" min="1" id="cant" name="cant" value="' + cantidad + '" ></div></span></td>' +
-                '<td data-th="Precio unitario"><span class="bt-content">' + precio + '</span></td>' +
-                '<td data-th="Total"><span class="bt-content">' + parseInt(cantidad) * parseInt(precio) + '</span></td>' +
-                '<td data-th="Acciones"><span class="bt-content text-center">' +
-                '<button class="btn btn-danger remove"' +
-                'type="button">Eliminar</button>' +
-                '</td>' +
-                '</tr>');
-            var total = $('#total_final').val();
-            var total_final = parseInt(total) + (parseInt(cantidad) * parseInt(precio));
-            document.getElementById("total_final").value = total_final;
-            /INSERTA EN OBJETO Y AÑADE A ARREGLO/
-            var producto = {
-                "id_producto": id_producto,
-                "cantidad_producto": cantidad,
-                "precio_unidad": precio,
-                "total": parseInt(cantidad) * parseInt(precio),
-                "id_sucursal": id_sucursal
-            };
-            productos.push(producto);
-
-            console.log(productos);
-
-            if (pago == undefined || pago == "2" || pago == "1") {
-                alert("no es llantimax");
-
-                limpiar();
-            } else {
-                alert("es llantimax");
-
-                mostrar_formulario_credito();
-            }
+            $("#agregar_ventas_form")[0].reportValidity();
         }
     }
 
@@ -789,118 +798,122 @@
     //alert( $('#R1').attr("data-id_catalogo"));
 
     function generar_pedido() {
-        var sucursal = $('#sucursal').val();
-        console.log("sucursal :" + sucursal);
-        console.log(productos);
-        let metodo_pago = $('input[name="pago"]:checked').val();
-        var id_cliente = $('#cliente').val();
-        var auto = document.getElementById('auto').value;
-        var total_venta = 0;
-        for (var t = 0; t < productos.length; t++) {
-            total_venta += parseInt(productos[t]['total']);
-        }
-
-
-        var factura = 0;
-        var checado = document.getElementById('check_factura').checked;
-        if (checado) {
-            factura = 1;
-        } else {
-            factura = 0;
-        }
-
-        console.log(total_venta);
-        console.log(metodo_pago);
-        console.log(factura);
-        console.log(id_cliente);
-
-
-
-        var comentario_credito = "";
-        var fecha_credito = "";
-
-        alert("Generando venta");
-        console.log(productos);
-
-        var memo = document.getElementsByName('factura');
-        for (i = 0; i < memo.length; i++) {
-            if (memo[i].checked) {
-                var memory = memo[i].value;
-                factura = memory;
+        if (productos.length > 0 ) {
+            var sucursal = $('#sucursal').val();
+            console.log("sucursal :" + sucursal);
+            console.log(productos);
+            let metodo_pago = $('input[name="pago"]:checked').val();
+            var id_cliente = $('#cliente').val();
+            var auto = document.getElementById('auto').value;
+            var total_venta = 0;
+            for (var t = 0; t < productos.length; t++) {
+                total_venta += parseInt(productos[t]['total']);
             }
 
-        }
-        if (metodo_pago == "3") {
-            fecha_credito = document.getElementById('fecha').value;
-            comentario_credito = document.getElementById('descripcion').value;
+
+            var factura = 0;
+            var checado = document.getElementById('check_factura').checked;
+            if (checado) {
+                factura = 1;
+            } else {
+                factura = 0;
+            }
+
+            console.log(total_venta);
+            console.log(metodo_pago);
+            console.log(factura);
+            console.log(id_cliente);
+
+
+
+            var comentario_credito = "";
+            var fecha_credito = "";
+
+            alert("Generando venta");
+            console.log(productos);
+
+            var memo = document.getElementsByName('factura');
+            for (i = 0; i < memo.length; i++) {
+                if (memo[i].checked) {
+                    var memory = memo[i].value;
+                    factura = memory;
+                }
+
+            }
+            if (metodo_pago == "3") {
+                fecha_credito = document.getElementById('fecha').value;
+                comentario_credito = document.getElementById('descripcion').value;
+            } else {
+                fecha_credito = "";
+                comentario_credito = "";
+            }
+
+
+            var token = '{{csrf_token()}}';
+            var data = {
+                id_cliente: id_cliente,
+                id_sucursal: sucursal,
+                id_metodo_pago: metodo_pago,
+                total_venta: total_venta,
+                factura: factura,
+                array_productos: productos,
+                fecha: fecha_credito,
+                descripcion: comentario_credito,
+                auto: auto,
+                _token: token
+            };
+            console.log(data);
+            $.ajax({
+                type: "POST",
+                url: "/insertar_venta",
+                data: data,
+                success: function(msg) {
+
+                    console.log(msg);
+                    location.href = "/mostrar_venta";
+                }
+            });
         } else {
-            fecha_credito = "";
-            comentario_credito = "";
+            alert("No agrego productos");
         }
-
-
-        var token = '{{csrf_token()}}';
-        var data = {
-            id_cliente: id_cliente,
-            id_sucursal: sucursal,
-            id_metodo_pago: metodo_pago,
-            total_venta: total_venta,
-            factura: factura,
-            array_productos: productos,
-            fecha: fecha_credito,
-            descripcion: comentario_credito,
-            auto: auto,
-            _token: token
-        };
-        console.log(data);
-         $.ajax({
-             type: "POST",
-             url: "/insertar_venta",
-             data: data,
-             success: function(msg) {
-
-                 console.log(msg);
-                 location.href = "/mostrar_venta";
-             }
-         });
     }
 
     function enviar_datos() {
-        var nombre = document.getElementById("nombre").value;
-        var sucursal = document.getElementById("sucursales").value;
-        var telefono = document.getElementById("telefono").value;
-        var correo = document.getElementById("correo").value;
-        //var habitual = document.getElementById("habitual").value;
+        if ($("#agregar_cliente_form")[0].checkValidity()) {
+            event.preventDefault();
+            var nombre = document.getElementById("nombre").value;
+            var sucursal = document.getElementById("sucursal").value;
+            var telefono = document.getElementById("telefono").value;
+            var correo = document.getElementById("correo").value;
+            //var habitual = document.getElementById("habitual").value;
 
-        let habitual = $('input[name="habitual"]:checked').val();
+            let habitual = $('input[name="habitual"]:checked').val();
 
-        document.getElementById("telefono_cliente").innerHTML = "";
-        document.getElementById("correo_cliente").innerHTML = "";
+            var token = '{{csrf_token()}}';
+            var data = {
+                nombre: nombre,
+                sucursal: sucursal,
+                telefono: telefono,
+                correo: correo,
+                habitual: habitual,
+                _token: token
+            };
 
-        var token = '{{csrf_token()}}';
-        var data = {
-            nombre: nombre,
-            sucursal: sucursal,
-            telefono: telefono,
-            correo: correo,
-            habitual: habitual,
-            _token: token
-        };
-        $.ajax({
-            type: "POST",
-            url: "/agregar_clientes",
-            data: data,
-            success: function(msg) {
-                var datos = JSON.parse(msg);
+            $.ajax({
+                type: "POST",
+                url: "/agregar_clientes",
+                data: data,
+                success: function(msg) {
+                    location.href = "/mostrar_clientes"
+                }
+            });
+        } else {
+            //SI HAY ERROR DE VALIDACIÓN, ENVÍA EL MENSAJE DE ERROR
+            $("#agregar_cliente_form")[0].reportValidity();
+        }
 
-                alert("CLiente registrado correctamente");
-                datos.forEach(objeto => {
-                    $('#cliente').append('<option  value="' + objeto.id_cliente + '"data-correo="' + objeto.correo_electronico + '" data-telefono="' + objeto.telefono + '">' + objeto.nombre_completo + '</option>');
-                    $("#cliente").selectpicker("refresh");
-                });
-            }
-        });
     }
+
 
     function mostrar_formulario_credito() {
 

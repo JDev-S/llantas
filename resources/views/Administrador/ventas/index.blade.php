@@ -263,6 +263,45 @@ echo'<div class="modal fade modal-lg" id="modalLlanta_'.$venta-> id_venta.'" tab
 }
 ?>
 <!--FIN MODAL DETALLE -->
+<!--MODAL ELIMINAR-->
+<div class="modal fade" data-backdrop-bg="bgc-white" id="eliminarModal" tabindex="-1" aria-labelledby="dangerModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content bgc-transparent brc-danger-m2 shadow">
+            <div class="modal-header py-2 bgc-danger-tp1 border-0  radius-t-1">
+                <h5 class="modal-title text-white-tp1 text-110 pl-2 font-bolder" id="dangerModalLabel">
+                    Advertencia!
+                </h5>
+
+                <button type="button" class="position-tr btn btn-xs btn-outline-white btn-h-yellow btn-a-yellow mt-1px mr-1px btn-brc-tp" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="text-150">×</span>
+                </button>
+            </div>
+
+
+            <div class="modal-body bgc-white-tp2 p-md-4 pl-md-5">
+                <div class="d-flex align-items-top mr-2 mr-md-5">
+                    <i class="fas fa-exclamation-triangle fa-2x text-orange-d2 float-rigt mr-4 mt-1"></i>
+                    <input type="hidden" class="form-control" id="delete_id" name="delete_id">
+                    <div class="text-secondary-d2 text-105">
+                        Esta seguro de que desea eliminarlo?
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer bgc-white-tp2 border-0">
+                <button type="button" class="btn px-4 btn-light-grey" data-dismiss="modal">
+                    No
+                </button>
+
+                <button type="button" class="btn px-4 btn-danger" id="id-danger-yes-btn" onclick="eliminar_producto()" data-dismiss="modal">
+                    Si
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--FIN MODAL ELIMINAR-->
+
 @section('scripts')
 
 <!-- include vendor scripts used in "Bootstrap Table" page. see "/views//pages/partials/table-bootstrap/@vendor-scripts.hbs" -->
@@ -450,6 +489,18 @@ echo'<div class="modal fade modal-lg" id="modalLlanta_'.$venta-> id_venta.'" tab
                 '</body>' +
                '</html>'
             },
+            formatFullscreen: function() {
+                return 'Pantalla completa'
+            },
+            formatExport: function() {
+                return 'Exportar datos'
+            },
+            formatPrint: function() {
+                return 'Imprimir'
+            },
+            formatColumns: function() {
+                return 'Columnas'
+            },
             formatSearch: function() {
                 return 'Buscar'
             },
@@ -466,7 +517,7 @@ echo'<div class="modal fade modal-lg" id="modalLlanta_'.$venta-> id_venta.'" tab
         })
 
         function formatTableCellActions(value, row, index, field) {
-            var eliminar = "'" + row.id_llanta + "'";
+           
             return '<div class="action-buttons">\
             <button class="text-blue mx-1" data-target="#modalLlanta_' + row.id_venta + '" data-toggle="modal">' +
                 '<i class="fa fa-search-plus text-105"></i>' +
@@ -474,9 +525,9 @@ echo'<div class="modal fade modal-lg" id="modalLlanta_'.$venta-> id_venta.'" tab
                 // '<a class="text-success mx-1" href="#">\
                 //<i class="fa fa-pencil-alt text-105"></i>\
                 //</a>'+
-                '<a class="text-danger-m1 mx-1"  href="javascript:eliminar_producto(' + eliminar + ')">' +
+                '<button type="button" class="text-danger mx-1 " data-id="' + row.id_venta + '"  data-toggle="modal" data-target="#eliminarModal">' +
                 '<i class="fa fa-trash-alt text-105"></i>' +
-                '</a>' +
+                '</button>' +
                 '</div>'
         }
         // enable/disable 'remove' button
@@ -502,28 +553,6 @@ echo'<div class="modal fade modal-lg" id="modalLlanta_'.$venta-> id_venta.'" tab
             $('.fixed-table-pagination .caret').addClass('fa fa-caret-down')
         })
     })
-
-</script>
-
-<script type="text/javascript">
-    function eliminar_producto(id_producto) {
-        var id_producto = id_producto;
-        var token = '{{csrf_token()}}';
-        var data = {
-            id_producto: id_producto,
-            _token: token
-        };
-        console.log(data);
-        $.ajax({
-            type: "POST",
-            url: "/eliminar_Llanta",
-            data: data,
-            success: function(msg) {
-                alert(msg);
-                location.href = "/mostrar_llantas";
-            }
-        });
-    }
 
 </script>
 
@@ -687,6 +716,37 @@ function mostrar_ticket( ticket)
   '_blank' // <- This is what makes it open in a new window.
 );    
 }
+</script>
+<script type="text/javascript">
+    $('#eliminarModal').on('show.bs.modal', function(event) {
+        /*RECUPERAR METADATOS DEL BOTÓN*/
+        var button = $(event.relatedTarget)
+        var id_venta = button.data('id')
+        var modal = $(this)
+        modal.find('#delete_id').val(id_venta)
+    });
+
+</script>
+
+<script type="text/javascript">
+    function eliminar_producto() {
+        var id_venta = document.getElementById("delete_id").value;
+        var token = '{{csrf_token()}}';
+        var data = {
+            id_venta: id_venta,
+            _token: token
+        };
+        console.log(data);
+        $.ajax({
+            type: "POST",
+            url: "/eliminar_venta",
+            data: data,
+            success: function(msg) {
+                alert(msg);
+                location.href = "/mostrar_venta";
+            }
+        });
+    }
 </script>
 @stop
 @stop
