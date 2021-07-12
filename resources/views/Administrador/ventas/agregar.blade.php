@@ -798,13 +798,20 @@
     //alert( $('#R1').attr("data-id_catalogo"));
 
     function generar_pedido() {
-        if (productos.length > 0 ) {
+        let metodo_pago = $('input[name="pago"]:checked').val();
+         var id_cliente = $('#cliente').val();
+        var auto = document.getElementById('auto').value;
+        console.log(metodo_pago);
+        console.log(id_cliente);
+        console.log(auto);
+        
+        if (productos.length > 0 && metodo_pago!= undefined && auto!="" && id_cliente!="" ) {
             var sucursal = $('#sucursal').val();
             console.log("sucursal :" + sucursal);
             console.log(productos);
-            let metodo_pago = $('input[name="pago"]:checked').val();
-            var id_cliente = $('#cliente').val();
-            var auto = document.getElementById('auto').value;
+            //let metodo_pago = $('input[name="pago"]:checked').val();
+            //var id_cliente = $('#cliente').val();
+            //var auto = document.getElementById('auto').value;
             var total_venta = 0;
             for (var t = 0; t < productos.length; t++) {
                 total_venta += parseInt(productos[t]['total']);
@@ -829,7 +836,7 @@
             var comentario_credito = "";
             var fecha_credito = "";
 
-            alert("Generando venta");
+           
             console.log(productos);
 
             var memo = document.getElementsByName('factura');
@@ -843,12 +850,18 @@
             if (metodo_pago == "3") {
                 fecha_credito = document.getElementById('fecha').value;
                 comentario_credito = document.getElementById('descripcion').value;
+                if(fecha_credito=="" || comentario_credito=="")
+                    {
+                        alert("porfavor llene los datos");
+                        return 0;
+                    }
+                
             } else {
                 fecha_credito = "";
                 comentario_credito = "";
             }
 
-
+             alert("Generando venta");
             var token = '{{csrf_token()}}';
             var data = {
                 id_cliente: id_cliente,

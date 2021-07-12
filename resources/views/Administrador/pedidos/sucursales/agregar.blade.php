@@ -77,35 +77,37 @@
                 <div class="card-body p-0 table-responsive-xl mt-4 mb-4">
                     <div class="col-md-12 mt-2">
                         <div class="row mb-2">
-                            <div class="form-row col-md-12 justify-content-center">
-                                <div class="form-group col-md-2 ml-2 justify-content-center">
-                                    <select class="form-control selectpicker form-control" title="-- Sucursal destino --" data-size="5" data-header="Seleccione sucursal" data-style="btn-primary"  id="destino_sucursal" name="destino_sucursal" data-container="body">
-                                        <option data-divider="true"></option>
-                                        @foreach($sucursales as $sucursal)
-                                        <option data-tokens="{{$sucursal->id_sucursal}}" value="{{$sucursal->id_sucursal}}">{{$sucursal->sucursal}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-2 ml-2 justify-content-center">
-                                    <select class="form-control selectpicker form-control" title="-- Sucursal origen--" data-size="5" data-header="Seleccione sucursal" data-style="btn-primary" onChange="javascript:mostrar_productos_sucursal()" id="sucursal" name="sucursal" data-container="body">
-                                        <option data-divider="true"></option>
-                                        @foreach($sucursales as $sucursal)
-                                        <option data-tokens="{{$sucursal->id_sucursal}}" value="{{$sucursal->id_sucursal}}">{{$sucursal->sucursal}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-4 ml-2">
-                                    <select class="form-control selectpicker " multiple data-max-options="1" data-live-search="true" title="-- Producto --" data-size="4" data-header="Selecciona una producto" data-style="btn-primary" id="productos" name="productos" data-container="body">
-                                        <optgroup label="los chidos">
+                            <form id="agregar_pedido_form" class="form-row col-md-12 justify-content-center">
+                                <div class="form-row col-md-12 justify-content-center">
+                                    <div class="form-group col-md-2 ml-2 justify-content-center">
+                                        <select class="form-control selectpicker form-control" title="-- Sucursal destino --" data-size="5" data-header="Seleccione sucursal" data-style="btn-primary" id="destino_sucursal" name="destino_sucursal" data-container="body" required>
                                             <option data-divider="true"></option>
+                                            @foreach($sucursales as $sucursal)
+                                            <option data-tokens="{{$sucursal->id_sucursal}}" value="{{$sucursal->id_sucursal}}">{{$sucursal->sucursal}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-2 ml-2 justify-content-center">
+                                        <select class="form-control selectpicker form-control" title="-- Sucursal origen--" data-size="5" data-header="Seleccione sucursal" data-style="btn-primary" onChange="javascript:mostrar_productos_sucursal()" id="sucursal" name="sucursal" data-container="body" required>
+                                            <option data-divider="true"></option>
+                                            @foreach($sucursales as $sucursal)
+                                            <option data-tokens="{{$sucursal->id_sucursal}}" value="{{$sucursal->id_sucursal}}">{{$sucursal->sucursal}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4 ml-2">
+                                        <select class="form-control selectpicker " multiple data-max-options="1" data-live-search="true" title="-- Producto --" data-size="4" data-header="Selecciona una producto" data-style="btn-primary" id="productos" name="productos" data-container="body" required>
+                                            <optgroup label="los chidos">
+                                                <option data-divider="true"></option>
 
-                                        </optgroup>
-                                    </select>
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-1 ml-2">
+                                        <input class="form-control" min="1" max="9999" step="1" type="number" placeholder="Cantidad" style="border-color:#2470BD" id="cantidad" name="cantidad">
+                                    </div>
                                 </div>
-                                <div class="form-group col-md-1 ml-2">
-                                    <input class="form-control" min="1" max="9999" step="1" type="number" placeholder="Cantidad" style="border-color:#2470BD" id="cantidad" name="cantidad">
-                                </div>
-                            </div>
+                            </form>
                         </div>
                         <div class="row">
                             <div class="form-row col-md-12 justify-content-center">
@@ -193,123 +195,156 @@
 
     function mostrar_productos_sucursal() {
         var sucursal = $('#sucursal').val();
-        var sucursal_destino=$('#destino_sucursal').val();
+        var sucursal_destino = $('#destino_sucursal').val();
         //alert(sucursal);
-        
-        if(sucursal==sucursal_destino)
-        {
+
+        if (sucursal == sucursal_destino) {
             alert("Porfavor elegir otra sucursal origen");
-        }
-        else{
-             var token = '{{csrf_token()}}';
-        var data = {
-            sucursal: sucursal,
-            _token: token
-        };
-        $.ajax({
-            type: "POST",
-            url: "/mostrar_productos_pedidos",
-            data: data,
-            success: function(msg) {
-                console.log(msg);
-                var llenado = '';
-                var datos = JSON.parse(msg);
+        } else {
+            var token = '{{csrf_token()}}';
+            var data = {
+                sucursal: sucursal,
+                _token: token
+            };
+            $.ajax({
+                type: "POST",
+                url: "/mostrar_productos_pedidos",
+                data: data,
+                success: function(msg) {
+                    console.log(msg);
+                    var llenado = '';
+                    var datos = JSON.parse(msg);
 
-                $('#productos').selectpicker('selectAll');
-                var selected = [];
-                selected = $('#productos').val()
-                //alert(selected.length);
+                    $('#productos').selectpicker('selectAll');
+                    var selected = [];
+                    selected = $('#productos').val()
+                    //alert(selected.length);
 
-                for (i = 0; i < selected.length; i++) {
-                    $('#productos').find('[value=' + selected[i] + ']').remove();
-                    $('#productos').selectpicker('refresh');
-                }
-
-                $("#responsive-table tbody tr").html("");
-                document.getElementById("cantidad").value = "";
-                document.getElementById("total_final").value = 0;
-                productos = new Array();
-
-                datos.forEach(objeto => {
-                    if (objeto.cantidad > 0) {
-                        $('#productos').append('<option data-thumbnail="assets/image/user.JPG' + objeto.foto + '"  value="' + objeto.id_producto + '"data-producto="' + objeto.nombre_producto + '" data-cantidad="' + objeto.cantidad + '" data-categoria="' + objeto.categoria + '" data-marca="' + objeto.marca + '" data-modelo="' + objeto.modelo + '" data-subtext="Categoria: '+objeto.categoria+ '; Marca: ' + objeto.marca + '; Modelo: ' + objeto.modelo + '; Sucursal: ' + objeto.sucursal + '; Cantidad: ' + objeto.cantidad + '" showSubtext="true" data-precio="' + objeto.precio + '" data-foto="' + objeto.foto + '" data-sucursal="' + objeto.sucursal + '" data-suc="' + objeto.id_sucursal + '">' + objeto.nombre_producto + '</option>');
-                        $("#productos").selectpicker("refresh");
+                    for (i = 0; i < selected.length; i++) {
+                        $('#productos').find('[value=' + selected[i] + ']').remove();
+                        $('#productos').selectpicker('refresh');
                     }
 
-                });
-            }
-        });
+                    $("#responsive-table tbody tr").html("");
+                    document.getElementById("cantidad").value = "";
+                    document.getElementById("total_final").value = 0;
+                    productos = new Array();
+
+                    datos.forEach(objeto => {
+                        if (objeto.cantidad > 0) {
+                            $('#productos').append('<option data-thumbnail="assets/image/user.JPG' + objeto.foto + '"  value="' + objeto.id_producto + '"data-producto="' + objeto.nombre_producto + '" data-cantidad="' + objeto.cantidad + '" data-categoria="' + objeto.categoria + '" data-marca="' + objeto.marca + '" data-modelo="' + objeto.modelo + '" data-subtext="Categoria: ' + objeto.categoria + '; Marca: ' + objeto.marca + '; Modelo: ' + objeto.modelo + '; Sucursal: ' + objeto.sucursal + '; Cantidad: ' + objeto.cantidad + '" showSubtext="true" data-precio="' + objeto.precio + '" data-foto="' + objeto.foto + '" data-sucursal="' + objeto.sucursal + '" data-suc="' + objeto.id_sucursal + '">' + objeto.nombre_producto + '</option>');
+                            $("#productos").selectpicker("refresh");
+                        }
+
+                    });
+                }
+            });
         }
 
-       
+
     }
 
 
     function mostrar_tabla() {
+        if ($("#agregar_pedido_form")[0].checkValidity()) {
+            event.preventDefault();
+            /*Value tiene el valor del producto*/
+            /*OBTENER LOS VALORES DE LOS OTROS DATA */
+            // var datos=$('#productos option:selected').attr("data-value2");
+            var canti = document.getElementById("cantidad").value;
+            if (canti == "") {
+                document.getElementById("cantidad").value = "1";
+            }
+            var cantidad = document.getElementById("cantidad").value;
+            var sucursal = $('#sucursal').val();
+            var id_producto = $('#productos').val()[0];
+            var nombre_producto = $('#productos option:selected').attr("data-producto");
+            var categoria = $('#productos option:selected').attr("data-categoria");
+            var marca = $('#productos option:selected').attr("data-marca");
+            var modelo = $('#productos option:selected').attr("data-modelo");
+            var precio = $('#productos option:selected').attr("data-precio");
+            var foto = $('#productos option:selected').attr("data-foto");
+            var nombre_sucursal = $('#productos option:selected').attr("data-sucursal");
+            var id_sucursal = $('#productos option:selected').attr("data-suc");
+            var cantidad_suc = $('#productos option:selected').attr("data-cantidad");
+            var bandera = 0;
 
-        /*Value tiene el valor del producto*/
-        /*OBTENER LOS VALORES DE LOS OTROS DATA */
-        // var datos=$('#productos option:selected').attr("data-value2");
-        var cantidad = document.getElementById("cantidad").value;
-        var sucursal = $('#sucursal').val();
-        var id_producto = $('#productos').val()[0];
-        var nombre_producto = $('#productos option:selected').attr("data-producto");
-        var categoria = $('#productos option:selected').attr("data-categoria");
-        var marca = $('#productos option:selected').attr("data-marca");
-        var modelo = $('#productos option:selected').attr("data-modelo");
-        var precio = $('#productos option:selected').attr("data-precio");
-        var foto = $('#productos option:selected').attr("data-foto");
-        var nombre_sucursal = $('#productos option:selected').attr("data-sucursal");
-        var id_sucursal = $('#productos option:selected').attr("data-suc");
-        var cantidad_suc = $('#productos option:selected').attr("data-cantidad");
-        var bandera = 0;
+            /VERIFICAR SI LA TABLA TIENE FILAS/
+            if ($("#responsive-table tbody tr").length != 0) {
+                /EVALUAR SI ESXISTE EL PRODUCTO AGREGADO EN LA TABLA/
+                $("#responsive-table tbody tr").each(function(index_tr) {
+                    if (bandera == 0) {
+                        var t_idsucursal = ($(this).attr("data-id_sucursal"));
+                        var t_idproducto = ($(this).attr("data-id_producto"));
+                        /*SI EL PRODUCTO EXISTE, LO ACTUALIZA*/
+                        if (id_sucursal == t_idsucursal && id_producto == t_idproducto) {
+                            //var t_cantidad = $(this).attr("data-cantidad");
+                            var t_cantidad = document.getElementById("cant").value;
+                            cantidad = parseInt(t_cantidad) + parseInt(cantidad);
+                            alert(t_cantidad);
+                            bandera = 1;
+                            $(this).attr('data-cantidad', cantidad);
+                            $(this).html(""); /*LIMPIA EL CONTENIDO DE TR PARA EVITAR DUPLICADOS*/
+                            var tr = '<td data-th="Producto"><span class="bt-content">' + nombre_producto + '</span></td>' +
+                                '<td data-th="Marca"><span class="bt-content">' + marca + '</span></td>' +
+                                '<td data-th="Modelo"><span class="bt-content">' + modelo + '</span></td>' +
+                                '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input  class="col-9" style="padding-left:0px;" step="1" min="1" type="number" id="cant" name="cant" value="' + cantidad + '" ></div></span></td>' +
+                                '<td data-th="Acciones"><span class="bt-content text-center">' +
+                                '<button class="btn btn-danger remove"' +
+                                'type="button">Eliminar</button>' +
+                                '</td>';
+                            $(this).append(tr);
+                            var total = $('#total_final').val();
+                            var total_final = total - parseInt(t_cantidad);
+                            total_final = total_final + parseInt(cantidad);
+                            document.getElementById("total_final").value = total_final;
 
-        /VERIFICAR SI LA TABLA TIENE FILAS/
-        if ($("#responsive-table tbody tr").length != 0) {
-            /EVALUAR SI ESXISTE EL PRODUCTO AGREGADO EN LA TABLA/
-            $("#responsive-table tbody tr").each(function(index_tr) {
-                if (bandera == 0) {
-                    var t_idsucursal = ($(this).attr("data-id_sucursal"));
-                    var t_idproducto = ($(this).attr("data-id_producto"));
-                    /*SI EL PRODUCTO EXISTE, LO ACTUALIZA*/
-                    if (id_sucursal == t_idsucursal && id_producto == t_idproducto) {
-                        //var t_cantidad = $(this).attr("data-cantidad");
-                        var t_cantidad = document.getElementById("cant").value;
-                        cantidad = parseInt(t_cantidad) + parseInt(cantidad);
-                        alert(t_cantidad);
-                        bandera = 1;
-                        $(this).attr('data-cantidad', cantidad);
-                        $(this).html(""); /*LIMPIA EL CONTENIDO DE TR PARA EVITAR DUPLICADOS*/
-                        var tr = '<td data-th="Producto"><span class="bt-content">' + nombre_producto + '</span></td>' +
-                            '<td data-th="Marca"><span class="bt-content">' + marca + '</span></td>' +
-                            '<td data-th="Modelo"><span class="bt-content">' + modelo + '</span></td>' +
-                            '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input  class="col-9" style="padding-left:0px;" step="1" min="1" type="number" id="cant" name="cant" value="' + cantidad + '" ></div></span></td>' +
-                            '<td data-th="Acciones"><span class="bt-content text-center">' +
-                            '<button class="btn btn-danger remove"' +
-                            'type="button">Eliminar</button>' +
-                            '</td>';
-                        $(this).append(tr);
-                        var total = $('#total_final').val();
-                        var total_final = total - parseInt(t_cantidad);
-                        total_final = total_final + parseInt(cantidad);
-                        document.getElementById("total_final").value = total_final;
+                            /*ACTUALIZAR ARREGLO*/
+                            productos = productos.map(function(objeto) {
+                                return objeto.id_producto == id_producto && objeto.id_sucursal == id_sucursal ? {
+                                    "id_producto": objeto.id_producto,
+                                    "cantidad_producto": cantidad,
+                                    "id_sucursal": id_sucursal
+                                } : objeto;
+                            });
 
-                        /*ACTUALIZAR ARREGLO*/
-                        productos = productos.map(function(objeto) {
-                            return objeto.id_producto == id_producto && objeto.id_sucursal == id_sucursal ? {
-                                "id_producto": objeto.id_producto,
-                                "cantidad_producto": cantidad,
-                                "id_sucursal": id_sucursal
-                            } : objeto;
-                        });
-
+                        }
                     }
+                });
+                /*SI NO EXISTE EL ELEMENTO, ENTONCES LO INSERTA*/
+                if (bandera == 0) {
+                    alert("nueva fila");
+                    // Nueva fila dentro de tbody.
+                    $('#table').append(`<tr id="R${++rowIdx}" data-id_sucursal="${id_sucursal}" data-id_producto="${id_producto}" data-marca="${marca}" data-modelo="${modelo}" data-cantidad="${cantidad}">` +
+                        '<td data-th="Producto"><span class="bt-content">' + nombre_producto + '</span></td>' +
+                        '<td data-th="Marca"><span class="bt-content">' + marca + '</span></td>' +
+                        '<td data-th="Modelo"><span class="bt-content">' + modelo + '</span></td>' +
+                        '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input class="col-9" style="padding-left:0px;" type="number" step="1" min="1" id="cant" name="cant" value="' + cantidad + '" ></div></span></td>' +
+                        '<td data-th="Acciones"><span class="bt-content text-center">' +
+                        '<button class="btn btn-danger remove"' +
+                        'type="button">Eliminar</button>' +
+                        '</td>' +
+                        '</tr>');
+                    var total = $('#total_final').val();
+                    var total_final = parseInt(total) + parseInt(cantidad);
+                    document.getElementById("total_final").value = total_final;
+                    /*INSERTA EN OBJETO Y AÑADE A ARREGLO*/
+                    var producto = {
+                        "id_producto": id_producto,
+                        "cantidad_producto": cantidad,
+                        "id_sucursal": id_sucursal
+                    };
+                    productos.push(producto);
+
+                    console.log(productos);
+
+
                 }
-            });
-            /*SI NO EXISTE EL ELEMENTO, ENTONCES LO INSERTA*/
-            if (bandera == 0) {
-                alert("nueva fila");
+            } else {
                 // Nueva fila dentro de tbody.
+
+                alert(typeof(id_producto));
+
                 $('#table').append(`<tr id="R${++rowIdx}" data-id_sucursal="${id_sucursal}" data-id_producto="${id_producto}" data-marca="${marca}" data-modelo="${modelo}" data-cantidad="${cantidad}">` +
                     '<td data-th="Producto"><span class="bt-content">' + nombre_producto + '</span></td>' +
                     '<td data-th="Marca"><span class="bt-content">' + marca + '</span></td>' +
@@ -333,37 +368,12 @@
 
                 console.log(productos);
 
-
             }
         } else {
-            // Nueva fila dentro de tbody.
-
-            alert(typeof(id_producto));
-
-            $('#table').append(`<tr id="R${++rowIdx}" data-id_sucursal="${id_sucursal}" data-id_producto="${id_producto}" data-marca="${marca}" data-modelo="${modelo}" data-cantidad="${cantidad}">` +
-                '<td data-th="Producto"><span class="bt-content">' + nombre_producto + '</span></td>' +
-                '<td data-th="Marca"><span class="bt-content">' + marca + '</span></td>' +
-                '<td data-th="Modelo"><span class="bt-content">' + modelo + '</span></td>' +
-                '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input class="col-9" style="padding-left:0px;" type="number" step="1" min="1" id="cant" name="cant" value="' + cantidad + '" ></div></span></td>' +
-                '<td data-th="Acciones"><span class="bt-content text-center">' +
-                '<button class="btn btn-danger remove"' +
-                'type="button">Eliminar</button>' +
-                '</td>' +
-                '</tr>');
-            var total = $('#total_final').val();
-            var total_final = parseInt(total) + parseInt(cantidad);
-            document.getElementById("total_final").value = total_final;
-            /*INSERTA EN OBJETO Y AÑADE A ARREGLO*/
-            var producto = {
-                "id_producto": id_producto,
-                "cantidad_producto": cantidad,
-                "id_sucursal": id_sucursal
-            };
-            productos.push(producto);
-
-            console.log(productos);
-
+            //SI HAY ERROR DE VALIDACIÓN, ENVÍA EL MENSAJE DE ERROR
+            $("#agregar_pedido_form")[0].reportValidity();
         }
+
     }
 
     /*Actualizar fila al cambiar valor del input cantidad*/
@@ -425,7 +435,11 @@
             var total2 = $('#total_final').val();
             var total_final = parseInt(total2) - parseInt(cantidad_anterior);
             document.getElementById("total_final").value = total_final;
-            productos = productos.filter(objeto => (objeto.id_producto != id_producto && objeto.id_sucursal != id_sucursal));
+            console.log("Productos antes");
+            console.log(productos);
+            productos = productos.filter(objeto => (objeto.id_producto != id_producto && objeto.id_sucursal == id_sucursal));
+            console.log("Productos despues");
+            console.log(productos);
         });
 
         // Getting all the rows next to the row
@@ -462,30 +476,34 @@
     //alert( $('#R1').attr("data-id_catalogo"));
 
     function generar_pedido() {
-        var sucursal = $('#sucursal').val();
-        var sucursal_destino=$('#destino_sucursal').val();
-        console.log("sucursal :" + sucursal);
-        console.log(productos);
+        if (productos.length > 0) {
+            var sucursal = $('#sucursal').val();
+            var sucursal_destino = $('#destino_sucursal').val();
+            console.log("sucursal :" + sucursal);
+            console.log(productos);
 
-        var token = '{{csrf_token()}}';
-        var data = {
-            array_productos: productos,
-            descripcion: "Favor de confirmar el pedido, es urgente",
-            id_sucursal: sucursal,
-            sucursal_destino:sucursal_destino,
-            _token: token
-        };
-        console.log(data);
-        $.ajax({
-            type: "POST",
-            url: "/insertar_pedido_sucursal",
-            data: data,
-            success: function(msg) {
+            var token = '{{csrf_token()}}';
+            var data = {
+                array_productos: productos,
+                descripcion: "Favor de confirmar el pedido, es urgente",
+                id_sucursal: sucursal,
+                sucursal_destino: sucursal_destino,
+                _token: token
+            };
+            console.log(data);
+            $.ajax({
+                type: "POST",
+                url: "/insertar_pedido_sucursal",
+                data: data,
+                success: function(msg) {
 
-                alert(msg);
-                location.href = "/mostrar_pedido_sucursal";
-            }
-        });
+                    alert(msg);
+                    location.href = "/mostrar_pedido_sucursal";
+                }
+            });
+        } else {
+                alert("No ha seleccionado productos");
+        }
     }
 
 </script>

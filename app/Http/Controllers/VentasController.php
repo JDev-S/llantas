@@ -163,7 +163,7 @@ select inventario.id_producto as id_producto, productos_llantimax.nombre as nomb
     
      function generar_folio_credito()
     {
-        $id_credito = $id_usuario."".$id_usuario."".$id_venta."".VentasController::generar_cadena_aleatoria_credito();
+        $id_credito = VentasController::generar_cadena_aleatoria_credito();
         
         return $id_credito;
     }
