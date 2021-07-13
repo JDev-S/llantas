@@ -35,9 +35,8 @@ select inventario.id_producto as id_producto, productos_llantimax.nombre as nomb
     
     public function mostrar_vista()
     {
-        $fecha_venta= VentasController::obtener_fecha_actual();
-        
-        return view('/Administrador/ventas/agregar');
+        $clientes=DB::select("select clientes.id_cliente,clientes.nombre_completo,clientes.telefono,clientes.correo_electronico,clientes.id_sucursal,sucursal.sucursal from clientes inner join sucursal on sucursal.id_sucursal=clientes.id_sucursal");
+        return view('/Administrador/ventas/agregar',compact('clientes'));
     }
     
     
@@ -49,23 +48,18 @@ select inventario.id_producto as id_producto, productos_llantimax.nombre as nomb
         $id_sucursal_usuario = session('id_sucursal_usuario');//session
         $id_sucursal =$input['id_sucursal'];
        
-        $id_cliente = $input ['id_cliente'];
+        $id_cliente = $input['id_cliente'][0];
         $id_metodo_pago = $input ['id_metodo_pago'];
         $total_venta = $input ['total_venta'];
         $factura = $input['factura'];
         $array_productos=$input['array_productos'];
         $comentario_credito=$input['descripcion'];
         $fecha_ultimo_dia=$input['fecha'];
-       $auto=$input['auto'];
-     
-        //$array_lista_productos = VentasController::array_productos($array_productos);
-       
-       //foreach($array_productos as $producto){
-           
-         //  echo $producto['id_producto'];
-           //var_dump ($producto);
-    //   }
+        $auto=$input['auto'];
+        
         $id_sucursal_cliente = VentasController::obtener_sucursal_cliente($id_cliente);
+        
+        
                 
         /*DATOS DE LOS PRODUCTOS*/
         /*$array_productos = array(
@@ -227,8 +221,9 @@ select inventario.id_producto as id_producto, productos_llantimax.nombre as nomb
     
     function obtener_sucursal_cliente($id_cliente)
     {
-        $consulta = DB::select('SELECT * FROM clientes where clientes.id_cliente='.$id_cliente);    
-        return $id_sucursal_cliente = $consulta[0]->id_sucursal;
+        
+        $query = DB::select('SELECT * FROM clientes where clientes.id_cliente='.$id_cliente);    
+        return $id_sucursal_cliente = $query[0]->id_sucursal;
     }
     
     public function mostrar_ventas_realizadas()
@@ -352,5 +347,55 @@ select inventario.id_producto as id_producto, productos_llantimax.nombre as nomb
     {
         $id_venta = $input['id_venta'];
         $query=DB::update("DELETE FROM venta where id_venta=?",[$id_venta]);
+    }
+    
+    function imprimir_venta($input)
+    {
+        $datos=(json_decode($input));
+       foreach ($datos as $dato)
+       {
+           /* echo $id_metodo_pago = $dato->id_metodo_pago;
+            echo "<br>";
+            echo( $id_cliente = $dato->id_cliente[0]);
+           echo "<br>";
+            echo $nombre_cliente=$dato->nombre_cliente;
+           echo "<br>";
+            echo $sucursal_cliente=$dato->sucursal_cliente;
+           echo "<br>";
+            echo $correo_cliente=$dato->correo_cliente;
+           echo "<br>";
+            echo $telefono=$dato->telefono;
+           echo "<br>";
+            print_r( $array_productos=$dato->array_productos);
+           echo "<br>";
+            echo $auto=$dato->auto;
+           echo "<br>";
+            echo $total_venta= $dato->total_venta;
+           echo "<br>";*/
+           
+            $id_metodo_pago = $dato->id_metodo_pago;
+            $id_cliente = $dato->id_cliente[0];
+            $nombre_cliente=$dato->nombre_cliente;
+            $sucursal_cliente=$dato->sucursal_cliente;
+            $correo_cliente=$dato->correo_cliente;
+            $telefono=$dato->telefono;
+            $array_productos=$dato->array_productos;
+            $auto=$dato->auto;
+            $total_venta= $dato->total_venta;
+       }
+        
+        $id_venta = VentasController::generar_folio();
+        $fecha_venta= VentasController::obtener_fecha_actual();
+        $nombre_mp=VentasController::obtener_nombre_metodo_pago($id_metodo_pago);
+        $pdf= \PDF::loadView('/documentos/cotizacion', compact('id_venta','id_metodo_pago','fecha_venta','sucursal_cliente','nombre_cliente','telefono','correo_cliente','total_venta','nombre_mp','fecha_venta','array_productos','auto'));
+        $pdf->setPaper('A4', 'Portrait');//Portrait  Landscape
+        return $pdf->stream('ejemplo.pdf');
+         //return view('/documentos/cotizacion', compact('id_venta','id_metodo_pago','fecha_venta','sucursal_cliente','nombre_cliente','telefono','correo_cliente','total_venta','nombre_mp','fecha_venta','array_productos','auto'));
+    }
+    
+    function obtener_nombre_metodo_pago($id_metodo)
+    {
+        $consulta=DB::select('select * from metodo_pago where metodo_pago.id_metodo_pago='.$id_metodo);
+        return $consulta[0]->metodo_pago;
     }
 }

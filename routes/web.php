@@ -170,3 +170,5 @@ Route::post('/agregar_producto_catalogo','CatalogoController@agregar_producto_ca
 Route::get('/exportar_ticket/{ticket?}','VentasController@exportar_ticket')->name('exportar_ticket');
 /*MOSTRAR HISTORIAL ABONOS*/
 Route::get('/exportar_historial_abono/{ticket?}','VentasController@exportar_historial_abono')->name('exportar_historial_abono');
+/*IMPRIMIR VENTA*/
+Route::get('/imprimir_venta/{input?}','VentasController@imprimir_venta')->name('imprimir_venta');

@@ -164,7 +164,16 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/basictable@2.0.2/dist/js/jquery.basictable.min.js"></script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('input[type=number]').forEach(node => node.addEventListener('keypress', e => {
+            if (e.keyCode == 13) {
+                e.preventDefault();
+            }
+        }))
+    });
 
+</script>
 
 <script type="text/javascript">
     var rowIdx = 0;

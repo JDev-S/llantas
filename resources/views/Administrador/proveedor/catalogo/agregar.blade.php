@@ -76,8 +76,8 @@
                 </div>
                 <div class="card-body p-0 table-responsive-xl mt-4 mb-4">
                     <div class="col-md-12 mt-2">
-                        <div class="row mb-2 " >
-                            <form id="agregar_catalogo_form" class= " form-row col-md-12 justify-content-center" >
+                        <div class="row mb-2 ">
+                            <form id="agregar_catalogo_form" class=" form-row col-md-12 justify-content-center">
                                 <div class="form-row col-md-12 justify-content-center">
                                     <div class="form-group col-md-2 ml-2 justify-content-center">
                                         <select class="form-control selectpicker form-control" title="-- Sucursal --" data-size="5" data-header="Seleccione sucursal" data-style="btn-primary" id="sucursal" name="sucursal" onchange="javascript:uso_sucursal()" data-container="body" required>
@@ -192,6 +192,17 @@
 <!-- include vendor scripts used in "Bootstrap Table" page. see "/views//pages/partials/table-bootstrap/@vendor-scripts.hbs" -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/basictable@2.0.2/dist/js/jquery.basictable.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('input[type=number]').forEach(node => node.addEventListener('keypress', e => {
+            if (e.keyCode == 13) {
+                e.preventDefault();
+            }
+        }))
+    });
+
+</script>
 
 <script type="text/javascript">
     var id_sucursal = "";
@@ -546,7 +557,7 @@
             var id_producto = $(this).attr("data-id_producto");
             var id_proveedor = $(this).attr("data-id_proveedor");
 
-            productos = productos.filter(objeto => ((objeto.id_producto != id_producto && objeto.id_proveedor != id_proveedor)||(objeto.id_producto != id_producto && objeto.id_proveedor == id_proveedor)));
+            productos = productos.filter(objeto => ((objeto.id_producto != id_producto && objeto.id_proveedor != id_proveedor) || (objeto.id_producto != id_producto && objeto.id_proveedor == id_proveedor)));
             console.log("PRODUCTOS DEspues");
             console.log(productos);
         });
@@ -601,14 +612,34 @@
                 success: function(msg) {
 
                     alert(msg);
-                    //location.href = "/mostrar_proveedores";
+                    location.href = "/mostrar_proveedores";
                 }
             });
         } else {
-            alert("No ha seleccionado proveedores y productos")
+            $.aceToaster.add({
+                placement: 'br',
+                body: "<div class='p-3 m-2 d-flex'>\
+                         <span class='align-self-center text-center mr-3 py-2 px-1 border-1 bgc-danger radius-round'>\
+                            <i class='fa fa-times text-180 w-4 text-white mx-2px'></i>\
+                         </span>\
+                         <div>\
+                            <h4 class='text-dark-tp3'>Error</h4>\
+                            <span class='text-dark-tp3 text-110'>Seleccione el cliente para realizar la venta.</span>\
+                         </div>\
+                        </div>\
+                        <button data-dismiss='toast' class='btn text-grey btn-h-light-danger position-tr mr-1 mt-1'><i class='fa fa-times'></i></button>",
+
+                width: 480,
+                delay: 5000,
+
+                close: false,
+
+                className: 'shadow border-none radius-0 border-l-4 brc-danger',
+
+                bodyClass: 'border-0 p-0',
+                headerClass: 'd-none'
+            })
         }
-
-
     }
 
 </script>

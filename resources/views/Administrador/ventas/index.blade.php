@@ -715,6 +715,7 @@ function mostrar_ticket( ticket)
   url,
   '_blank' // <- This is what makes it open in a new window.
 );    
+    
 }
 </script>
 <script type="text/javascript">

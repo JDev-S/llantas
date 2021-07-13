@@ -39,7 +39,7 @@ class ClientesController extends Controller
         
         //INSERT INTO clientes(id_cliente, fecha_registro, nombre_completo, telefono,correo_electronico, id_sucursal, cliente_habitual) VALUES (1, '12/04/2021', 'Maximiliano Gabriel', '123456','max@gmail.com',2,1);
 
-        $clientes=DB::select("SELECT * FROM clientes WHERE clientes.nombre_completo='".$nombre_cliente."' or clientes.correo_electronico='".$correo."' or clientes.telefono='".$telefono."'");
+        $clientes=DB::select("SELECT clientes.id_cliente,clientes.nombre_completo,clientes.telefono,clientes.correo_electronico,clientes.id_sucursal,sucursal.sucursal from clientes inner join sucursal on sucursal.id_sucursal=clientes.id_sucursal WHERE clientes.nombre_completo='".$nombre_cliente."' or clientes.correo_electronico='".$correo."' or clientes.telefono='".$telefono."'");
         $json=json_encode($clientes);
 		return response()->json($json);
       }

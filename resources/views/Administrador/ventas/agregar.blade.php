@@ -77,7 +77,7 @@
                 <div class="card-body p-0 table-responsive-xl mt-4 mb-4">
                     <div class="col-md-12 mt-2">
                         <div class="row mb-2">
-                            <form id="agregar_ventas_form" class="form-row col-md-12 justify-content-center">
+                            <form type="POST" id="agregar_ventas_form" class="form-row col-md-12 justify-content-center">
                                 <div class="form-row col-md-12 justify-content-center">
                                     <div class="form-group col-md-2 ml-2 justify-content-center">
                                         <select class="form-control selectpicker form-control" title="-- Sucursal --" data-size="5" data-header="Seleccione sucursal" data-style="btn-primary" onChange="javascript:mostrar_productos_sucursal()" id="sucursal" name="sucursal" data-container="body" required>
@@ -137,11 +137,11 @@
 
                                 <div class="page-tools">
                                     <div class="action-buttons">
-                                        <a class="btn bg-white btn-light mx-1px text-95 shadow-sm" href="#" data-title="Print">
+                                        <a class="btn bg-white btn-light mx-1px text-95 shadow-sm" href="javascript:imprimir()" data-title="Print">
                                             <i class="mr-1 fa fa-print text-primary text-120 w-2"></i>
                                             Imprimir
                                         </a>
-                                        <a class="btn bg-white btn-light mx-1px text-95 shadow-sm" href="#" data-title="PDF">
+                                        <a class="btn bg-white btn-light mx-1px text-95 shadow-sm" href="javascript:imprimir()" data-title="PDF">
                                             <i class="mr-1 far fa-file-pdf text-danger text-120 w-2"></i>
                                             Exportar
                                         </a>
@@ -172,15 +172,11 @@
                                                 </div>
                                                 <div class="row mt-2">
                                                     <div class="form-group col-7 col-lg-8 col-md-7 justify-content-center pl-2 mt-2 ml-2 mb-1">
-                                                        <select class="form-control selectpicker form-control" title="-- Cliente --" data-size="5" data-header="" data-style="btn-primary" onChange="javascript:mostrar_info()" id="cliente" name="cliente" data-container="body" required>
-                                                            <option data-divider="true"></option>
-                                                            <?php
-                                                                $query2 = "select * from clientes";
-                                                                $data2=DB::select($query2);      
-                                                            ?>
-                                                            @foreach($data2 as $item)
-                                                            <option data-tokens="Cliente" data-telefono="{{$item->telefono}}" data-correo="{{$item->correo_electronico}}" value="{{$item->id_cliente}}">{{$item->nombre_completo}}</option>
-                                                            @endforeach
+                                                        <select onChange="javascript:mostrar_info()" class="form-control selectpicker form-control" multiple data-max-options="1" data-live-search="true" title="-- Cliente --" data-size="4" data-header="Selecciona un cliente" data-style="btn-primary" id="cliente" name="cliente" data-container="body" required>
+                                                            <optgroup label="los chidos">
+
+                                                            </optgroup>
+
                                                         </select>
                                                     </div>
                                                     <div class="col-2 text-left align-self-center pl-0 mb-1 mt-2">
@@ -426,6 +422,16 @@
 <!-- include vendor scripts used in "Bootstrap Table" page. see "/views//pages/partials/table-bootstrap/@vendor-scripts.hbs" -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/basictable@2.0.2/dist/js/jquery.basictable.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('input[type=number]').forEach(node => node.addEventListener('keypress', e => {
+            if (e.keyCode == 13) {
+                e.preventDefault();
+            }
+        }))
+    });
+
+</script>
 <script type="text/javascript">
     var rowIdx = 0;
     var productos = new Array();
@@ -449,6 +455,18 @@
         document.getElementById("sucursal_venta").innerHTML = "";
         document.getElementById("sucursal_venta").innerHTML = "Sucursal: " + sucursal_ventas;
 
+        /*LIMPIAR CLIENTES CUANDO CAMBIE LA SUCURSAL*/
+        $('#cliente').selectpicker('selectAll');
+        var selected2 = [];
+        selected2 = $('#cliente').val()
+        alert("Valor del selected2 clientes: " + selected2.length);
+
+        for (j = 0; j < selected2.length; j++) {
+            $('#cliente').find('[value=' + selected2[j] + ']').remove();
+            $('#cliente').selectpicker('refresh');
+        }
+
+
         var token = '{{csrf_token()}}';
         var data = {
             sucursal: sucursal,
@@ -462,7 +480,8 @@
                 console.log(msg);
                 var llenado = '';
                 var datos = JSON.parse(msg);
-
+                var clientes = @json($clientes);
+                /*LIMPIAR PRODUCTOS CUANDO CAMBIE LA SUCURSAL*/
                 $('#productos').selectpicker('selectAll');
                 var selected = [];
                 selected = $('#productos').val()
@@ -481,12 +500,21 @@
 
                 productos = new Array();
 
+
                 datos.forEach(objeto => {
+
                     if (objeto.cantidad > 0) {
                         $('#productos').append('<option data-thumbnail="assets/image/user.JPG' + objeto.foto + '"  value="' + objeto.id_producto + '"data-producto="' + objeto.nombre_producto + '" data-cantidad="' + objeto.cantidad + '" data-categoria="' + objeto.categoria + '" data-marca="' + objeto.marca + '" data-modelo="' + objeto.modelo + '" data-subtext="Categoria: ' + objeto.categoria + '; Marca: ' + objeto.marca + '; Modelo: ' + objeto.modelo + '; Sucursal: ' + objeto.sucursal + '; Cantidad: ' + objeto.cantidad + '" showSubtext="true" data-precio="' + objeto.precio + '" data-foto="' + objeto.foto + '" data-sucursal="' + objeto.sucursal + '" data-suc="' + objeto.id_sucursal + '">' + objeto.nombre_producto + '</option>');
                         $("#productos").selectpicker("refresh");
                     }
 
+                });
+
+                clientes.forEach(objeto => {
+                    if (objeto.id_sucursal == sucursal) {
+                        $('#cliente').append('<option  value="' + objeto.id_cliente + '" data-nombre="' + objeto.nombre_completo + '" data-suc="' + objeto.sucursal + '" data-telefono="' + objeto.telefono + '" data-correo="' + objeto.correo_electronico + '">' + objeto.nombre_completo + '</option>');
+                        $("#cliente").selectpicker("refresh");
+                    }
                 });
             }
         });
@@ -528,13 +556,16 @@
                     if (bandera == 0) {
                         var t_idsucursal = ($(this).attr("data-id_sucursal"));
                         var t_idproducto = ($(this).attr("data-id_producto"));
+
                         /SI EL PRODUCTO EXISTE, LO ACTUALIZA/
                         if (id_sucursal == t_idsucursal && id_producto == t_idproducto) {
-                            //var t_cantidad = $(this).attr("data-cantidad");
-                            var t_cantidad = document.getElementById("cant").value;
+                            //var t_cantidad = document.getElementById("cant").value;
+                            var t_cantidad = ($(this).attr("data-cantidad"));
+                            alert("Imprimo t_cant:" + t_cantidad);
+                            alert("Imprimo cantidad_arriba:" + cantidad);
+                            alert("Suma cantidades: suma del input cant + suma del input arriba : " + t_cantidad + " + " + cantidad);
                             cantidad = parseInt(t_cantidad) + parseInt(cantidad);
-                            alert(t_cantidad);
-                            alert(cantidad);
+                            alert("Valor nuevo: " + cantidad);
                             bandera = 1;
                             $(this).attr('data-cantidad', cantidad);
                             $(this).attr('data-total', parseInt(cantidad) * parseInt(precio));
@@ -542,7 +573,7 @@
                             $(this).html("");
                             /LIMPIA EL CONTENIDO DE TR PARA EVITAR DUPLICADOS/
                             var tr = '<td data-th="Producto"><span class="bt-content">' + nombre_producto + '</span></td>' +
-                                '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input  class="col-9" style="padding-left:0px;" step="1" min="1" type="number" id="cant" name="cant" value="' + cantidad + '" ></div></span></td>' +
+                                '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input  class="col-9" style="padding-left:0px;" min="1" max="9999" step="1" type="number" id="cant" name="cant" value="' + cantidad + '" ></div></span></td>' +
                                 '<td data-th="Precio unitario"><span class="bt-content">' + precio + '</span></td>' +
                                 '<td data-th="Total"><span class="bt-content">' + parseInt(cantidad) * parseInt(precio) + '</span></td>' +
                                 '<td data-th="Acciones"><span class="bt-content text-center">' +
@@ -562,6 +593,7 @@
                                     "cantidad_producto": cantidad,
                                     "precio_unidad": objeto.precio_unidad,
                                     "total": parseInt(cantidad) * parseInt(objeto.precio_unidad),
+                                    "nombre_producto": nombre_producto,
                                     "id_sucursal": id_sucursal
                                 } : objeto;
                             });
@@ -586,7 +618,7 @@
                     // Nueva fila dentro de tbody.
                     $('#table').append(`<tr id="R${++rowIdx}" data-id_sucursal="${id_sucursal}" data-id_producto="${id_producto}" data-precio="${precio}" data-producto="${nombre_producto}"  data-total="${parseInt(cantidad) * parseInt(precio)}" data-cantidad="${cantidad}">` +
                         '<td data-th="Producto"><span class="bt-content">' + nombre_producto + '</span></td>' +
-                        '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input class="col-9" style="padding-left:0px;" type="number" step="1" min="1" id="cant" name="cant" value="' + cantidad + '" ></div></span></td>' +
+                        '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input class="col-9" style="padding-left:0px;" type="number" min="1" max="9999" step="1" id="cant" name="cant" value="' + cantidad + '" ></div></span></td>' +
                         '<td data-th="Precio unitario"><span class="bt-content">' + precio + '</span></td>' +
                         '<td data-th="Total"><span class="bt-content">' + parseInt(cantidad) * parseInt(precio) + '</span></td>' +
                         '<td data-th="Acciones"><span class="bt-content text-center">' +
@@ -603,6 +635,7 @@
                         "cantidad_producto": cantidad,
                         "precio_unidad": precio,
                         "total": parseInt(cantidad) * parseInt(precio),
+                        "nombre_producto": nombre_producto,
                         "id_sucursal": id_sucursal
                     };
                     productos.push(producto);
@@ -628,7 +661,7 @@
 
                 $('#table').append(`<tr id="R${++rowIdx}" data-id_sucursal="${id_sucursal}" data-id_producto="${id_producto}" data-precio="${precio}" data-producto="${nombre_producto}"  data-total="${parseInt(cantidad) * parseInt(precio)}" data-cantidad="${cantidad}">` +
                     '<td data-th="Producto"><span class="bt-content">' + nombre_producto + '</span></td>' +
-                    '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input class="col-9" style="padding-left:0px;" type="number" step="1" min="1" id="cant" name="cant" value="' + cantidad + '" ></div></span></td>' +
+                    '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input class="col-9" style="padding-left:0px;" type="number" min="1" max="9999" step="1" id="cant" name="cant" value="' + cantidad + '" ></div></span></td>' +
                     '<td data-th="Precio unitario"><span class="bt-content">' + precio + '</span></td>' +
                     '<td data-th="Total"><span class="bt-content">' + parseInt(cantidad) * parseInt(precio) + '</span></td>' +
                     '<td data-th="Acciones"><span class="bt-content text-center">' +
@@ -645,6 +678,7 @@
                     "cantidad_producto": cantidad,
                     "precio_unidad": precio,
                     "total": parseInt(cantidad) * parseInt(precio),
+                    "nombre_producto": nombre_producto,
                     "id_sucursal": id_sucursal
                 };
                 productos.push(producto);
@@ -674,6 +708,7 @@
         $(this).parents("tr").each(function(index2) {
             var id_sucursal = $(this).attr("data-id_sucursal");
             var id_producto = $(this).attr("data-id_producto");
+            var nombre_producto = $(this).attr("data-producto");
             var precio_compra = $(this).attr("data-precio");
             var producto = $(this).attr("data-producto");
             var cantidad = $(this).find("#cant").val();
@@ -705,9 +740,11 @@
                     "cantidad_producto": cantidad,
                     "precio_unidad": objeto.precio_unidad,
                     "total": parseInt(cantidad) * parseInt(objeto.precio_unidad),
+                    "nombre_producto": nombre_producto,
                     "id_sucursal": id_sucursal
                 } : objeto;
             });
+            alert(pago);
 
             if (pago == undefined || pago == "2" || pago == "1") {
                 alert("no es llantimax");
@@ -730,7 +767,7 @@
     $('#table').on('click', '.remove', function() {
 
         $(this).parents("tr").each(function(index2) {
-
+            let pago = $('input[name="pago"]:checked').val();
             var precio_compra = $(this).attr("data-precio");
             var cantidad_anterior = $(this).attr("data-cantidad");
             var id_producto = $(this).attr("data-id_producto");
@@ -748,7 +785,7 @@
             console.log(info);
             console.log("numero :" + total_venta);
 
-            productos = productos.filter(objeto => (objeto.id_producto != id_producto && objeto.id_sucursal == id_sucursal));
+            productos = productos.filter(objeto => (objeto.id_producto != id_producto));
             console.log("despues productos");
             console.log(productos);
 
@@ -799,95 +836,393 @@
 
     function generar_pedido() {
         let metodo_pago = $('input[name="pago"]:checked').val();
-         var id_cliente = $('#cliente').val();
+        var id_cliente = $('#cliente').val();
+        alert(id_cliente);
         var auto = document.getElementById('auto').value;
         console.log(metodo_pago);
         console.log(id_cliente);
         console.log(auto);
-        
-        if (productos.length > 0 && metodo_pago!= undefined && auto!="" && id_cliente!="" ) {
-            var sucursal = $('#sucursal').val();
-            console.log("sucursal :" + sucursal);
-            console.log(productos);
-            //let metodo_pago = $('input[name="pago"]:checked').val();
-            //var id_cliente = $('#cliente').val();
-            //var auto = document.getElementById('auto').value;
-            var total_venta = 0;
-            for (var t = 0; t < productos.length; t++) {
-                total_venta += parseInt(productos[t]['total']);
-            }
+        if (productos.length > 0) {
+            if (metodo_pago != undefined) {
+                if (auto != "") {
+                    if (id_cliente != "") {
+                        var sucursal = $('#sucursal').val();
+                        console.log("sucursal :" + sucursal);
+                        console.log(productos);
+                        //let metodo_pago = $('input[name="pago"]:checked').val();
+                        //var id_cliente = $('#cliente').val();
+                        //var auto = document.getElementById('auto').value;
+                        var total_venta = 0;
+                        for (var t = 0; t < productos.length; t++) {
+                            total_venta += parseInt(productos[t]['total']);
+                        }
 
 
-            var factura = 0;
-            var checado = document.getElementById('check_factura').checked;
-            if (checado) {
-                factura = 1;
-            } else {
-                factura = 0;
-            }
+                        var factura = 0;
+                        var checado = document.getElementById('check_factura').checked;
+                        if (checado) {
+                            factura = 1;
+                        } else {
+                            factura = 0;
+                        }
 
-            console.log(total_venta);
-            console.log(metodo_pago);
-            console.log(factura);
-            console.log(id_cliente);
+                        console.log(total_venta);
+                        console.log(metodo_pago);
+                        console.log(factura);
+                        console.log(id_cliente);
 
 
 
-            var comentario_credito = "";
-            var fecha_credito = "";
+                        var comentario_credito = "";
+                        var fecha_credito = "";
 
-           
-            console.log(productos);
 
-            var memo = document.getElementsByName('factura');
-            for (i = 0; i < memo.length; i++) {
-                if (memo[i].checked) {
-                    var memory = memo[i].value;
-                    factura = memory;
-                }
+                        console.log(productos);
 
-            }
-            if (metodo_pago == "3") {
-                fecha_credito = document.getElementById('fecha').value;
-                comentario_credito = document.getElementById('descripcion').value;
-                if(fecha_credito=="" || comentario_credito=="")
-                    {
-                        alert("porfavor llene los datos");
-                        return 0;
+
+                        if (metodo_pago == "3") {
+                            fecha_credito = document.getElementById('fecha').value;
+                            comentario_credito = document.getElementById('descripcion').value;
+                            if (fecha_credito == "" || comentario_credito == "") {
+                                $.aceToaster.add({
+                                    placement: 'br',
+                                    body: "<div class='p-3 m-2 d-flex'>\
+                         <span class='align-self-center text-center mr-3 py-2 px-1 border-1 bgc-danger radius-round'>\
+                            <i class='fa fa-times text-180 w-4 text-white mx-2px'></i>\
+                         </span>\
+                         <div>\
+                            <h4 class='text-dark-tp3'>Error</h4>\
+                            <span class='text-dark-tp3 text-110'>Porfavor llene todos los campos.</span>\
+                         </div>\
+                        </div>\
+                        <button data-dismiss='toast' class='btn text-grey btn-h-light-danger position-tr mr-1 mt-1'><i class='fa fa-times'></i></button>",
+
+                                    width: 480,
+                                    delay: 5000,
+
+                                    close: false,
+
+                                    className: 'shadow border-none radius-0 border-l-4 brc-danger',
+
+                                    bodyClass: 'border-0 p-0',
+                                    headerClass: 'd-none'
+                                })
+                                return 0;
+                            }
+
+                        } else {
+                            fecha_credito = "";
+                            comentario_credito = "";
+                        }
+
+                        alert("Generando venta");
+                        var token = '{{csrf_token()}}';
+                        var data = {
+                            id_cliente: id_cliente,
+                            id_sucursal: sucursal,
+                            id_metodo_pago: metodo_pago,
+                            total_venta: total_venta,
+                            factura: factura,
+                            array_productos: productos,
+                            fecha: fecha_credito,
+                            descripcion: comentario_credito,
+                            auto: auto,
+                            _token: token
+                        };
+                        console.log(data);
+                        $.ajax({
+                            type: "POST",
+                            url: "/insertar_venta",
+                            data: data,
+                            success: function(msg) {
+
+                                console.log(msg);
+                                location.href = "/mostrar_venta";
+                            }
+                        });
+                    } else {
+                        $.aceToaster.add({
+                            placement: 'br',
+                            body: "<div class='p-3 m-2 d-flex'>\
+                         <span class='align-self-center text-center mr-3 py-2 px-1 border-1 bgc-danger radius-round'>\
+                            <i class='fa fa-times text-180 w-4 text-white mx-2px'></i>\
+                         </span>\
+                         <div>\
+                            <h4 class='text-dark-tp3'>Error</h4>\
+                            <span class='text-dark-tp3 text-110'>Seleccione el cliente para realizar la venta.</span>\
+                         </div>\
+                        </div>\
+                        <button data-dismiss='toast' class='btn text-grey btn-h-light-danger position-tr mr-1 mt-1'><i class='fa fa-times'></i></button>",
+
+                            width: 480,
+                            delay: 5000,
+
+                            close: false,
+
+                            className: 'shadow border-none radius-0 border-l-4 brc-danger',
+
+                            bodyClass: 'border-0 p-0',
+                            headerClass: 'd-none'
+                        })
                     }
-                
-            } else {
-                fecha_credito = "";
-                comentario_credito = "";
-            }
+                } else {
+                    $.aceToaster.add({
+                        placement: 'br',
+                        body: "<div class='p-3 m-2 d-flex'>\
+                         <span class='align-self-center text-center mr-3 py-2 px-1 border-1 bgc-danger radius-round'>\
+                            <i class='fa fa-times text-180 w-4 text-white mx-2px'></i>\
+                         </span>\
+                         <div>\
+                            <h4 class='text-dark-tp3'>Error</h4>\
+                            <span class='text-dark-tp3 text-110'>Escriba para que tipo de auto es.</span>\
+                         </div>\
+                        </div>\
+                        <button data-dismiss='toast' class='btn text-grey btn-h-light-danger position-tr mr-1 mt-1'><i class='fa fa-times'></i></button>",
 
-             alert("Generando venta");
-            var token = '{{csrf_token()}}';
-            var data = {
-                id_cliente: id_cliente,
-                id_sucursal: sucursal,
-                id_metodo_pago: metodo_pago,
-                total_venta: total_venta,
-                factura: factura,
-                array_productos: productos,
-                fecha: fecha_credito,
-                descripcion: comentario_credito,
-                auto: auto,
-                _token: token
-            };
-            console.log(data);
-            $.ajax({
-                type: "POST",
-                url: "/insertar_venta",
-                data: data,
-                success: function(msg) {
+                        width: 480,
+                        delay: 5000,
 
-                    console.log(msg);
-                    location.href = "/mostrar_venta";
+                        close: false,
+
+                        className: 'shadow border-none radius-0 border-l-4 brc-danger',
+
+                        bodyClass: 'border-0 p-0',
+                        headerClass: 'd-none'
+                    })
                 }
-            });
+
+            } else {
+
+                $.aceToaster.add({
+                    placement: 'br',
+                    body: "<div class='p-3 m-2 d-flex'>\
+                         <span class='align-self-center text-center mr-3 py-2 px-1 border-1 bgc-danger radius-round'>\
+                            <i class='fa fa-times text-180 w-4 text-white mx-2px'></i>\
+                         </span>\
+                         <div>\
+                            <h4 class='text-dark-tp3'>Error</h4>\
+                            <span class='text-dark-tp3 text-110'>Elija la forma de pago</span>\
+                         </div>\
+                        </div>\
+                        <button data-dismiss='toast' class='btn text-grey btn-h-light-danger position-tr mr-1 mt-1'><i class='fa fa-times'></i></button>",
+
+                    width: 480,
+                    delay: 5000,
+
+                    close: false,
+
+                    className: 'shadow border-none radius-0 border-l-4 brc-danger',
+
+                    bodyClass: 'border-0 p-0',
+                    headerClass: 'd-none'
+                })
+            }
         } else {
-            alert("No agrego productos");
+            $.aceToaster.add({
+                placement: 'br',
+                body: "<div class='p-3 m-2 d-flex'>\
+                         <span class='align-self-center text-center mr-3 py-2 px-1 border-1 bgc-danger radius-round'>\
+                            <i class='fa fa-times text-180 w-4 text-white mx-2px'></i>\
+                         </span>\
+                         <div>\
+                            <h4 class='text-dark-tp3'>Error</h4>\
+                            <span class='text-dark-tp3 text-110'>Eliga productos</span>\
+                         </div>\
+                        </div>\
+                        <button data-dismiss='toast' class='btn text-grey btn-h-light-danger position-tr mr-1 mt-1'><i class='fa fa-times'></i></button>",
+
+                width: 480,
+                delay: 5000,
+
+                close: false,
+
+                className: 'shadow border-none radius-0 border-l-4 brc-danger',
+
+                bodyClass: 'border-0 p-0',
+                headerClass: 'd-none'
+            })
+        }
+
+    }
+
+    function imprimir() {
+        let metodo_pago = $('input[name="pago"]:checked').val();
+        var id_cliente = $('#cliente').val();
+        var auto = document.getElementById('auto').value;
+        console.log(metodo_pago);
+        console.log(id_cliente);
+        console.log(auto);
+        if (productos.length > 0) {
+            if (metodo_pago != undefined) {
+                if (auto != "") {
+                    if (id_cliente != "") {
+                        var sucursal = $('#sucursal').val();
+                        console.log("sucursal :" + sucursal);
+                        console.log(productos);
+                        var total_venta = 0;
+                        for (var t = 0; t < productos.length; t++) {
+                            total_venta += parseInt(productos[t]['total']);
+                        }
+
+
+                        var factura = 0;
+                        var checado = document.getElementById('check_factura').checked;
+                        if (checado) {
+                            factura = 1;
+                        } else {
+                            factura = 0;
+                        }
+
+                        console.log(total_venta);
+                        console.log(metodo_pago);
+                        console.log(factura);
+                        console.log(id_cliente);
+                        var comentario_credito = "";
+                        var fecha_credito = "";
+                        console.log(productos);
+                        if (metodo_pago == "3") {
+                            fecha_credito = document.getElementById('fecha').value;
+                            comentario_credito = document.getElementById('descripcion').value;
+                            if (fecha_credito == "" || comentario_credito == "") {
+                                $.aceToaster.add({
+                                    placement: 'br',
+                                    body: "<div class='p-3 m-2 d-flex'>\
+                         <span class='align-self-center text-center mr-3 py-2 px-1 border-1 bgc-danger radius-round'>\
+                            <i class='fa fa-times text-180 w-4 text-white mx-2px'></i>\
+                         </span>\
+                         <div>\
+                            <h4 class='text-dark-tp3'>Error</h4>\
+                            <span class='text-dark-tp3 text-110'>Porfavor llene todos los campos.</span>\
+                         </div>\
+                        </div>\
+                        <button data-dismiss='toast' class='btn text-grey btn-h-light-danger position-tr mr-1 mt-1'><i class='fa fa-times'></i></button>",
+                                    width: 480,
+                                    delay: 5000,
+                                    close: false,
+                                    className: 'shadow border-none radius-0 border-l-4 brc-danger',
+                                    bodyClass: 'border-0 p-0',
+                                    headerClass: 'd-none'
+                                })
+                                return 0;
+                            }
+
+                        } else {
+                            fecha_credito = "";
+                            comentario_credito = "";
+                        }
+                        var telefono = $('#cliente option:selected').attr("data-telefono");
+                        var correo = $('#cliente option:selected').attr("data-correo");
+                        var nombre_cliente = $('#cliente option:selected').attr("data-nombre");
+                        var sucursal_cliente = $('#cliente option:selected').attr("data-suc");
+                        alert("Generando venta");
+                        var token = '{{csrf_token()}}';
+                        var datos = new Array();
+                        var data = {
+                            id_cliente: id_cliente,
+                            id_sucursal: sucursal,
+                            id_metodo_pago: metodo_pago,
+                            total_venta: total_venta,
+                            factura: factura,
+                            array_productos: productos,
+                            fecha: fecha_credito,
+                            descripcion: comentario_credito,
+                            auto: auto,
+                            nombre_cliente: nombre_cliente,
+                            sucursal_cliente: sucursal_cliente,
+                            correo_cliente: correo,
+                            telefono: telefono,
+                            _token: token
+                        };
+                        datos.push(data);
+                        var url = '/imprimir_venta/' + JSON.stringify(datos);
+                        window.open(
+                            url,
+                            '_blank' // <- This is what makes it open in a new window.
+                        );
+                    } else {
+                        $.aceToaster.add({
+                            placement: 'br',
+                            body: "<div class='p-3 m-2 d-flex'>\
+                         <span class='align-self-center text-center mr-3 py-2 px-1 border-1 bgc-danger radius-round'>\
+                            <i class='fa fa-times text-180 w-4 text-white mx-2px'></i>\
+                         </span>\
+                         <div>\
+                            <h4 class='text-dark-tp3'>Error</h4>\
+                            <span class='text-dark-tp3 text-110'>Seleccione el cliente para realizar la venta.</span>\
+                         </div>\
+                        </div>\
+                        <button data-dismiss='toast' class='btn text-grey btn-h-light-danger position-tr mr-1 mt-1'><i class='fa fa-times'></i></button>",
+                            width: 480,
+                            delay: 5000,
+                            close: false,
+                            className: 'shadow border-none radius-0 border-l-4 brc-danger',
+                            bodyClass: 'border-0 p-0',
+                            headerClass: 'd-none'
+                        })
+                    }
+                } else {
+                    $.aceToaster.add({
+                        placement: 'br',
+                        body: "<div class='p-3 m-2 d-flex'>\
+                         <span class='align-self-center text-center mr-3 py-2 px-1 border-1 bgc-danger radius-round'>\
+                            <i class='fa fa-times text-180 w-4 text-white mx-2px'></i>\
+                         </span>\
+                         <div>\
+                            <h4 class='text-dark-tp3'>Error</h4>\
+                            <span class='text-dark-tp3 text-110'>Escriba para que tipo de auto es.</span>\
+                         </div>\
+                        </div>\
+                        <button data-dismiss='toast' class='btn text-grey btn-h-light-danger position-tr mr-1 mt-1'><i class='fa fa-times'></i></button>",
+                        width: 480,
+                        delay: 5000,
+                        close: false,
+                        className: 'shadow border-none radius-0 border-l-4 brc-danger',
+                        bodyClass: 'border-0 p-0',
+                        headerClass: 'd-none'
+                    })
+                }
+            } else {
+
+                $.aceToaster.add({
+                    placement: 'br',
+                    body: "<div class='p-3 m-2 d-flex'>\
+                         <span class='align-self-center text-center mr-3 py-2 px-1 border-1 bgc-danger radius-round'>\
+                            <i class='fa fa-times text-180 w-4 text-white mx-2px'></i>\
+                         </span>\
+                         <div>\
+                            <h4 class='text-dark-tp3'>Error</h4>\
+                            <span class='text-dark-tp3 text-110'>Elija la forma de pago</span>\
+                         </div>\
+                        </div>\
+                        <button data-dismiss='toast' class='btn text-grey btn-h-light-danger position-tr mr-1 mt-1'><i class='fa fa-times'></i></button>",
+                    width: 480,
+                    delay: 5000,
+                    close: false,
+                    className: 'shadow border-none radius-0 border-l-4 brc-danger',
+                    bodyClass: 'border-0 p-0',
+                    headerClass: 'd-none'
+                })
+            }
+        } else {
+            $.aceToaster.add({
+                placement: 'br',
+                body: "<div class='p-3 m-2 d-flex'>\
+                         <span class='align-self-center text-center mr-3 py-2 px-1 border-1 bgc-danger radius-round'>\
+                            <i class='fa fa-times text-180 w-4 text-white mx-2px'></i>\
+                         </span>\
+                         <div>\
+                            <h4 class='text-dark-tp3'>Error</h4>\
+                            <span class='text-dark-tp3 text-110'>Eliga productos</span>\
+                         </div>\
+                        </div>\
+                        <button data-dismiss='toast' class='btn text-grey btn-h-light-danger position-tr mr-1 mt-1'><i class='fa fa-times'></i></button>",
+                width: 480,
+                delay: 5000,
+                close: false,
+                className: 'shadow border-none radius-0 border-l-4 brc-danger',
+                bodyClass: 'border-0 p-0',
+                headerClass: 'd-none'
+            })
         }
     }
 
@@ -917,7 +1252,40 @@
                 url: "/agregar_clientes",
                 data: data,
                 success: function(msg) {
-                    location.href = "/mostrar_clientes"
+                    
+                     var clientes =  JSON.parse(msg);
+                    clientes.forEach(objeto => {
+                    
+                        $('#cliente').append('<option  value="' + objeto.id_cliente + '" data-nombre="' + objeto.nombre_completo + '" data-suc="' + objeto.sucursal + '" data-telefono="' + objeto.telefono + '" data-correo="' + objeto.correo_electronico + '">' + objeto.nombre_completo + '</option>');
+                        $("#cliente").selectpicker("refresh");
+                    
+                });
+                    
+                    $.aceToaster.add({
+                        placement: 'rc',
+                        body: "<p class='p-3 mb-0 text-center text-white'>\
+                            <span class='d-inline-block mb-3 border-2 bgc-white radius-round p-25'>\
+                                <i class='fa fa-check fa-2x mx-1px text-success'></i>\
+                            </span><br />\
+                            <span class='text-125'>Cliente registrado correctamente</span>\
+                        </p>\
+                        <button data-dismiss='toast' class='close position-tr mt-1 mr-2 text-white'>&times;</button>\
+                        ",
+
+                        width: 360,
+                        delay: 4000,
+
+                        close: false,
+
+                        className: 'bgc-success-d2 shadow ',
+
+                        bodyClass: 'border-0 p-0',
+                        headerClass: 'd-none',
+
+                        progress: 'position-bl bgc-white-tp4 py-2px m-1px',
+                        progressReverse: true
+                    })
+
                 }
             });
         } else {
@@ -949,7 +1317,7 @@
 
             '<div class="col-5" style=" padding-left: 0px;">' +
             '<span class="text-125 text-secondary-d3 float-left  ">' +
-            '$' + comision +
+            '$' + comision.toFixed(2) +
             '</span>' +
             '</div>';
 
@@ -989,6 +1357,8 @@
     }
 
 </script>
+
+
 <script>
     jQuery(function($) {
         $('#responsive-table').basictable({
@@ -997,5 +1367,6 @@
     })
 
 </script>
+
 @stop
 @stop

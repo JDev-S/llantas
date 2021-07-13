@@ -255,6 +255,13 @@
 
                 datos.forEach(objeto => {
                     //let tmp =[] ;
+                    var habitual = "";
+
+                    if (objeto.cliente_habitual == 1) {
+                        habitual = "Cliente habitual";
+                    } else {
+                        habitual = "Cliente no habitual";
+                    }
                     arr.push({
                         "id_cliente": objeto.id_cliente,
                         "fecha": objeto.fecha,
@@ -263,6 +270,7 @@
                         "correo": objeto.correo,
                         "sucursal": objeto.sucursal,
                         "habitual": objeto.cliente_habitual,
+                        "habi": habitual,
                         "suc": objeto.id_sucursal
                     }, );
                     //arr.push(tmp);
@@ -301,6 +309,12 @@
                         {
                             field: 'sucursal',
                             title: 'Sucursal',
+                            align: 'center',
+                            sortable: true
+                        },
+                        {
+                            field: 'habi',
+                            title: 'Cliente habitual',
                             align: 'center',
                             sortable: true
                         },

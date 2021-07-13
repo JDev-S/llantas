@@ -120,22 +120,6 @@
                 </div>
             </div>
 
-            <!--<div class="" style="margin-bottom:110px;"></div>
-            <div class="col-md-12 col-sm-9 align-middle">
-                <table class="table text-dark-m2 text-95 bgc-white ml-n1px  " id="table">
-                    <thead>
-                        <tr>
-                            <th class="align-middle"><b>Código del producto</b></th>
-                            <th class="align-middle"><b>Nombre del proveedor</b></th>
-                            <th class="align-middle"><b>Cantidad</b></th>
-                            <th class="align-middle"><b>Precio unitario</b></th>
-                            <th class="align-middle"><b>Total</b></th>
-                        </tr>
-                    </thead>
-                    
-                </table>
-            </div>-->
-
             <div class="col-auto mt-5 shadow">
                 <div class="card acard h-100">
                     <div class="card-header t-border-1 mb-2 mt-2">
@@ -187,7 +171,16 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/basictable@2.0.2/dist/js/jquery.basictable.min.js"></script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('input[type=number]').forEach(node => node.addEventListener('keypress', e => {
+            if (e.keyCode == 13) {
+                e.preventDefault();
+            }
+        }))
+    });
 
+</script>
 
 <script type="text/javascript">
     var rowIdx = 0;
