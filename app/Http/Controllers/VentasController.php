@@ -58,36 +58,6 @@ select inventario.id_producto as id_producto, productos_llantimax.nombre as nomb
         $auto=$input['auto'];
         
         $id_sucursal_cliente = VentasController::obtener_sucursal_cliente($id_cliente);
-        
-        
-                
-        /*DATOS DE LOS PRODUCTOS*/
-        /*$array_productos = array(
-           array(
-               "id_producto" => 1,
-                "cantidad_producto" => 5,
-                "total" => 500,
-                "precio_unidad" => 50,
-           ),
-           array(
-               "id_producto" => 2,
-                "cantidad_producto" => 5,
-                "total" => 500,
-                "precio_unidad" => 50,
-           ),
-           array(
-               "id_producto" => 3,
-                "cantidad_producto" => 5,
-                "total" => 500,
-                "precio_unidad" => 50,
-           ),
-           array(
-               "id_producto" => 4,
-                "cantidad_producto" => 5,
-                "total" => 500,
-                "precio_unidad" => 50,
-           )
-       ); */
        
         /*OBTENER FECHA ACTUAL*/ 
         $fecha_venta= VentasController::obtener_fecha_actual();
@@ -101,7 +71,7 @@ select inventario.id_producto as id_producto, productos_llantimax.nombre as nomb
             /*GENERAR VENTA*/
             if($id_metodo_pago==3)
             {
-                echo 'total_venta '.$total_venta;
+               // echo 'total_venta '.$total_venta;
                 $total_final=intval($total_venta)*0.03;
                 $total_venta=intval($total_venta)+$total_final;
             }
@@ -110,24 +80,24 @@ select inventario.id_producto as id_producto, productos_llantimax.nombre as nomb
             
             $ingresar = DB::insert('INSERT INTO venta(id_venta, id_usuario, id_sucursal_usuario, id_sucursal, id_cliente, id_sucursal_cliente, id_metodo_pago, total_venta, fecha_venta, factura,auto) VALUES(?,?,?,?,?,?,?,?,?,?,?)', [$id_venta, $id_usuario, $id_sucursal_usuario, $id_sucursal, $id_cliente, $id_sucursal_cliente, $id_metodo_pago, $total_venta, $fecha_venta, $factura,$auto]);
        
-            /*INSERTAR DETALLE DE LA VENTA*/
+            //INSERTAR DETALLE DE LA VENTA
             foreach($array_productos as $propiedad){
                 $ingresar = DB::insert('INSERT INTO detalle_venta (id_venta, id_usuario, id_sucursal_usuario, id_sucursal, id_producto, cantidad_producto, total, precio_unidad) VALUES (?,?,?,?,?,?,?,?)', [$id_venta, $id_usuario, $id_sucursal_usuario, $id_sucursal, $propiedad['id_producto'], $propiedad['cantidad_producto'] , $propiedad['total'] , $propiedad['precio_unidad']]);
                 
                 
-                /*VERIFICAR SI SE TRATA DE UN SERVICIO O NO Y SER DESCONTADO DEL INVENTARIO*/
+                //VERIFICAR SI SE TRATA DE UN SERVICIO O NO Y SER DESCONTADO DEL INVENTARIO
                 $contador=DB::select("select COUNT(*) as contador from servicio_cliente WHERE id_servicio='".$propiedad['id_producto']."'");
-                echo $contador[0]->contador;
+                //echo $contador[0]->contador;
                 if($contador[0]->contador==0)
                 {
-                    echo 'Entro al if';
+                    //echo 'Entro al if';
                     $cantidad_inventario = DB:: select("select cantidad  from inventario where id_producto='".$propiedad['id_producto']."' and id_sucursal='".$propiedad['id_sucursal']."'");
                 
                     $cantidad=$cantidad_inventario[0]->cantidad;
                     $cantidad_final =intval($cantidad)- intval($propiedad['cantidad_producto']);
                     $actualizar = DB::update('UPDATE inventario SET cantidad='.$cantidad_final.' WHERE id_producto=? AND id_sucursal=?', [$propiedad['id_producto'],$propiedad['id_sucursal']]);    
                 }
-                echo 'No entro al if';
+                //echo 'No entro al if';
                 
             }
             if($id_metodo_pago==3)
@@ -138,7 +108,16 @@ select inventario.id_producto as id_producto, productos_llantimax.nombre as nomb
                 
                 
             }
-            echo 'Venta realizada';
+            $sat="";
+            if($factura==0){
+                $sat="no";
+            }
+            else
+            {
+                $sat="si";
+            }
+            
+		   echo $sat;
             DB::commit();
         }catch (Exception $e){
                 echo 'Ha ocurrido un error!';

@@ -17,7 +17,7 @@
     <div class="page-header">
         <h1 class="page-title text-primary-d2">
             <i class="fas fa-list-alt text-dark-l3 mr-1"></i>
-            Creditos
+            Créditos
             <!--<small class="page-info text-secondary-d2">
                 <i class="fa fa-angle-double-right text-80"></i>
                 extended tables plugin
@@ -72,7 +72,7 @@
                                         </label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input type="number" class="form-control col-sm-8 col-md-10" name="monto" id="monto" required>
+                                        <input type="number" class="form-control col-sm-8 col-md-10" name="monto" id="monto" min="0.01" max="999999999.00" step="any" lang="en" required>
                                         <input id="new_id_credito" name="id_credito" type="hidden">
                                         <input id="new_id_cliente" name="id_cliente" type="hidden">
                                     </div>
@@ -253,22 +253,22 @@
                                                     <div class="row mt-4">
 
                                                         <div class="col-10 col-sm-5 text-dark-l1 text-90 order-first order-sm-last" style="padding-left: 30px; padding-right: 0px;">
-                                                            <div class="row my-2 " >
+                                                            <div class="row my-2 ">
                                                                 <div class="col-6 text-left">
                                                                     SubTotal
                                                                 </div>
                                                                 <div class="col-5 align-content-center" id="subtotal">
-                                                                    
+
                                                                 </div>
                                                             </div>
 
-                                                            <div class="row my-2" >
-                                                                <div class="col-6 text-left" >
+                                                            <div class="row my-2">
+                                                                <div class="col-6 text-left">
                                                                     Comisión (3%)
                                                                 </div>
 
-                                                                <div class="col-5 align-content-center" id="total_extra" >
-                                                                    
+                                                                <div class="col-5 align-content-center" id="total_extra">
+
                                                                 </div>
                                                             </div>
 
@@ -405,7 +405,7 @@
                 liquidado = '<span class="badge badge-sm bgc-green-d1 text-white pb-1 px-25">Liquidado</span>';
             }
 
-            var monto_deber = parseInt(objeto.total_venta) - parseInt(objeto.monto);
+            var monto_deber = parseFloat(objeto.total_venta) - parseFloat(objeto.monto);
 
             var a = numeral(objeto.monto);
             var b = a.format('$0,0.00');
@@ -428,7 +428,7 @@
                 "telefono": objeto.telefono,
                 "correo": objeto.correo_electronico,
                 "fecha_venta": objeto.fecha_venta,
-                "tv":objeto.total_venta,
+                "tv": objeto.total_venta,
                 "abonar": boton_comprar
             }, );
             //arr.push(tmp);
@@ -634,7 +634,7 @@
             //var eliminar = "'" + row.id_llanta + "'";
             //modalDetalle_'.$credito-> id_venta.'_'.$credito->id_credito.
             return '<div class="action-buttons">\
-            <button class="text-blue mx-1" data-target="#modalDetalle" data-tv="'+row.tv+'" data-id="' + row.id_credito + '" data-venta="' + row.id_venta + '"  data-suc="' + row.sucursal_usuario + '" data-nombrec="' + row.nombre_cliente + '" data-telefono="' + row.telefono + '" data-total="' + row.total_venta + '" data-correo="' + row.correo + '" data-fecha="' + row.fecha_venta + '" data-toggle="modal">' +
+            <button class="text-blue mx-1" data-target="#modalDetalle" data-tv="' + row.tv + '" data-id="' + row.id_credito + '" data-venta="' + row.id_venta + '"  data-suc="' + row.sucursal_usuario + '" data-nombrec="' + row.nombre_cliente + '" data-telefono="' + row.telefono + '" data-total="' + row.total_venta + '" data-correo="' + row.correo + '" data-fecha="' + row.fecha_venta + '" data-toggle="modal">' +
                 '<i class="fa fa-search-plus text-105"></i>' +
                 '</button>' +
                 // '<a class="text-success mx-1" href="#">\
@@ -678,37 +678,7 @@
     })
 
 </script>
-<script type="text/javascript">
-    function enviar_datos() {
-        var nombre = document.getElementById("nombre").value;
-        var sucursal = document.getElementById("sucursal").value;
-        var telefono = document.getElementById("telefono").value;
-        var correo = document.getElementById("correo").value;
-        //var habitual = document.getElementById("habitual").value;
 
-        let habitual = $('input[name="habitual"]:checked').val();
-
-        var token = '{{csrf_token()}}';
-        var data = {
-            nombre: nombre,
-            sucursal: sucursal,
-            telefono: telefono,
-            correo: correo,
-            habitual: habitual,
-            _token: token
-        };
-
-        $.ajax({
-            type: "POST",
-            url: "/agregar_clientes",
-            data: data,
-            success: function(msg) {
-                location.href = "/mostrar_clientes"
-            }
-        });
-    }
-
-</script>
 
 <script type="text/javascript">
     $('#eliminarModal').on('show.bs.modal', function(event) {
@@ -744,6 +714,7 @@
 </script>
 
 <script type="text/javascript">
+    var rowIdx = 0;
     $('#modalDetalle').on('show.bs.modal', function(event) {
         /RECUPERAR METADATOS DEL BOTÓN/
         var button = $(event.relatedTarget)
@@ -755,7 +726,7 @@
         var correo = button.data('correo')
         var fecha_venta = button.data('fecha')
         var total_venta = button.data('total')
-        var tv=button.data('tv')
+        var tv = button.data('tv')
         var llenado = '';
         var llenado2 = '';
         var datos = @json($detalles);
@@ -806,40 +777,73 @@
                 var b = a.format('$0,0.00');
 
 
-                llenado2 += '<tr >' +
+                /*llenado2 += '<tr >' +
                     '<td >' + objeto.id_abono_credito + '</td>' +
                     '<td >' + objeto.id_credito + '</td>' +
                     '<td >' + objeto.fecha + '</td>' +
                     '<td >' + b + '</td>' +
                     '<td >' + objeto.comentario + '</td>' +
+                    
+                    '</tr>';*/
+               llenado2+= `<tr id="R${++rowIdx}" data-id_abono="${objeto.id_abono_credito}" data-id_credito="${objeto.id_credito}" data-fecha="${objeto.fecha}" data-pago="${objeto.monto}"  data-comentario="${objeto.comentario}" ">` +
+                    '<td data-th="Producto"><span class="bt-content">' + objeto.id_abono_credito + '</span></td>' +
+                    '<td data-th="Producto"><span class="bt-content">' + objeto.id_credito + '</span></td>' +
+                     '<td data-th="Producto"><span class="bt-content">' + objeto.fecha + '</span></td>' +
+                    '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input class="col-9" style="padding-left:0px;" type="number" min="0.01" max="999999999.00" step="any" lang="en" id="cant" name="cant" value="' + objeto.monto + '" ></div></span></td>' +
+                    '<td data-th="Producto"><span class="bt-content">' + objeto.comentario + '</span></td>' +
                     '</tr>';
             }
         });
         console.log(llenado);
         document.getElementById('detalles_abonos').innerHTML = "";
         document.getElementById('detalles_abonos').innerHTML = llenado2;
-        
+
         var comision = parseInt(tv) * 0.03;
-        comision=comision.toFixed(2);
-        var subtotal=parseInt(tv)- (parseInt(tv)*0.03);
-        
-         var a = numeral(subtotal);
-            var b = a.format('$0,0.00');
-            var c = numeral(comision);
-            var d = c.format('$0,0.00');
-        
+        comision = comision.toFixed(2);
+        var subtotal = parseInt(tv) - (parseInt(tv) * 0.03);
+
+        var a = numeral(subtotal);
+        var b = a.format('$0,0.00');
+        var c = numeral(comision);
+        var d = c.format('$0,0.00');
+
         document.getElementById("subtotal").innerHTML = "";
-        document.getElementById("subtotal").innerHTML = '<span class="text-120 text-secondary-d3 float-left" >'+
-                                                                    b +  
-                                                                    '</span>';
+        document.getElementById("subtotal").innerHTML = '<span class="text-120 text-secondary-d3 float-left" >' +
+            b +
+            '</span>';
 
         document.getElementById('total_extra').innerHTML = "";
-        document.getElementById('total_extra').innerHTML = '<span class="text-120 text-secondary-d3 float-left" >'+
-                                                                            d+
-                                                                        '</span>';
+        document.getElementById('total_extra').innerHTML = '<span class="text-120 text-secondary-d3 float-left" >' +
+            d +
+            '</span>';
 
 
 
+    });
+    
+    /*Actualizar fila al cambiar valor del input cantidad*/
+
+    $('#detalles_abonos').on('change', '#cant', function(index) {
+       
+        $(this).parents("tr").each(function(index2) {
+            var id_abono = $(this).attr("data-id_abono");
+            var id_credito = $(this).attr("data-id_credito");
+            var data_fecha = $(this).attr("data-fecha");
+            var data_pago = $(this).attr("data-pago");
+            var data_comentario = $(this).attr("data-comentario");
+            
+            alert(id_abono);
+
+            $(this).html("");
+            var tr = '<td data-th="Producto"><span class="bt-content">' + objeto.id_abono_credito + '</span></td>' +
+                    '<td data-th="Producto"><span class="bt-content">' + objeto.id_credito + '</span></td>' +
+                     '<td data-th="Producto"><span class="bt-content">' + objeto.fecha + '</span></td>' +
+                    '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input class="col-9" style="padding-left:0px;" type="number" min="0.01" max="999999999.00" step="any" lang="en" id="cant" name="cant" value="' + objeto.monto + '" ></div></span></td>' +
+                    '<td data-th="Producto"><span class="bt-content">' + objeto.comentario + '</span></td>' +
+            $(this).attr('data-pago', data_pago);
+            $(this).append(tr);
+
+        });
     });
 
 </script>
@@ -890,7 +894,52 @@
                 success: function(msg) {
 
                     alert(msg);
-                    location.href = "/mostrar_creditos";
+                    if (msg === "Monto ingresado excede el monto a deber") {
+                        $.aceToaster.add({
+                            placement: 'br',
+                            body: "<div class='p-3 m-2 d-flex'>\
+                         <span class='align-self-center text-center mr-3 py-2 px-1 border-1 bgc-danger radius-round'>\
+                            <i class='fa fa-times text-180 w-4 text-white mx-2px'></i>\
+                         </span>\
+                         <div>\
+                            <h4 class='text-dark-tp3'>Error</h4>\
+                            <span class='text-dark-tp3 text-110'>"+msg+".</span>\
+                         </div>\
+                        </div>\
+                        <button data-dismiss='toast' class='btn text-grey btn-h-light-danger position-tr mr-1 mt-1'><i class='fa fa-times'></i></button>",
+
+                            width: 480,
+                            delay: 5000,
+
+                            close: false,
+
+                            className: 'shadow border-none radius-0 border-l-4 brc-danger',
+
+                            bodyClass: 'border-0 p-0',
+                            headerClass: 'd-none'
+                        })
+                    } else {
+                        $.aceToaster.add({
+                            placement: 'rc',
+                            body: "<p class='p-3 mb-0 text-center text-white'>\
+                                            <span class='d-inline-block mb-3 border-2 bgc-white radius-round p-25'>\
+                                            <i class='fa fa-check fa-2x mx-1px text-success'></i>\
+                                            </span><br />\
+                                            <span class='text-125'>" + msg + "</span>\
+                                            </p>\
+                                            <button data-dismiss='toast' class='close position-tr mt-1 mr-2 text-white'>&times;</button>\ ",
+                            width: 360,
+                            delay: 4000,
+                            close: false,
+                            className: 'bgc-success-d2 shadow ',
+                            bodyClass: 'border-0 p-0',
+                            headerClass: 'd-none',
+                            progress: 'position-bl bgc-white-tp4 py-2px m-1px',
+                            progressReverse: true
+                        })
+                        location.href = "/mostrar_creditos";
+                    }
+
                 }
             });
 

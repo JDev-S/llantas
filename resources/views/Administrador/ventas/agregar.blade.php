@@ -936,11 +936,92 @@
                             url: "/insertar_venta",
                             data: data,
                             success: function(msg) {
-
                                 console.log(msg);
-                                location.href = "/mostrar_venta";
+                               console.log( typeof(msg));
+                                console.log(msg === "si");
+                                if (msg === "si") {
+                                    $.aceToaster.add({
+                                        placement: 'rc',
+                                        body: "<p class='p-3 mb-0 text-center text-white'>\
+                                            <span class='d-inline-block mb-3 border-2 bgc-white radius-round p-25'>\
+                                            <i class='fa fa-check fa-2x mx-1px text-success'></i>\
+                                            </span><br />\
+                                            <span class='text-125'>Venta realizada correctamente</span>\
+                                            </p>\
+                                            <button data-dismiss='toast' class='close position-tr mt-1 mr-2 text-white'>&times;</button>\ ",
+                                        width: 360,
+                                        delay: 4000,
+                                        close: false,
+                                        className: 'bgc-success-d2 shadow ',
+                                        bodyClass: 'border-0 p-0',
+                                        headerClass: 'd-none',
+                                        progress: 'position-bl bgc-white-tp4 py-2px m-1px',
+                                        progressReverse: true
+                                    })
+
+                                    var url = "https://www.sat.gob.mx/personas/factura-electronica";
+                                    window.open(
+                                        url,
+                                        '_blank' // <- This is what makes it open in a new window.
+                                    );
+                                    location.href = "/mostrar_venta";
+                                } else {
+                                    $.aceToaster.add({
+                                        placement: 'rc',
+                                        body: "<p class='p-3 mb-0 text-center text-white'>\
+                                            <span class='d-inline-block mb-3 border-2 bgc-white radius-round p-25'>\
+                                            <i class='fa fa-check fa-2x mx-1px text-success'></i>\
+                                            </span><br />\
+                                            <span class='text-125'>Venta realizada correctamente</span>\
+                                            </p>\
+                                            <button data-dismiss='toast' class='close position-tr mt-1 mr-2 text-white'>&times;</button>\ ",
+                                        width: 360,
+                                        delay: 4000,
+                                        close: false,
+                                        className: 'bgc-success-d2 shadow ',
+                                        bodyClass: 'border-0 p-0',
+                                        headerClass: 'd-none',
+                                        progress: 'position-bl bgc-white-tp4 py-2px m-1px',
+                                        progressReverse: true
+                                    })
+                                    //location.href = "/mostrar_venta";
+                                }
+
                             }
-                        });
+                        }).fail( function( jqXHR, textStatus, errorThrown ) {
+
+  if (jqXHR.status === 0) {
+
+    alert('Not connect: Verify Network.');
+
+  } else if (jqXHR.status == 404) {
+
+    alert('Requested page not found [404]');
+
+  } else if (jqXHR.status == 500) {
+
+    alert('Internal Server Error [500].');
+
+  } else if (textStatus === 'parsererror') {
+
+    alert('Requested JSON parse failed.');
+      alert(msg);
+
+  } else if (textStatus === 'timeout') {
+
+    alert('Time out error.');
+
+  } else if (textStatus === 'abort') {
+
+    alert('Ajax request aborted.');
+
+  } else {
+
+    alert('Uncaught Error: ' + jqXHR.responseText);
+
+  }
+
+});
                     } else {
                         $.aceToaster.add({
                             placement: 'br',
@@ -1253,15 +1334,15 @@
                 url: "/agregar_clientes",
                 data: data,
                 success: function(msg) {
-                    
-                     var clientes =  JSON.parse(msg);
+
+                    var clientes = JSON.parse(msg);
                     clientes.forEach(objeto => {
-                    
+
                         $('#cliente').append('<option  value="' + objeto.id_cliente + '" data-nombre="' + objeto.nombre_completo + '" data-suc="' + objeto.sucursal + '" data-telefono="' + objeto.telefono + '" data-correo="' + objeto.correo_electronico + '">' + objeto.nombre_completo + '</option>');
                         $("#cliente").selectpicker("refresh");
-                    
-                });
-                    
+
+                    });
+
                     $.aceToaster.add({
                         placement: 'rc',
                         body: "<p class='p-3 mb-0 text-center text-white'>\

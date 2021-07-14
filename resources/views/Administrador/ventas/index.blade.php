@@ -311,10 +311,13 @@
             var myNumeral = numeral(objeto.total_venta);
             var currencyString = myNumeral.format('$0,0.00');
             var factura = "";
-            if (objeto.factura = 1) {
+            var fact="";
+            if (objeto.factura === 1) {
                 factura = "Sí";
+                fact='<input type="checkbox" checked="true" disabled>';
             } else {
                 factura = "No";
+                fact='<input type="checkbox" disabled>';
             }
             arr.push({
                 //"id_productos_llantimax": '<button class="btn px-4 btn-info mb-1" data-target="#modalLlanta_' + objeto.id_productos_llantimax + '_' + objeto.sucursal + '" data-toggle="modal" type="button">' + objeto.id_productos_llantimax + '</button>',
@@ -327,6 +330,7 @@
                 "telefono": objeto.telefono,
                 "correo": objeto.correo_electronico,
                 "factura": factura,
+                "invoice":fact,
                 "total_venta": currencyString,
                 "metodo_pago": objeto.metodo_pago,
                 "fecha_venta": objeto.fecha_venta
@@ -384,12 +388,12 @@
                     align: 'center',
                     sortable: true
                 },
-                /*{
-                    field: 'sucursal',
-                    title: 'Sucursal',
+                {
+                    field: 'invoice',
+                    title: 'Factura',
                     align: 'center',
                     sortable: true
-                },*/
+                },
 
                 {
                     field: 'tools',

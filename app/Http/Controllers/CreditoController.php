@@ -30,18 +30,61 @@ class CreditoController extends Controller
         
         $fecha_venta= CreditoController::obtener_fecha_actual();
         $id_abono_credito = CreditoController::generar_folio();
-        
-         $ingresar = DB::insert('INSERT INTO abono_credito(id_abono_credito, id_credito, fecha, monto, comentario) VALUES (?,?,?,?,?)', [$id_abono_credito,$id_credito,$fecha_venta,$monto,$comentario]);
-        
         $suma_abonado=CreditoController::obtener_suma_montos($id_credito);
         $total_venta=CreditoController::obtener_total_venta($id_credito);
+        $status="";
+        /*
+        
+        SI MONTO A DEBER ES CERO
+         SI
+            YA LO PAGASTE NO MAMES
+         NO{
+        1.- VERIFICAR SI EL MONTO INGRESADO ES MAYOR AL MONTO A DEBER
+            1.1 SUMAR MONTO A DEBER
+            1.2 RECUPERAR MONTO INGRESA
+            1.3 SI EL MONTO INGRESADO ES MAYOR AL MONTO A DEBER
+                SI
+                    LO MANDAS AL CHORI
+                NO
+                    POS LO INSERTAS
+        }
+        
+        */
+        $monto_deber=floatval($total_venta)-floatval($suma_abonado);
+         if($monto>$monto_deber)
+         {
+             $status="Monto ingresado excede el monto a deber";
+         }
+        else
+        {
+            $ingresar = DB::insert('INSERT INTO abono_credito(id_abono_credito, id_credito, fecha, monto, comentario) VALUES (?,?,?,?,?)', [$id_abono_credito,$id_credito,$fecha_venta,$monto,$comentario]);   
+            $status="Abono realizado";
+            $suma_abonado_nuevo=CreditoController::obtener_suma_montos($id_credito);
+            $monto_deber_nuevo=floatval($total_venta)-floatval($suma_abonado_nuevo);
+            if($monto_deber_nuevo==0)
+            {
+                $query=DB::select("select id_venta from credito where id_credito='".$id_credito."'");
+                $id_venta=$query[0]->id_venta;
+                $actualizar = DB::update("UPDATE credito SET status_credito='Liquidado' WHERE id_credito=? AND id_venta=?", [$id_credito,$id_venta]);
+            }
+            else
+            {
+                $status=$status." Debe :".$monto_deber_nuevo;
+            }
+        }
+         /*
+        
+       
         if(intval($suma_abonado)==intval($total_venta))
         {
-            $query=DB::select("select id_venta from credito where id_credito='".$id_credito."'");
-            $id_venta=$query[0]->id_venta;
-            $actualizar = DB::update("UPDATE credito SET status_credito='Liquidado' WHERE id_credito=? AND id_venta=?", [$id_credito,$id_venta]);
+            
         }
-         echo 'Abono realizado';
+         echo 'Abono realizado';*/
+        echo $status;
+    }
+    
+    public function obtener_monto_credito($id_credito)
+    {
         
     }
     

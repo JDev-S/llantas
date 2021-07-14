@@ -111,7 +111,7 @@
                                         </select>
                                     </div>
                                     <div class="form-group col-md-1 ml-2">
-                                        <input class="form-control" min="1" step="1" type="number" placeholder="Precio" style="border-color:#2470BD" id="precio" name="precio" required>
+                                        <input class="form-control" min="0.01" max="999999999.00" step="any" lang="en" type="number" placeholder="Precio" style="border-color:#2470BD" id="precio" name="precio" required>
                                     </div>
                                 </div>
                             </form>

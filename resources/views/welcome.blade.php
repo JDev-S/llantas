@@ -289,7 +289,7 @@
                                         <li class="nav-item">
                                             <a href="/mostrar_creditos" class="nav-link">
                                                 <span class="nav-text">
-                                                    <span>Mostrar creditos</span>
+                                                    <span>Mostrar créditos</span>
                                                 </span>
                                             </a>
                                         </li>

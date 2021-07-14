@@ -72,7 +72,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">$</div>
                                     </div>
-                                    <input type="number" min='0' , step="any" class="form-control" id="precio" name="precio" placeholder="0.00" required>
+                                    <input type="number" min="0.01" max="999999999.00" step="any" lang="en" class="form-control" id="precio" name="precio" placeholder="0.00" required>
                                 </div>
                             </div>
                         </div>
@@ -128,7 +128,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">$</div>
                                     </div>
-                                    <input type="number" min='0.00' , step="any" class="form-control" id="update_precio" name="update_precio" placeholder="0.00" required>
+                                    <input type="number" min="0.01" max="999999999.00" step="any" lang="en" class="form-control" id="update_precio" name="update_precio" placeholder="0.00" required>
                                 </div>
                             </div>
                         </div>

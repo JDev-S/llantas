@@ -103,6 +103,25 @@
                                         <div class="card dcard mb-4">
                                             <div class="card-body px-4 px-lg-5">
                                                 <div class="mt-4">
+                                                    <div class="page-header border-0 mb-0">
+                                                        <h1 class="page-title text-dark-l3 text-115">
+                                                            <small class="page-info text-dark-m3">
+                                                            </small>
+                                                        </h1>
+                                                        <div class="page-tools">
+                                                            <div class="action-buttons">
+                                                                <input type="hidden" id="detalle_id" name="detalle_id">
+                                                                <a class="btn bg-white btn-light mx-1px text-95 shadow-sm" href="javascript:mostrar_ticket()" data-title="Print">
+                                                                    <i class="mr-1 fa fa-print text-primary text-120 w-2"></i>
+                                                                    Imprimir
+                                                                </a>
+                                                                <a class="btn bg-white btn-light mx-1px text-95 shadow-sm" href="javascript:mostrar_ticket()" data-title="PDF">
+                                                                    <i class="mr-1 far fa-file-pdf text-danger text-120 w-2"></i>
+                                                                    Exportar
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                     <h1 class="page-title text-dark-l3 text-115">
                                                         Detalle del pedido
                                                     </h1>
@@ -501,7 +520,7 @@
         var historial = @json($historial_pedidos);
         var modal = $(this)
 
-
+        modal.find('#detalle_id').val(id_pedido)
         datos.forEach(objeto => {
             if (objeto.id_pedido == id_pedido) {
                 //alert("hola");
@@ -664,6 +683,17 @@
         });
     }
 
+</script>
+<script type="text/javascript">
+function mostrar_ticket()
+{
+    var ticket=document.getElementById("detalle_id").value;
+     var url = '/exportar_pedido_sucursal/' + ticket;
+        window.open(
+            url,
+            '_blank' // <- This is what makes it open in a new window.
+        );
+}
 </script>
 @stop
 @stop
