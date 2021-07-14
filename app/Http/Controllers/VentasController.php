@@ -454,4 +454,26 @@ where pedido_proveedor.id_pedido="'.$ticket.'"');
         return $pdf->stream('ejemplo.pdf');
         //return view('/documentos/pedido_proveedor', //compact('ticket','nombre_usuario','sucursal_usuario','fecha_venta','pedidos_detalles','total_venta'));
     }
+    
+    function exportar_pedido_sucursal($ticket)
+    {   
+         $pedidos_solicitados=DB::select('select pedido.id_pedido,
+        suc_destino.id_sucursal as id_sucursal_destino,
+        suc_destino.sucursal as sucursal_destino,pedido.fecha,
+        suc_origen.id_sucursal as id_sucursal_origen,suc_origen.sucursal as sucursal_origen,status.id_status,status.status,usu_origen.id_usuario as id_usuario_origen, usu_origen.nombre_completo as nombre_usuario_origen,usu_destino.id_usuario as id_usuario_destino,usu_destino.nombre_completo as nombre_usuario_destino,sucu_usu_destino.id_sucursal as id_sucursal_usuario_destino,sucu_usu_destino.sucursal as nombre_sucursal_usuario_destino, sucu_usu_origen.id_sucursal as id_sucursal_usuario_origen, sucu_usu_origen.sucursal as nombre_sucursal_usuario_origen  from pedido inner join status on status.id_status=pedido.id_status inner join sucursal suc_origen on suc_origen.id_sucursal=pedido.id_origen inner join sucursal suc_destino on suc_destino.id_sucursal=pedido.id_destino inner join usuario usu_origen on usu_origen.id_usuario=pedido.id_usuario_distribuidor and usu_origen.id_sucursal=pedido.id_sucursal_origen inner join usuario usu_destino on usu_destino.id_usuario=pedido.id_usuario_solicitante and usu_destino.id_sucursal=pedido.id_sucursal_destino inner join sucursal sucu_usu_destino on sucu_usu_destino.id_sucursal=usu_destino.id_sucursal Inner join sucursal sucu_usu_origen on sucu_usu_origen.id_sucursal=usu_origen.id_sucursal where pedido.id_pedido="'.$ticket.'" order by pedido.fecha desc');
+        $fecha_pedido=$pedidos_solicitados[0]->fecha;
+        $nombre_solicitante=$pedidos_solicitados[0]->nombre_usuario_destino;
+        $sucursal_solicitante=$pedidos_solicitados[0]->nombre_sucursal_usuario_destino;
+        $nombre_distribuido=$pedidos_solicitados[0]->nombre_usuario_origen;
+        $sucursal_distribuidor=$pedidos_solicitados[0]->nombre_sucursal_usuario_origen;
+        
+         $historial_pedidos=DB::select('select * from historial_pedido inner join status on status.id_status=historial_pedido.id_status where historial_pedido.id_pedido="'.$ticket.'"');
+        $detalles_pedido_sucursal=DB::select('SELECT detalle_pedido.id_pedido, detalle_pedido.id_producto, productos_llantimax.nombre, detalle_pedido.cantidad, detalle_pedido.descripcion FROM detalle_pedido INNER JOIN productos_llantimax on productos_llantimax.id_productos_llantimax=detalle_pedido.id_producto where detalle_pedido.id_pedido="'.$ticket.'"');
+        
+        $pdf= \PDF::loadView('/documentos/pedido_sucursal', compact('ticket','fecha_pedido','nombre_solicitante','sucursal_solicitante','nombre_distribuido','sucursal_distribuidor','historial_pedidos','detalles_pedido_sucursal'));
+        $pdf->setPaper('A4', 'Portrait');//Portrait  Landscape
+        return $pdf->stream('ejemplo.pdf');
+        //return view('/documentos/pedido_sucursal', compact('ticket','fecha_pedido','nombre_solicitante','sucursal_solicitante','nombre_distribuido','sucursal_distribuidor','historial_pedidos','detalles_pedido_sucursal'));
+        
+    }
 }

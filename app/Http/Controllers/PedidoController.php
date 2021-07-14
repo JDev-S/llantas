@@ -261,7 +261,8 @@ class PedidoController extends Controller
         $query4="select* from status where id_status!=1 and id_status!=2";
         $solicitados=DB::select($query3);
         $aceptados=DB::select($query4);
-        return view('/Administrador/pedidos/sucursales/pedidos_solicitados',compact('pedidos_solicitados','detalles_pedido_sucursal','sucursal_usuario','solicitados','aceptados'));
+        $historial_pedidos=DB::select('select * from historial_pedido inner join status on status.id_status=historial_pedido.id_status');
+        return view('/Administrador/pedidos/sucursales/pedidos_solicitados',compact('pedidos_solicitados','detalles_pedido_sucursal','sucursal_usuario','solicitados','aceptados','historial_pedidos'));
     }
     
     public function obtener_historiales(Request $input)

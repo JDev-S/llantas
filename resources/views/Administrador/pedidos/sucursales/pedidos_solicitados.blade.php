@@ -79,13 +79,14 @@
     </div>
 </div>
 <!--FIN MODAL ACTUALIZAR STATUS-->
-<!--MODAL DETALLE PEDIDO-->
+<!--Modal detalle del producto-->
+
 <div class="modal fade modal-lg" id="modalDetalle" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header" style="background:#2470bd;">
                 <h5 class="modal-title" id="exampleModalLabel2" style="color:white;">
-                    DETALLE DEL PEDIDO
+                    DETALLES E HISTORIAL
                 </h5>
 
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -103,7 +104,7 @@
                                             <div class="card-body px-4 px-lg-5">
                                                 <div class="mt-4">
                                                     <h1 class="page-title text-dark-l3 text-115">
-                                                        Pedido
+                                                        Detalle del pedido
                                                     </h1>
                                                     <div class="table-responsive row  text-95 text-secondary-d3 py-25 border-y-2" style=" margin-right: 0px; margin-left: 0px;">
                                                         <table class="table table-striped table-borderless border-0 border-b-2 brc-default-l1">
@@ -113,13 +114,37 @@
                                                                     <th><b>Código del producto</b></th>
                                                                     <th><b>Cantidad</b></th>
                                                                     <th><b>Descripción</b></th>
+
                                                                 </tr>
                                                             </thead>
                                                             <tbody class="text-95" id="tbl_pedido" name="tbl_pedido">
+
                                                             </tbody>
                                                         </table>
                                                     </div>
                                                 </div>
+
+                                                <div class="mt-4">
+                                                    <h1 class="page-title text-dark-l3 text-115">
+                                                        Historial de mi pedido
+                                                    </h1>
+                                                    <div class="table-responsive row  text-95 text-secondary-d3 py-25 border-y-2" style=" margin-right: 0px; margin-left: 0px;">
+                                                        <table class="table table-striped table-borderless border-0 border-b-2 brc-default-l1">
+                                                            <thead class="bg-none " style="background-color:#309b74;">
+                                                                <tr class="text-white">
+                                                                    <th><b>Folio del pedido</b></th>
+                                                                    <th><b>Status</b></th>
+                                                                    <th><b>Fecha</b></th>
+                                                                    <th><b>Descripción</b></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody class="text-95" id="tbl_historial" name="tbl_historial">
+
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -471,7 +496,9 @@
         var id_pedido = button.data('id')
         /*ASIGNAR VALOR A LOS METADATOS DEL MODAL*/
         var llenado = '';
+        var llenado2 = '';
         var datos = @json($detalles_pedido_sucursal);
+        var historial = @json($historial_pedidos);
         var modal = $(this)
 
 
@@ -487,6 +514,37 @@
         });
         console.log(llenado);
         document.getElementById('tbl_pedido').innerHTML = llenado;
+
+        historial.forEach(objeto => {
+            if (objeto.id_pedido == id_pedido) {
+                var status = "";
+                if (objeto.status == "Solicitado") {
+                    status = '<span class="badge badge-sm bgc-info-d1 text-white pb-1 px-25">Solicitado</span>';
+                } else
+                if (objeto.status == "Aceptado") {
+                    status = '<span class="badge badge-sm bgc-green-d1 text-white pb-1 px-25">Aceptado</span>';
+                } else
+                if (objeto.status == "Rechazado") {
+                    status = '<span class="badge badge-sm bgc-red-d1 text-white pb-1 px-25">Rechazado</span>';
+                } else
+                if (objeto.status == "En transito") {
+                    status = '<span class="badge badge-sm bgc-warning-d1 text-white pb-1 px-25">En transito</span>';
+                } else
+                if (objeto.status == "Entregado") {
+                    status = '<span class="badge badge-sm bgc-green-d1 text-white pb-1 px-25">Entregado</span>';
+                }
+
+                llenado2 += '<tr> <td>' + objeto.id_pedido + '</td>' +
+                    '<td>' + status + '</td>' +
+                    '<td>' + objeto.fecha_evento + '</td>' +
+                    '<td>' + objeto.descripcion_evento + '</td>' +
+                    '</tr>';
+            }
+        });
+        console.log(llenado2);
+        document.getElementById('tbl_historial').innerHTML = llenado2;
+
+
     });
 
 </script>
