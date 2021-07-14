@@ -57,6 +57,7 @@
 <div class="page-content container container-plus">
     <div class="page-header">
         <h1 class="page-title text-primary-d3">
+            <i class="fas fa-file-invoice-dollar text-dark-l3 mr-1"></i>
             Nuevo pedido
             <!--<small class="page-info text-secondary-d2">
                 <i class="fa fa-angle-double-right text-80"></i>

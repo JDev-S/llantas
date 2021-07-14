@@ -4,7 +4,8 @@
     <!-- page header and toolbox -->
     <div class="page-header pb-2">
         <h1 class="page-title text-primary-d2 text-150">
-            Dashboard
+            <i class="fas fa-home text-dark-l3 mr-1"></i>
+            Principal
             <small class="page-info text-secondary-d2 text-nowrap">
 
                 <p class="text-justify"> ¡Bienvenido! Este es el panel principal del sistema.</p>

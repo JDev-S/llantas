@@ -6,6 +6,7 @@
 <div class="page-content container container-plus">
     <div class="page-header">
         <h1 class="page-title text-primary-d2">
+            <i class="fas fa-th-list text-dark-l3 mr-1"></i>
             Inventario
             <!--<small class="page-info text-secondary-d2">
                 <i class="fa fa-angle-double-right text-80"></i>
@@ -259,23 +260,23 @@
             </div>
             <div class="modal-body bgc-white-tp2 p-md-4 pl-md-5">
                 <form id="eliminar_inventario_form">
-                <div class="d-flex align-items-top mr-2 mr-md-5">
-                    <i class="fas fa-exclamation-triangle fa-2x text-orange-d2 float-rigt mr-4 mt-1"></i>
-                    <input type="hidden" class="form-control" id="delete_id" name="delete_id">
-                    <input type="hidden" class="form-control" id="delete_id_sucursal" name="delete_id_sucursal">
-                    <input type="hidden" class="form-control" id="delete_cantidad" name="delete_cantidad">
-                    <div class="text-secondary-d2 text-105">
-                        Cantidad de producto a eliminar?
-                        <input type="number" id="delete_cant_nueva" name="delete_cant_nueva" placeholder="0" min="1" step="1" required>
+                    <div class="d-flex align-items-top mr-2 mr-md-5">
+                        <i class="fas fa-exclamation-triangle fa-2x text-orange-d2 float-rigt mr-4 mt-1"></i>
+                        <input type="hidden" class="form-control" id="delete_id" name="delete_id">
+                        <input type="hidden" class="form-control" id="delete_id_sucursal" name="delete_id_sucursal">
+                        <input type="hidden" class="form-control" id="delete_cantidad" name="delete_cantidad">
+                        <div class="text-secondary-d2 text-105">
+                            Cantidad de producto a eliminar?
+                            <input type="number" id="delete_cant_nueva" name="delete_cant_nueva" placeholder="0" min="1" step="1" required>
+                        </div>
                     </div>
-                </div>
                 </form>
             </div>
             <div class="modal-footer bgc-white-tp2 border-0">
                 <button type="button" class="btn px-4 btn-light-grey" data-dismiss="modal">
                     No
                 </button>
-                <button type="button" class="btn px-4 btn-danger" id="id-danger-yes-btn" onclick="eliminar_producto()" >
+                <button type="button" class="btn px-4 btn-danger" id="id-danger-yes-btn" onclick="eliminar_producto()">
                     Si
                 </button>
             </div>
@@ -391,59 +392,59 @@
             </div>
             <div class="modal-body">
                 <form id="agregar_inventario_form">
-                <div class="card-body p-0">
-                    <div class="card acard mt-2 mt-lg-3">
-                        <div class="card-body px-3 pb-1">
-                            <div class="form-group row">
-                                <?php
+                    <div class="card-body p-0">
+                        <div class="card acard mt-2 mt-lg-3">
+                            <div class="card-body px-3 pb-1">
+                                <div class="form-group row">
+                                    <?php
                         $query2 = "select * from sucursal ";
                         $data2=DB::select($query2);      
                         ?>
-                                <div class="col-sm-3 col-form-label text-sm-right pr-0">
-                                    <label for="id-form-field-1" class="mb-0">
-                                        Sucursal
-                                    </label>
+                                    <div class="col-sm-3 col-form-label text-sm-right pr-0">
+                                        <label for="id-form-field-1" class="mb-0">
+                                            Sucursal
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <select class="form-control col-sm-8 col-md-10" id="sucursal_nueva" name="sucursal" onChange="javascript:obtener_valor()" required>
+
+                                            <option value="0">Elige una sucursal</option>
+                                            @foreach($data2 as $item)
+                                            <option value="{{ $item->id_sucursal }}"> {{ $item->sucursal }} </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="col-sm-9">
-                                    <select class="form-control col-sm-8 col-md-10" id="sucursal_nueva" name="sucursal" onChange="javascript:obtener_valor()" required>
 
-                                        <option value="0">Elige una sucursal</option>
-                                        @foreach($data2 as $item)
-                                        <option value="{{ $item->id_sucursal }}"> {{ $item->sucursal }} </option>
-                                        @endforeach
-                                    </select>
+
+                                <div class="form-group row">
+
+
+                                    <div class="col-sm-3 col-form-label text-sm-right pr-0">
+                                        <label for="id-form-field-1" class="mb-0">
+                                            Productos
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <select class="form-control col-sm-8 col-md-10" id="mostrar_productos" name="producto" required>
+
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-
-
-                            <div class="form-group row">
-
-
-                                <div class="col-sm-3 col-form-label text-sm-right pr-0">
-                                    <label for="id-form-field-1" class="mb-0">
-                                        Productos
-                                    </label>
+                                <div class="form-group row">
+                                    <div class="col-sm-3 col-form-label text-sm-right pr-0">
+                                        <label for="id-form-field-1" class="mb-0">
+                                            Cantidad
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control col-sm-8 col-md-10" id="nueva_cantidad" name="nueva_cantidad" required>
+                                    </div>
                                 </div>
-                                <div class="col-sm-9">
-                                    <select class="form-control col-sm-8 col-md-10" id="mostrar_productos"  name="producto" required>
 
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-sm-3 col-form-label text-sm-right pr-0">
-                                    <label for="id-form-field-1" class="mb-0">
-                                        Cantidad
-                                    </label>
-                                </div>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control col-sm-8 col-md-10" id="nueva_cantidad" name="nueva_cantidad" required>
-                                </div>
-                            </div>
-
-                        </div><!-- /.card-body -->
+                            </div><!-- /.card-body -->
+                        </div>
                     </div>
-                </div>
                 </form>
             </div>
 
@@ -515,7 +516,7 @@
 
     function enviar_datos() {
         if ($("#agregar_inventario_form")[0].checkValidity()) {
-             event.preventDefault();
+            event.preventDefault();
             var sucursal = document.getElementById("sucursal_nueva").value;
             var producto = document.getElementById("mostrar_productos").value;
             var cantidad = document.getElementById("nueva_cantidad").value;
@@ -539,10 +540,9 @@
                 }
             });
 
-        } else 
-            {
-                $("#agregar_inventario_form")[0].reportValidity();    
-            }
+        } else {
+            $("#agregar_inventario_form")[0].reportValidity();
+        }
 
     }
 
@@ -1014,8 +1014,7 @@
 
 <script type="text/javascript">
     function eliminar_producto() {
-        if ($("#eliminar_inventario_form")[0].checkValidity())
-        {
+        if ($("#eliminar_inventario_form")[0].checkValidity()) {
             event.preventDefault();
             var id_producto = document.getElementById("delete_id").value;
             var id_sucursal = document.getElementById("delete_id_sucursal").value;
@@ -1042,11 +1041,10 @@
                     location.href = "/mostrar_inventario";
                 }
             });
-        }else
-        {
+        } else {
             $("#eliminar_inventario_form")[0].reportValidity();
         }
-       
+
     }
 
 </script>

@@ -172,3 +172,7 @@ Route::get('/exportar_ticket/{ticket?}','VentasController@exportar_ticket')->nam
 Route::get('/exportar_historial_abono/{ticket?}','VentasController@exportar_historial_abono')->name('exportar_historial_abono');
 /*IMPRIMIR VENTA*/
 Route::get('/imprimir_venta/{input?}','VentasController@imprimir_venta')->name('imprimir_venta');
+/*IMPRIMIR PEDIDO PROVEEDOR*/
+Route::get('/exportar_pedido_proveedor/{ticket?}','VentasController@exportar_pedido_proveedor')->name('exportar_pedido_proveedor');
+/*IMPRIMIR PEDIDO SUCURSAL*/
+Route::get('/exportar_pedido_sucursal/{ticket?}','VentasController@exportar_pedido_sucursal')->name('exportar_pedido_sucursal');

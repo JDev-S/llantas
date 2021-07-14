@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Ticket_{{$id_venta}}</title>
+    <title>Ticket_{{$ticket}}</title>
 
     <style>
         .invoice-box {
@@ -40,6 +40,7 @@
         .invoice-box table tr.top table td.title {
             font-size: 45px;
             line-height: 45px;
+
             color: #333;
         }
 
@@ -108,7 +109,7 @@
 		<div class="invoice-box table">
 			<table cellpadding="0" cellspacing="0">
 				<tr class="top">
-					<td colspan="4">
+					<td colspan="6">
 						<table>
 							<tr>
 								<td class="title" style="padding-bottom: 0px;">
@@ -116,7 +117,7 @@
 								</td>
 
 								<td style="text-align:right">
-									<b>Folio #:</b>'.$id_venta.'<br />
+									<b>Folio #:</b>'.$ticket.'<br />
 									<b>Fecha:</b> '.$fecha_venta.'<br />
 									
 								</td>
@@ -132,91 +133,47 @@
 								<td style="padding-bottom: 30px;">
 									LLANTIMAX<br />
 									<b>Sucursal:</b> 
-									'.$sucursal.'
+									'.$sucursal_usuario.'
                                     <br />
-									<b>Método pago:</b> 
-									'.$metodo_pago.'
-                                     <br />
-								</td>
-
-								<td style="text-align:right" >
-								<b>Nombre cliente:</b>
-									'.$cliente.'<br />
-                                    <b>Correo eléctronico:</b>
-									'.$correo.'
 								</td>
 							</tr>
 						</table>
 					</td>
 				</tr>
 				<tr class="heading" >
-					<td style="text-align:center;">Código</td>
+                    <td style="text-align:center;">Nombre proveedor</td>
+                    <td style="text-align:center;">Nombre empresa</td>
+					<td style="text-align:center;">Código producto</td>
 					<td style="text-align:center;">Cantidad</td>
                     <td style="text-align:center;">Precio</td>
 					<td style="text-align:center;">Total</td>
 				</tr>';
                 
-                foreach($detalles as $detalle)
+                foreach($pedidos_detalles as $propiedad)
                 {
-                    $valor2=$detalle->precio_unidad;
+                    $valor2=$propiedad->precio_unidad;
                                     if ($valor2<0) return "-".formato_moneda(-$valor2);
                     //echo '$' . number_format($valor1, 2);
                     
-                    $valor=$detalle->total;
+                    $valor=$propiedad->total;
                     if ($valor<0) return "-".formato_moneda(-$valor);
                         //echo '$' . number_format($valor1, 2);
 				echo '<tr class="item">
-					<td style="text-align:center;">'.$detalle->nombre.'</td>
-                    <td style="text-align:center;">'.$detalle->cantidad_producto.'</td>
+                    <td style="text-align:center;">'.$propiedad->nombre_contacto.'</td>
+                    <td style="text-align:center;">'.$propiedad->nombre_empresa.'</td>
+					<td style="text-align:center;">'.$propiedad->nombre.'</td>
+                    <td style="text-align:center;">'.$propiedad->cantidad.'</td>
                     <td style="text-align:center;"> $' .number_format($valor2, 2).'</td>
 					<td style="text-align:center;"> $' . number_format($valor, 2).'</td>
 				</tr>';
                 }
-
-                     $valor1=  intval($total_venta)-(intval($total_venta)*0.03);
-                    if ($valor1<0) return "-".formato_moneda(-$valor1);
-                    echo
-                    '<tr class="total">
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td style="text-align:center;font-size:12px;padding-bottom: 0px;"> 
-                            <table>
-                            <tr>
-                                <td width="40%" style="padding-bottom: 0px;"><b>Subtotal:</b></td>
-                                <td style="padding-bottom: 0px;">' ;
-
-                                    echo '$'.number_format($valor1, 2).
-                                '</td>
-                            </tr>
-                            </table>
-                          </td>
-				    </tr>';
                     
-                     $valor2=  intval($total_venta)*0.03;
-                    if ($valor2<0) return "-".formato_moneda(-$valor2);
-                    echo
-                    '<tr class="total">
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td style="text-align:center;font-size:12px;padding-top: 0px;padding-bottom: 0px;"> 
-                            <table>
-                            <tr>
-                                <td width="40%" style="padding-top: 0px;padding-bottom: 0px;"><b>Comisión(3%):</b></td>
-                                <td style="padding-top: 0px;padding-bottom: 0px;" >' ;
-
-                                    echo '$'.number_format($valor2, 2).
-                                '</td>
-                            </tr>
-                            </table>
-                          </td>
-				    </tr>';
-               $valor1=  $total_venta;
+                    $valor1=  $total_venta;
                     if ($valor1<0) return "-".formato_moneda(-$valor1);
                     echo
                     '<tr class="total">
                         <td></td>
+                        <td></td><td></td>
                         <td></td>
                         <td></td>
                         <td style="text-align:center; font-size:12px; padding-top: 0px;"> 
@@ -232,36 +189,7 @@
                           </td>
 				    </tr>
 			</table>
-            <table cellpadding="0" cellspacing="0">
-            <tr  style="text-align:left;">
-					<td style="text-align:left;"><b>Abonos </b></td>
-					
-				</tr>
-
-				<tr class="heading">
-					<td style="text-align:center;">Folio del abono</td>
-					<td style="text-align:center;">Folio de crédito</td>
-                    <td style="text-align:center;">Fecha</td>
-					<td style="text-align:center;">Monto</td>
-                    <td style="text-align:center;">Comentario</td>
-				</tr>';
-                 foreach($abonos as $abono)
-                {
-                    
-                    $valor=$abono->monto;
-                    if ($valor<0) return "-".formato_moneda(-$valor);
-                        //echo '$' . number_format($valor1, 2);
-				echo '<tr class="item">
-					<td style="text-align:center;">'.$abono->id_abono_credito.'</td>
-                    <td style="text-align:center;">'.$abono->id_credito.'</td>
-                    <td style="text-align:center;">' .$abono->fecha.'</td>
-					<td style="text-align:center;"> $' . number_format($valor, 2).'</td>
-                    <td style="text-align:center;">' .$abono->comentario.'</td>
-				</tr>';
-                }
-            echo'</table>
 		</div>
 	</body>';
     ?>
-
 </html>

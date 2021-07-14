@@ -1,6 +1,58 @@
 @extends('welcome')
 @section('contenido')
 @section('styles')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/basictable@2.0.2/dist/css/basictable.min.css">
+<style type="text/css">
+    .dropdown-toggle::after {
+        display: inline-block;
+        margin-left: 0.255em;
+        vertical-align: 0.255em;
+        content: "";
+        border-top: 0.3em solid;
+        border-right: 0.3em solid transparent;
+        border-bottom: 0px;
+        border-left: 0.3em solid transparent;
+        color: white;
+    }
+
+    placeholder.btn-danger,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-danger:active,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-danger:focus,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-danger:hover,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-dark,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-dark:active,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-dark:focus,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-dark:hover,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-info,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-info:active,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-info:focus,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-info:hover,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-primary,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-primary:active,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-primary:focus,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-primary:hover,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-secondary,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-secondary:active,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-secondary:focus,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-secondary:hover,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-success,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-success:active,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-success:focus,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-success:hover {
+        color: white;
+    }
+
+    .btn-primary {
+        background-color: #2470BD;
+        border-color: #2470BD;
+    }
+
+    .table-responsive {
+        max-height: 358px;
+    }
+
+</style>
 <link rel="stylesheet" type="text/css" href="\npm\bootstrap-table@1.18.3\dist\bootstrap-table.min.css">
 <style>
     .table .thead-blue th {
@@ -24,48 +76,58 @@
 <link rel="stylesheet" type="text/css" href="\npm\eonasdan-bootstrap-datetimepicker@4.17.49\build\css\bootstrap-datetimepicker.min.css">
 <link rel="stylesheet" type="text/css" href="\npm\dropzone@5.9.2\dist\dropzone.min.css">
 @stop
-<div role="main" class="main-content">
-
-    <div class="page-content container container-plus">
-        <div class="card acard mt-2 mt-lg-3">
-            <div class="card-header">
-                <h3 class="card-title text-125 text-primary-d2">
-                    <i class="far fa-edit text-dark-l3 mr-1"></i>
-                    Visualizar reportes
-                </h3>
-            </div>
-
-            <div class="card-body px-3 pb-1">
-                <form id="reporte_form">
-                    <div class="form-group row">
-                        <div class="col-sm-3 col-form-label text-sm-right pr-0">
-                            Fecha de inicio
-                        </div>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control col-md-3 d-inline-block mb-1 mb-md-0" id="id-date-1" name="id-date-1" required>
-                            <label class=" col-sm-3 col-form-label text-sm-right pr-3"> Fecha final</label>
-                            <input type="text" class="form-control col-md-3 d-inline-block mb-1 mb-md-0" id="id-date-2" name="id-date-2" required>
-                        </div>
-
-                    </div>
-                </form>
-
-                <div class="mt-5 border-t-1 bgc-secondary-l4 brc-secondary-l2 py-35 mx-n25">
-                    <div class="offset-md-3 col-md-9 text-nowrap">
-                        <button class="btn btn-info btn-bold px-4" type="submit" onclick="mostrar_ventas();">
-                            <i class="fa fa-check mr-1"></i>
-                            Visualizar.
-                        </button>
-
-                        <button class="btn btn-outline-lightgrey btn-bgc-white btn-bold ml-2 px-4" type="reset" onclick="limpiar();">
-                            <i class="fa fa-undo mr-1"></i>
-                            Limpiar campos.
-                        </button>
+<div class="page-content container container-plus">
+    <div class="page-header">
+        <h1 class="page-title text-primary-d3">
+            <i class="fas fa-file-pdf text-dark-l3 mr-1"></i>
+            Reportes de ventas
+            <!--<small class="page-info text-secondary-d2">
+                <i class="fa fa-angle-double-right text-80"></i>
+                extended tables plugin
+            </small>-->
+        </h1>
+    </div>
+    <div class="card bcard mt-4">
+        <div class="card-body p-0 border-x-0 border-y-0 border-b-0 brc-default-m4 radius-0">
+            <div class="mt-0 mt-lg-0 card dcard h-auto overflow-hidden shadow border-t-0 ml-0 mr-0">
+                <div class="col-md-12">
+                    <div class="card-header t-border-1 mb-0 mt-2">
+                        <h5 class="text-success-d4 mb-0">
+                            Llena el formulario:
+                        </h5>
                     </div>
                 </div>
+                <div class="card-body p-0 table-responsive-xl mt-4 mb-4">
+                    <div class="col-md-12 mt-2">
+                        <div class="row mb-2 ">
+                            <form id="reporte_form" class=" form-row col-md-12 justify-content-center">
+                                <div class="form-row col-md-12 justify-content-center">
+                                    <div class="form-group col-md-2 ml-2 justify-content-center">
+                                        
+                                        <input type="text" class="form-control " id="id-date-1" name="id-date-1" required placeholder="Fecha Inicial"> 
+                                    </div>
 
-            </div><!-- /.card-body -->
-        </div><!-- /.card -->
+                                    <div class="form-group col-md-2 ml-2 justify-content-center">
+                                    
+                                        <input type="text" class="form-control " id="id-date-2" name="id-date-2" required placeholder="Fecha final"> 
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="row">
+                            <div class="form-row col-md-12 justify-content-center">
+                                <div class="form-group col-md-2 ml-2 justify-content-center">
+                                    <button class="btn px-4 btn-primary mb-1 " onclick="mostrar_ventas();">Visualizar</button>
+                                </div>
+                                 <div class="form-group col-md-2 ml-2 justify-content-center">
+                                    <button class="btn px-4 btn-primary mb-1 " onclick="limpiar()">Limpiar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

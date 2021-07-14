@@ -6,6 +6,7 @@
 <div class="page-content container container-plus">
     <div class="page-header">
         <h1 class="page-title text-primary-d2">
+            <i class="fas fa-shipping-fast text-dark-l3 mr-1"></i>
             Proveedores
             <!--<small class="page-info text-secondary-d2">
                 <i class="fa fa-angle-double-right text-80"></i>
@@ -35,7 +36,66 @@
         </div>
     </div>
 </div>
+<!--Modal detalle del producto-->
 
+<div class="modal fade modal-lg" id="modalDetalle" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background:#2470bd;">
+                <h5 class="modal-title" id="exampleModalLabel2" style="color:white;">
+                    CATALOGO PROVEEDOR
+                </h5>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card-body p-0">
+                    <div role="main" class="main-content">
+                        <div class="page-content container container-plus">
+                            <div class="container px-0">
+                                <div class="row mt-0">
+                                    <div class="col-12 col-lg-10 offset-lg-1 col-xl-12 offset-xl-0">
+                                        <div class="card dcard mb-4">
+                                            <div class="card-body px-4 px-lg-5">
+                                                <div class="mt-4">
+                                                    <h1 class="page-title text-dark-l3 text-115">
+                                                        Productos del proveedor
+                                                    </h1>
+                                                    <div class="table-responsive row  text-95 text-secondary-d3 py-25 border-y-2" style=" margin-right: 0px; margin-left: 0px;">
+                                                        <table class="table table-striped table-borderless border-0 border-b-2 brc-default-l1">
+                                                            <thead class="bg-none " style="background-color:#309b74;">
+                                                                <tr class="text-white">
+                                                                    <th><b>Código del producto</b></th>
+                                                                    <th><b>Precio Compra</b></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody class="text-95" id="tbl_pedido" name="tbl_pedido">
+
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--FIN MODAL DETALLE -->
 <!--MODAL AGREGAR Proovedor -->
 <div class="modal fade" id="modalNuevo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -186,6 +246,44 @@
     </div>
 </div>
 <!--FIN MODAL ACTUALIZAR PROVEEDOR-->
+<!--MODAL ELIMINAR-->
+<div class="modal fade" data-backdrop-bg="bgc-white" id="eliminarModal" tabindex="-1" aria-labelledby="dangerModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content bgc-transparent brc-danger-m2 shadow">
+            <div class="modal-header py-2 bgc-danger-tp1 border-0  radius-t-1">
+                <h5 class="modal-title text-white-tp1 text-110 pl-2 font-bolder" id="dangerModalLabel">
+                    Advertencia!
+                </h5>
+
+                <button type="button" class="position-tr btn btn-xs btn-outline-white btn-h-yellow btn-a-yellow mt-1px mr-1px btn-brc-tp" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="text-150">×</span>
+                </button>
+            </div>
+
+
+            <div class="modal-body bgc-white-tp2 p-md-4 pl-md-5">
+                <div class="d-flex align-items-top mr-2 mr-md-5">
+                    <i class="fas fa-exclamation-triangle fa-2x text-orange-d2 float-rigt mr-4 mt-1"></i>
+                    <input type="hidden" class="form-control" id="delete_id" name="delete_id">
+                    <div class="text-secondary-d2 text-105">
+                        Esta seguro de que desea eliminarlo?
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer bgc-white-tp2 border-0">
+                <button type="button" class="btn px-4 btn-light-grey" data-dismiss="modal">
+                    No
+                </button>
+
+                <button type="button" class="btn px-4 btn-danger" id="id-danger-yes-btn" onclick="eliminar_Proveedor()" data-dismiss="modal">
+                    Si
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+        <!--FIN MODAL ELIMINAR-->
 @section('scripts')
 
 <!-- include vendor scripts used in "Bootstrap Table" page. see "/views//pages/partials/table-bootstrap/@vendor-scripts.hbs" -->
@@ -196,6 +294,7 @@
 <script src="\npm\bootstrap-table@1.18.3\dist\extensions\export\bootstrap-table-export.min.js"></script>
 <script src="\npm\bootstrap-table@1.18.3\dist\extensions\print\bootstrap-table-print.min.js"></script>
 <script src="\npm\bootstrap-table@1.18.3\dist\extensions\mobile\bootstrap-table-mobile.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
 
 <!-- "Bootstrap Table" page script to enable its demo functionality -->
 <script>
@@ -385,18 +484,18 @@
         })
 
         function formatTableCellActions(value, row, index, field) {
-            var eliminar = "'" + row.id_proveedor + "'";
+            var eliminar = row.id_proveedor;
             return '<div class="action-buttons">' +
-                //<button class="text-blue mx-1" data-target="#modalLlanta_' + row.id_llanta + '" data-toggle="modal">' +
-                //  '<i class="fa fa-search-plus text-105"></i>' +
-                //'</button>' +
+                '<button type="button" class="text-blue mx-1 " data-id="' + eliminar + '"  data-toggle="modal" data-target="#modalDetalle">' +
+                 '<i class="far fa-list-alt"></i>' +
+                '</button>' +
                 // '<a class="text-success mx-1" href="#">\
                 //<i class="fa fa-pencil-alt text-105"></i>\
                 //</a>'+
-                '<button class="text-blue mx-1" data-toggle="modal" data-target="#editModal" data-id="' + row.id_proveedor + '" data-nombre="' + row.nombre_contacto + '" data-telefono="' + row.telefono + '" data-correo="' + row.correo_electronico + '" data-sucursal="' + row.sucursal + '" data-direccion="' + row.direccion + '" data-empresa="' + row.nombre_empresa + '" data-suc="' + row.id_sucursal + '" ><i class="fa fa-pencil-alt"></i></button>' +
-                '<a class="text-danger-m1 mx-1"  href="javascript:eliminar_Proveedor(' + eliminar + ')">' +
+                '<button class="text-green mx-1" data-toggle="modal" data-target="#editModal" data-id="' + row.id_proveedor + '" data-nombre="' + row.nombre_contacto + '" data-telefono="' + row.telefono + '" data-correo="' + row.correo_electronico + '" data-sucursal="' + row.sucursal + '" data-direccion="' + row.direccion + '" data-empresa="' + row.nombre_empresa + '" data-suc="' + row.id_sucursal + '" ><i class="fa fa-pencil-alt"></i></button>' +
+                '<button type="button" class="text-danger mx-1 " data-id="' + eliminar + '"  data-toggle="modal" data-target="#eliminarModal">' +
                 '<i class="fa fa-trash-alt text-105"></i>' +
-                '</a>' +
+                '</button>' +
                 '</div>'
         }
 
@@ -473,7 +572,18 @@
 
 </script>
 <script type="text/javascript">
-    function eliminar_Proveedor(id_proveedor) {
+            $('#eliminarModal').on('show.bs.modal', function(event) {
+                /*RECUPERAR METADATOS DEL BOTÓN*/
+                var button = $(event.relatedTarget)
+                var id_cliente = button.data('id')
+                var modal = $(this)
+                modal.find('#delete_id').val(id_cliente)
+            });
+
+</script>
+
+<script type="text/javascript">
+    function eliminar_Proveedor() {
         var id_proveedor = id_proveedor;
         var token = '{{csrf_token()}}';
         var data = {
@@ -562,6 +672,46 @@
             $("#actualizar_proveedor_form")[0].reportValidity();
         }
     }
+
+</script>
+<script type="text/javascript">
+            $('#modalDetalle').on('show.bs.modal', function(event) {
+                /*RECUPERAR METADATOS DEL BOTÓN*/
+                var button = $(event.relatedTarget)
+                var id_cliente = button.data('id')
+                var modal = $(this)
+               
+            });
+
+</script>
+<script type="text/javascript">
+    $('#modalDetalle').on('show.bs.modal', function(event) {
+        /RECUPERAR METADATOS DEL BOTÓN/
+        var button = $(event.relatedTarget)
+        var id_proveedor = button.data('id')
+        /*ASIGNAR VALOR A LOS METADATOS DEL MODAL*/
+        var llenado = '';
+        var datos = @json($catalogos);
+        
+        var modal = $(this)
+
+
+        datos.forEach(objeto => {
+            var precio = numeral(objeto.precio_compra);
+            var valor = precio.format('$0,0.00');
+            if (objeto.id_proveedor == id_proveedor) {
+                //alert("hola");
+                llenado += '<tr> <td>' + objeto.nombre + '</td>' +
+                    '<td>' + valor + '</td>' +
+                    '</tr>';
+            }
+        });
+        console.log(llenado);
+        document.getElementById('tbl_pedido').innerHTML = llenado;
+
+       
+
+    });
 
 </script>
 @stop

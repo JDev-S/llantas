@@ -16,6 +16,7 @@
 <div class="page-content container container-plus">
     <div class="page-header">
         <h1 class="page-title text-primary-d2">
+            <i class="fas fa-list-alt text-dark-l3 mr-1"></i>
             Creditos
             <!--<small class="page-info text-secondary-d2">
                 <i class="fa fa-angle-double-right text-80"></i>
@@ -250,8 +251,27 @@
                                                     <div class="row border-b-2 brc-green-l1"></div>
 
                                                     <div class="row mt-4">
-                                                        <div class="col-10 col-sm-5 text-dark-l1 text-90 order-first order-sm-last" style="
-                          padding-left: 30px; padding-right: 0px;">
+
+                                                        <div class="col-10 col-sm-5 text-dark-l1 text-90 order-first order-sm-last" style="padding-left: 30px; padding-right: 0px;">
+                                                            <div class="row my-2 " >
+                                                                <div class="col-6 text-left">
+                                                                    SubTotal
+                                                                </div>
+                                                                <div class="col-5 align-content-center" id="subtotal">
+                                                                    
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row my-2" >
+                                                                <div class="col-6 text-left" >
+                                                                    Comisión (3%)
+                                                                </div>
+
+                                                                <div class="col-5 align-content-center" id="total_extra" >
+                                                                    
+                                                                </div>
+                                                            </div>
+
                                                             <div class="row my-2 align-items-center bgc-green-d3 p-2 radius-1">
                                                                 <div class="col-6 text-right text-white text-100">
                                                                     Monto Total:
@@ -408,6 +428,7 @@
                 "telefono": objeto.telefono,
                 "correo": objeto.correo_electronico,
                 "fecha_venta": objeto.fecha_venta,
+                "tv":objeto.total_venta,
                 "abonar": boton_comprar
             }, );
             //arr.push(tmp);
@@ -613,7 +634,7 @@
             //var eliminar = "'" + row.id_llanta + "'";
             //modalDetalle_'.$credito-> id_venta.'_'.$credito->id_credito.
             return '<div class="action-buttons">\
-            <button class="text-blue mx-1" data-target="#modalDetalle" data-id="' + row.id_credito + '" data-venta="' + row.id_venta + '"  data-suc="' + row.sucursal_usuario + '" data-nombrec="' + row.nombre_cliente + '" data-telefono="' + row.telefono + '" data-total="' + row.total_venta + '" data-correo="' + row.correo + '" data-fecha="' + row.fecha_venta + '" data-toggle="modal">' +
+            <button class="text-blue mx-1" data-target="#modalDetalle" data-tv="'+row.tv+'" data-id="' + row.id_credito + '" data-venta="' + row.id_venta + '"  data-suc="' + row.sucursal_usuario + '" data-nombrec="' + row.nombre_cliente + '" data-telefono="' + row.telefono + '" data-total="' + row.total_venta + '" data-correo="' + row.correo + '" data-fecha="' + row.fecha_venta + '" data-toggle="modal">' +
                 '<i class="fa fa-search-plus text-105"></i>' +
                 '</button>' +
                 // '<a class="text-success mx-1" href="#">\
@@ -734,6 +755,7 @@
         var correo = button.data('correo')
         var fecha_venta = button.data('fecha')
         var total_venta = button.data('total')
+        var tv=button.data('tv')
         var llenado = '';
         var llenado2 = '';
         var datos = @json($detalles);
@@ -796,6 +818,25 @@
         console.log(llenado);
         document.getElementById('detalles_abonos').innerHTML = "";
         document.getElementById('detalles_abonos').innerHTML = llenado2;
+        
+        var comision = parseInt(tv) * 0.03;
+        comision=comision.toFixed(2);
+        var subtotal=parseInt(tv)- (parseInt(tv)*0.03);
+        
+         var a = numeral(subtotal);
+            var b = a.format('$0,0.00');
+            var c = numeral(comision);
+            var d = c.format('$0,0.00');
+        
+        document.getElementById("subtotal").innerHTML = "";
+        document.getElementById("subtotal").innerHTML = '<span class="text-120 text-secondary-d3 float-left" >'+
+                                                                    b +  
+                                                                    '</span>';
+
+        document.getElementById('total_extra').innerHTML = "";
+        document.getElementById('total_extra').innerHTML = '<span class="text-120 text-secondary-d3 float-left" >'+
+                                                                            d+
+                                                                        '</span>';
 
 
 

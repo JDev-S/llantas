@@ -57,6 +57,7 @@
 <div class="page-content container container-plus">
     <div class="page-header">
         <h1 class="page-title text-primary-d3">
+            <i class="fas fa-clipboard-list text-dark-l3 mr-1"></i>
             Agregar productos al proveedor
             <!--<small class="page-info text-secondary-d2">
                 <i class="fa fa-angle-double-right text-80"></i>
@@ -628,7 +629,6 @@
                          </div>\
                         </div>\
                         <button data-dismiss='toast' class='btn text-grey btn-h-light-danger position-tr mr-1 mt-1'><i class='fa fa-times'></i></button>",
-
                 width: 480,
                 delay: 5000,
 

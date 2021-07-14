@@ -6,6 +6,7 @@
 <div class="page-content container container-plus">
     <div class="page-header">
         <h1 class="page-title text-primary-d2">
+            <i class="fas fa-tasks text-dark-l3 mr-1"></i>
             Pedidos a sucursales
             <!--<small class="page-info text-secondary-d2">
                 <i class="fa fa-angle-double-right text-80"></i>
@@ -224,6 +225,7 @@
                 "nombre_usuario_origen": objeto.nombre_usuario_origen,
                 "nombre_sucursal_usuario_origen": objeto.nombre_sucursal_usuario_origen,
                 "status": status,
+                "fecha":objeto.fecha,
                 "boton": boton_status
             }, );
             //arr.push(tmp);
@@ -238,6 +240,12 @@
             columns: [{
                     field: 'id_pedido',
                     title: 'Folio del pedido',
+                    align: 'center',
+                    sortable: true
+                },
+                {
+                    field: 'fecha',
+                    title: 'Fecha pedido',
                     align: 'center',
                     sortable: true
                 },

@@ -6,6 +6,7 @@
 <div class="page-content container container-plus">
     <div class="page-header">
         <h1 class="page-title text-primary-d2">
+            <i class="fas fa-user text-dark-l3 mr-1"></i>
             Clientes
             <!--<small class="page-info text-secondary-d2">
                 <i class="fa fa-angle-double-right text-80"></i>
@@ -233,14 +234,14 @@
                 </button>
             </div>
         </div>
+    </div>
+</div>
         <!--FIN MODAL ELIMINAR-->
 
         @section('scripts')
 
         <!-- include vendor scripts used in "Bootstrap Table" page. see "/views//pages/partials/table-bootstrap/@vendor-scripts.hbs" -->
         <script src="\npm\tableexport.jquery.plugin@1.10.22\tableExport.min.js"></script>
-
-
         <script src="\npm\bootstrap-table@1.18.3\dist\bootstrap-table.min.js"></script>
         <script src="\npm\bootstrap-table@1.18.3\dist\extensions\export\bootstrap-table-export.min.js"></script>
         <script src="\npm\bootstrap-table@1.18.3\dist\extensions\print\bootstrap-table-print.min.js"></script>

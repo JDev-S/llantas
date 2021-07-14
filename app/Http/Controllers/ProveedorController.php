@@ -13,7 +13,8 @@ class ProveedorController extends Controller
     {
         $proveedores=DB::select('select proveedores.id_proveedor, rol_proveedor.rol_proveedor, proveedores.nombre_empresa,proveedores.telefono,proveedores.direccion,proveedores.nombre_contacto,proveedores.correo_electronico,IFNULL(sucursal.sucursal, "Proveedor general") as sucursal, ifnull(proveedores.id_sucursal,"0") as id_sucursal from proveedores inner join rol_proveedor on proveedores.id_rol_proveedor=rol_proveedor.id_rol_proveedor left join sucursal on sucursal.id_sucursal=proveedores.id_sucursal');
         $sucursal_usuario= Session::get('sucursal_usuario');
-		return view('/Administrador/proveedor/index',compact('proveedores','sucursal_usuario'));
+        $catalogos=DB::select('SELECT catalogo.id_catalogo, catalogo.id_producto, productos_llantimax.nombre, catalogo.id_proveedor,proveedores.nombre_contacto, proveedores.nombre_empresa,proveedores.telefono, catalogo.precio_compra from catalogo INNER JOIN productos_llantimax on productos_llantimax.id_productos_llantimax=catalogo.id_producto INNER JOIN proveedores on proveedores.id_proveedor=catalogo.id_proveedor ORDER BY catalogo.id_catalogo');
+		return view('/Administrador/proveedor/index',compact('proveedores','sucursal_usuario','catalogos'));
     }
     
     

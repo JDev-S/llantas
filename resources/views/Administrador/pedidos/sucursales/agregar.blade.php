@@ -57,6 +57,7 @@
 <div class="page-content container container-plus">
     <div class="page-header">
         <h1 class="page-title text-primary-d3">
+            <i class="fas fa-shipping-fast text-dark-l3 mr-1"></i>
             Nuevo pedido
             <!--<small class="page-info text-secondary-d2">
                 <i class="fa fa-angle-double-right text-80"></i>
@@ -80,7 +81,7 @@
                             <form id="agregar_pedido_form" class="form-row col-md-12 justify-content-center">
                                 <div class="form-row col-md-12 justify-content-center">
                                     <div class="form-group col-md-2 ml-2 justify-content-center">
-                                        <select class="form-control selectpicker form-control" title="-- Sucursal destino --" data-size="5" data-header="Seleccione sucursal" data-style="btn-primary" id="destino_sucursal" name="destino_sucursal" data-container="body" required>
+                                        <select class="form-control selectpicker form-control" title="-- Sucursal destino --" data-size="5" data-header="Seleccione sucursal" data-style="btn-primary" id="destino_sucursal" name="destino_sucursal" data-container="body" onChange="javascript:mostrar_productos_sucursal()" required>
                                             <option data-divider="true"></option>
                                             @foreach($sucursales as $sucursal)
                                             <option data-tokens="{{$sucursal->id_sucursal}}" value="{{$sucursal->id_sucursal}}">{{$sucursal->sucursal}}</option>
@@ -193,6 +194,20 @@
 
         if (sucursal == sucursal_destino) {
             alert("Porfavor elegir otra sucursal origen");
+            $('#productos').selectpicker('selectAll');
+            var selected = [];
+            selected = $('#productos').val()
+            //alert(selected.length);
+
+            for (i = 0; i < selected.length; i++) {
+                $('#productos').find('[value=' + selected[i] + ']').remove();
+                $('#productos').selectpicker('refresh');
+            }
+
+            $("#responsive-table tbody tr").html("");
+            document.getElementById("cantidad").value = "";
+            document.getElementById("total_final").value = 0;
+            productos = new Array();
         } else {
             var token = '{{csrf_token()}}';
             var data = {
@@ -495,7 +510,7 @@
                 }
             });
         } else {
-                alert("No ha seleccionado productos");
+            alert("No ha seleccionado productos");
         }
     }
 

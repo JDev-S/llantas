@@ -6,6 +6,7 @@
 <div class="page-content container container-plus">
     <div class="page-header">
         <h1 class="page-title text-primary-d2">
+            <i class="fas fa-tasks text-dark-l3 mr-1"></i>
             Pedidos a proveedores
             <!--<small class="page-info text-secondary-d2">
                 <i class="fa fa-angle-double-right text-80"></i>
@@ -59,10 +60,30 @@
                                         <div class="card dcard mb-4">
                                             <div class="card-body px-4 px-lg-5">
                                                 <div class="mt-4">
+                                                    <div class="page-header border-0 mb-0">
+                                                        <h1 class="page-title text-dark-l3 text-115">
+                                                            <small class="page-info text-dark-m3">
+                                                            </small>
+                                                        </h1>
+                                                        <div class="page-tools">
+                                                            <div class="action-buttons">
+                                                                <input type="hidden" id="detalle_id" name="detalle_id">
+                                                                <a class="btn bg-white btn-light mx-1px text-95 shadow-sm" href="javascript:mostrar_ticket()" data-title="Print">
+                                                                    <i class="mr-1 fa fa-print text-primary text-120 w-2"></i>
+                                                                    Imprimir
+                                                                </a>
+                                                                <a class="btn bg-white btn-light mx-1px text-95 shadow-sm" href="javascript:mostrar_ticket()" data-title="PDF">
+                                                                    <i class="mr-1 far fa-file-pdf text-danger text-120 w-2"></i>
+                                                                    Exportar
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                     <h1 class="page-title text-dark-l3 text-140">
                                                         <b>Productos solicitados</b>
                                                     </h1>
                                                     <div class="table-responsive row  text-95 text-secondary-d3 py-25 border-y-2 mt-4" style=" margin-right: 0px; margin-left: 0px;">
+                                                        
                                                         <table class="table table-striped table-borderless border-0 border-b-2 brc-default-l1">
                                                             <thead class="bg-none" style="background-color:#309b74; text-align:center">
                                                                 <tr class="text-white">
@@ -397,7 +418,7 @@
         //alert(datos);
         //console.log(datos);
         //alert(id_proveedor);
-        modal.find('#update_id').val(id_proveedor)
+        modal.find('#detalle_id').val(id_proveedor)
         //console.log(datos.length);
         /*for( i=0; i<datos.length;i++)
         {
@@ -457,7 +478,17 @@
     }
 
 </script>
-
+<script type="text/javascript">
+function mostrar_ticket()
+{
+    var ticket=document.getElementById("detalle_id").value;
+     var url = '/exportar_pedido_proveedor/' + ticket;
+        window.open(
+            url,
+            '_blank' // <- This is what makes it open in a new window.
+        );
+}
+</script>
 
 @stop
 @stop

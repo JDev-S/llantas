@@ -240,7 +240,7 @@ select inventario.id_producto as id_producto, productos_llantimax.nombre as nomb
        venta.factura 
        FROM venta 
        INNER join usuario on usuario.id_usuario=venta.id_usuario and usuario.id_sucursal=venta.id_sucursal_usuario 
-       INNER JOIN sucursal on sucursal.id_sucursal=venta.id_sucursal INNER JOIN clientes on venta.id_cliente=clientes.id_cliente and venta.id_sucursal_cliente=clientes.id_sucursal inner join metodo_pago on venta.id_metodo_pago=metodo_pago.id_metodo_pago
+       INNER JOIN sucursal on sucursal.id_sucursal=venta.id_sucursal INNER JOIN clientes on venta.id_cliente=clientes.id_cliente and venta.id_sucursal_cliente=clientes.id_sucursal inner join metodo_pago on venta.id_metodo_pago=metodo_pago.id_metodo_pago order by venta.fecha_venta desc
        ");
         
          $detalles=DB::select("SELECT productos_llantimax.id_productos_llantimax, productos_llantimax.nombre, cantidad_producto, precio_unidad, total,detalle_venta.id_venta FROM detalle_venta INNER JOIN productos_llantimax on productos_llantimax.id_productos_llantimax=detalle_venta.id_producto");
@@ -296,7 +296,7 @@ select inventario.id_producto as id_producto, productos_llantimax.nombre as nomb
     
     public function exportar_ticket($ticket)
     {
-      $venta=DB::select('select venta.id_venta, usuario.nombre_completo as vendedor, sucursal.sucursal, clientes.nombre_completo as cliente, clientes.telefono, clientes.correo_electronico, venta.total_venta, metodo_pago.metodo_pago, venta.fecha_venta, venta.factura FROM venta INNER join usuario on usuario.id_usuario=venta.id_usuario and usuario.id_sucursal=venta.id_sucursal_usuario INNER JOIN sucursal on sucursal.id_sucursal=venta.id_sucursal INNER JOIN clientes on venta.id_cliente=clientes.id_cliente and venta.id_sucursal_cliente=clientes.id_sucursal inner join metodo_pago on venta.id_metodo_pago=metodo_pago.id_metodo_pago where venta.id_venta="'.$ticket.'"');
+      $venta=DB::select('select venta.id_venta, usuario.nombre_completo as vendedor, sucursal.sucursal, clientes.nombre_completo as cliente,venta.Auto, clientes.telefono, clientes.correo_electronico, venta.total_venta, metodo_pago.metodo_pago, venta.fecha_venta, venta.factura FROM venta INNER join usuario on usuario.id_usuario=venta.id_usuario and usuario.id_sucursal=venta.id_sucursal_usuario INNER JOIN sucursal on sucursal.id_sucursal=venta.id_sucursal INNER JOIN clientes on venta.id_cliente=clientes.id_cliente and venta.id_sucursal_cliente=clientes.id_sucursal inner join metodo_pago on venta.id_metodo_pago=metodo_pago.id_metodo_pago where venta.id_venta="'.$ticket.'"');
         
        $id_venta = $venta[0]->id_venta;
        $vendedor = $venta[0]->vendedor;
@@ -307,10 +307,25 @@ select inventario.id_producto as id_producto, productos_llantimax.nombre as nomb
         $total_venta = $venta[0]->total_venta;
         $metodo_pago = $venta[0]->metodo_pago;
         $fecha_venta = $venta[0]->fecha_venta;
-        
+        $auto=$venta[0]->Auto;
+        $comentario="";
+        $fecha_pago="";
+        if($metodo_pago=="crédito(3%+)")
+        {
+            echo 'Entro';
+            
+            $credito=DB::select('select * from credito where credito.id_venta="'.$id_venta.'"');
+            print_r($credito);
+            if(count($credito)>0)
+            {
+            $comentario=$credito[0]->comentario;
+            $fecha_pago=$credito[0]->fecha_ultimo_dia;
+            }   
+        }
+    
       $detalles=DB::select('SELECT productos_llantimax.id_productos_llantimax, productos_llantimax.nombre, cantidad_producto, precio_unidad, total,detalle_venta.id_venta FROM detalle_venta INNER JOIN productos_llantimax on productos_llantimax.id_productos_llantimax=detalle_venta.id_producto where detalle_venta.id_venta="'.$ticket.'"');
         
-        $pdf= \PDF::loadView('/documentos/ticket', compact('detalles','id_venta','vendedor','sucursal','cliente','telefono','correo','total_venta','metodo_pago','fecha_venta'));
+        $pdf= \PDF::loadView('/documentos/ticket', compact('detalles','id_venta','vendedor','sucursal','cliente','telefono','correo','total_venta','metodo_pago','fecha_venta','auto','comentario','fecha_pago'));
         $pdf->setPaper('A4', 'Portrait');//Portrait  Landscape
         return $pdf->stream('ejemplo.pdf');
         //return view('/documentos/ticket', compact('detalles','id_venta','vendedor','sucursal','cliente','telefono','correo','total_venta','metodo_pago','fecha_venta'));
@@ -397,5 +412,46 @@ select inventario.id_producto as id_producto, productos_llantimax.nombre as nomb
     {
         $consulta=DB::select('select * from metodo_pago where metodo_pago.id_metodo_pago='.$id_metodo);
         return $consulta[0]->metodo_pago;
+    }
+    
+    function exportar_pedido_proveedor($ticket)
+    {
+        
+        $pedidos_detalles=DB::select('select detalle_pedido_proveedor.id_pedido_proveedor,
+	                                  usuario.nombre_completo, 
+                                      s2.sucursal as sucursal_usuario,
+                                      s1.sucursal as sucursal_pedido,
+                                      detalle_pedido_proveedor.total,
+                                      detalle_pedido_proveedor.cantidad,
+                                      detalle_pedido_proveedor.precio_unidad,
+                                      productos_llantimax.nombre,
+                                      proveedores.nombre_contacto,
+                                      proveedores.nombre_empresa,
+                                      proveedores.telefono,
+                                      proveedores.direccion,
+                                      proveedores.correo_electronico,
+                                      pedido_proveedor.fecha_venta
+                                      FROM detalle_pedido_proveedor 
+                                      INNER JOIN pedido_proveedor on pedido_proveedor.id_pedido=detalle_pedido_proveedor.id_pedido_proveedor and detalle_pedido_proveedor.id_usuario=pedido_proveedor.id_usuario and detalle_pedido_proveedor.id_usuario_sucursal=pedido_proveedor.id_sucursal_usuario and pedido_proveedor.id_sucursal=detalle_pedido_proveedor.id_sucursal 
+                                      INNER JOIN catalogo on detalle_pedido_proveedor.id_producto=catalogo.id_producto and detalle_pedido_proveedor.id_catalogo=catalogo.id_catalogo 
+                                      INNER JOIN productos_llantimax on productos_llantimax.id_productos_llantimax=catalogo.id_producto 
+                                      INNER JOIN proveedores on proveedores.id_proveedor=catalogo.id_proveedor 
+                                      INNER JOIN usuario on pedido_proveedor.id_usuario=usuario.id_usuario and pedido_proveedor.id_sucursal_usuario=usuario.id_sucursal
+                                      INNER JOIN sucursal s1 on s1.id_sucursal=pedido_proveedor.id_sucursal
+                                      INNER JOIN sucursal s2 on s2.id_sucursal=pedido_proveedor.id_sucursal_usuario
+where pedido_proveedor.id_pedido="'.$ticket.'"');
+        $nombre_usuario=$pedidos_detalles[0]->nombre_completo;
+        $sucursal_usuario=$pedidos_detalles[0]->sucursal_usuario;
+        $fecha_venta=$pedidos_detalles[0]->fecha_venta;
+        $total_venta=0;
+        foreach($pedidos_detalles as $detalle)
+        {
+            $total_venta+=intval($detalle->total);
+        }
+        
+        $pdf= \PDF::loadView('/documentos/pedido_proveedor', compact('ticket','nombre_usuario','sucursal_usuario','fecha_venta','pedidos_detalles','total_venta'));
+        $pdf->setPaper('A4', 'Portrait');//Portrait  Landscape
+        return $pdf->stream('ejemplo.pdf');
+        //return view('/documentos/pedido_proveedor', //compact('ticket','nombre_usuario','sucursal_usuario','fecha_venta','pedidos_detalles','total_venta'));
     }
 }
