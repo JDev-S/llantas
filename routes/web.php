@@ -142,6 +142,8 @@ Route::get('/mostrar_creditos','CreditoController@mostrar_creditos')->middleware
 Route::post('/insertar_abono', 'CreditoController@agregar_abono')->name('insertar_abono');
 /*ELIMINAR CREDITO*/
 Route::post('/eliminar_Credito', 'CreditoController@eliminar_Credito')->name('eliminar_Credito');
+/*ACTUALIZAR ABONO DE UN CREDITO*/
+Route::post('/actualizar_abono', 'CreditoController@actualizar_abono')->name('actualizar_abono');
 
 /*Reporte de ventas*/
 Route::get('/mostrar_reportes','VentasController@mostrar_reportes')->middleware('admin:1')->name('mostrar_reportes');

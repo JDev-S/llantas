@@ -276,58 +276,117 @@
             var id_sucursal = $('#productos option:selected').attr("data-suc");
             var cantidad_suc = $('#productos option:selected').attr("data-cantidad");
             var bandera = 0;
+            if (parseInt(cantidad_suc) >= parseInt(cantidad)) {
+                /VERIFICAR SI LA TABLA TIENE FILAS/
+                if ($("#responsive-table tbody tr").length != 0) {
+                    /EVALUAR SI ESXISTE EL PRODUCTO AGREGADO EN LA TABLA/
+                    $("#responsive-table tbody tr").each(function(index_tr) {
+                        if (bandera == 0) {
+                            var t_idsucursal = ($(this).attr("data-id_sucursal"));
+                            var t_idproducto = ($(this).attr("data-id_producto"));
+                            /*SI EL PRODUCTO EXISTE, LO ACTUALIZA*/
+                            if (id_sucursal == t_idsucursal && id_producto == t_idproducto) {
+                                bandera = 1;
+                                //var t_cantidad = $(this).attr("data-cantidad");
+                                var t_cantidad = document.getElementById("cant").value;
+                                if (parseInt(cantidad_suc) >= (parseInt(cantidad) + parseInt(t_cantidad))) {
+                                    cantidad = parseInt(t_cantidad) + parseInt(cantidad);
+                                    alert(t_cantidad);
 
-            /VERIFICAR SI LA TABLA TIENE FILAS/
-            if ($("#responsive-table tbody tr").length != 0) {
-                /EVALUAR SI ESXISTE EL PRODUCTO AGREGADO EN LA TABLA/
-                $("#responsive-table tbody tr").each(function(index_tr) {
-                    if (bandera == 0) {
-                        var t_idsucursal = ($(this).attr("data-id_sucursal"));
-                        var t_idproducto = ($(this).attr("data-id_producto"));
-                        /*SI EL PRODUCTO EXISTE, LO ACTUALIZA*/
-                        if (id_sucursal == t_idsucursal && id_producto == t_idproducto) {
-                            //var t_cantidad = $(this).attr("data-cantidad");
-                            var t_cantidad = document.getElementById("cant").value;
-                            cantidad = parseInt(t_cantidad) + parseInt(cantidad);
-                            alert(t_cantidad);
-                            bandera = 1;
-                            $(this).attr('data-cantidad', cantidad);
-                            $(this).html(""); /*LIMPIA EL CONTENIDO DE TR PARA EVITAR DUPLICADOS*/
-                            var tr = '<td data-th="Producto"><span class="bt-content">' + nombre_producto + '</span></td>' +
-                                '<td data-th="Marca"><span class="bt-content">' + marca + '</span></td>' +
-                                '<td data-th="Modelo"><span class="bt-content">' + modelo + '</span></td>' +
-                                '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input  class="col-9" style="padding-left:0px;" step="1" min="1" type="number" id="cant" name="cant" value="' + cantidad + '" ></div></span></td>' +
-                                '<td data-th="Acciones"><span class="bt-content text-center">' +
-                                '<button class="btn btn-danger remove"' +
-                                'type="button">Eliminar</button>' +
-                                '</td>';
-                            $(this).append(tr);
-                            var total = $('#total_final').val();
-                            var total_final = total - parseInt(t_cantidad);
-                            total_final = total_final + parseInt(cantidad);
-                            document.getElementById("total_final").value = total_final;
+                                    $(this).attr('data-cantidad', cantidad);
+                                    $(this).html(""); /*LIMPIA EL CONTENIDO DE TR PARA EVITAR DUPLICADOS*/
+                                    var tr = '<td data-th="Producto"><span class="bt-content">' + nombre_producto + '</span></td>' +
+                                        '<td data-th="Marca"><span class="bt-content">' + marca + '</span></td>' +
+                                        '<td data-th="Modelo"><span class="bt-content">' + modelo + '</span></td>' +
+                                        '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input  class="col-9" style="padding-left:0px;" step="1" min="1" max="9999" type="number" id="cant" name="cant" value="' + cantidad + '" ></div></span></td>' +
+                                        '<td data-th="Acciones"><span class="bt-content text-center">' +
+                                        '<button class="btn btn-danger remove"' +
+                                        'type="button">Eliminar</button>' +
+                                        '</td>';
+                                    $(this).append(tr);
+                                    var total = $('#total_final').val();
+                                    var total_final = total - parseInt(t_cantidad);
+                                    total_final = total_final + parseInt(cantidad);
+                                    document.getElementById("total_final").value = total_final;
 
-                            /*ACTUALIZAR ARREGLO*/
-                            productos = productos.map(function(objeto) {
-                                return objeto.id_producto == id_producto && objeto.id_sucursal == id_sucursal ? {
-                                    "id_producto": objeto.id_producto,
-                                    "cantidad_producto": cantidad,
-                                    "id_sucursal": id_sucursal
-                                } : objeto;
-                            });
+                                    /*ACTUALIZAR ARREGLO*/
+                                    productos = productos.map(function(objeto) {
+                                        return objeto.id_producto == id_producto && objeto.id_sucursal == id_sucursal ? {
+                                            "id_producto": objeto.id_producto,
+                                            "cantidad_producto": cantidad,
+                                            "id_sucursal": id_sucursal
+                                        } : objeto;
+                                    });
+                                } else {
+                                    /*NO HAY STOCK SUFICIENTE*/
+                                    $.aceToaster.add({
+                                        placement: 'br',
+                                        body: "<div class='p-3 m-2 d-flex'>\
+                         <span class='align-self-center text-center mr-3 py-2 px-1 border-1 bgc-danger radius-round'>\
+                            <i class='fa fa-times text-180 w-4 text-white mx-2px'></i>\
+                         </span>\
+                         <div>\
+                            <h4 class='text-dark-tp3'>Error</h4>\
+                            <span class='text-dark-tp3 text-110'>No es posible agregar esa cantidad. La cantidad que desea agregar es mayor al stock actual</span>\
+                         </div>\
+                        </div>\
+                        <button data-dismiss='toast' class='btn text-grey btn-h-light-danger position-tr mr-1 mt-1'><i class='fa fa-times'></i></button>",
 
+                                        width: 480,
+                                        delay: 5000,
+
+                                        close: false,
+
+                                        className: 'shadow border-none radius-0 border-l-4 brc-danger',
+
+                                        bodyClass: 'border-0 p-0',
+                                        headerClass: 'd-none'
+                                    })
+                                }
+
+
+                            }
                         }
+                    });
+                    /*SI NO EXISTE EL ELEMENTO, ENTONCES LO INSERTA*/
+                    if (bandera == 0) {
+                        alert("nueva fila");
+                        // Nueva fila dentro de tbody.
+                        $('#table').append(`<tr id="R${++rowIdx}" data-id_sucursal="${id_sucursal}" data-id_producto="${id_producto}" data-marca="${marca}" data-modelo="${modelo}" data-producto="${nombre_producto}" data-cantidad="${cantidad}">` +
+                            '<td data-th="Producto"><span class="bt-content">' + nombre_producto + '</span></td>' +
+                            '<td data-th="Marca"><span class="bt-content">' + marca + '</span></td>' +
+                            '<td data-th="Modelo"><span class="bt-content">' + modelo + '</span></td>' +
+                            '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input class="col-9" style="padding-left:0px;" type="number" step="1" min="1" max="9999" id="cant" name="cant" value="' + cantidad + '" ></div></span></td>' +
+                            '<td data-th="Acciones"><span class="bt-content text-center">' +
+                            '<button class="btn btn-danger remove"' +
+                            'type="button">Eliminar</button>' +
+                            '</td>' +
+                            '</tr>');
+                        var total = $('#total_final').val();
+                        var total_final = parseInt(total) + parseInt(cantidad);
+                        document.getElementById("total_final").value = total_final;
+                        /*INSERTA EN OBJETO Y AÑADE A ARREGLO*/
+                        var producto = {
+                            "id_producto": id_producto,
+                            "cantidad_producto": cantidad,
+                            "id_sucursal": id_sucursal
+                        };
+                        productos.push(producto);
+
+                        console.log(productos);
+
+
                     }
-                });
-                /*SI NO EXISTE EL ELEMENTO, ENTONCES LO INSERTA*/
-                if (bandera == 0) {
-                    alert("nueva fila");
+                } else {
                     // Nueva fila dentro de tbody.
-                    $('#table').append(`<tr id="R${++rowIdx}" data-id_sucursal="${id_sucursal}" data-id_producto="${id_producto}" data-marca="${marca}" data-modelo="${modelo}" data-cantidad="${cantidad}">` +
+
+                    alert(typeof(id_producto));
+
+                    $('#table').append(`<tr id="R${++rowIdx}" data-id_sucursal="${id_sucursal}" data-id_producto="${id_producto}" data-marca="${marca}" data-modelo="${modelo}" data-producto="${nombre_producto}" data-cantidad="${cantidad}">` +
                         '<td data-th="Producto"><span class="bt-content">' + nombre_producto + '</span></td>' +
                         '<td data-th="Marca"><span class="bt-content">' + marca + '</span></td>' +
                         '<td data-th="Modelo"><span class="bt-content">' + modelo + '</span></td>' +
-                        '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input class="col-9" style="padding-left:0px;" type="number" step="1" min="1" id="cant" name="cant" value="' + cantidad + '" ></div></span></td>' +
+                        '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input class="col-9" style="padding-left:0px;" type="number" step="1" min="1" max="9999" id="cant" name="cant" value="' + cantidad + '" ></div></span></td>' +
                         '<td data-th="Acciones"><span class="bt-content text-center">' +
                         '<button class="btn btn-danger remove"' +
                         'type="button">Eliminar</button>' +
@@ -346,37 +405,35 @@
 
                     console.log(productos);
 
-
                 }
+
             } else {
-                // Nueva fila dentro de tbody.
+                /*DEVOLVER MENSAJE QUE NO ES POSIBLE INSERTAR*/
+                $.aceToaster.add({
+                    placement: 'br',
+                    body: "<div class='p-3 m-2 d-flex'>\
+                         <span class='align-self-center text-center mr-3 py-2 px-1 border-1 bgc-danger radius-round'>\
+                            <i class='fa fa-times text-180 w-4 text-white mx-2px'></i>\
+                         </span>\
+                         <div>\
+                            <h4 class='text-dark-tp3'>Error</h4>\
+                            <span class='text-dark-tp3 text-110'>No es posible agregar esa cantidad. La cantidad que desea agregar es mayor al stock actual</span>\
+                         </div>\
+                        </div>\
+                        <button data-dismiss='toast' class='btn text-grey btn-h-light-danger position-tr mr-1 mt-1'><i class='fa fa-times'></i></button>",
 
-                alert(typeof(id_producto));
+                    width: 480,
+                    delay: 5000,
 
-                $('#table').append(`<tr id="R${++rowIdx}" data-id_sucursal="${id_sucursal}" data-id_producto="${id_producto}" data-marca="${marca}" data-modelo="${modelo}" data-cantidad="${cantidad}">` +
-                    '<td data-th="Producto"><span class="bt-content">' + nombre_producto + '</span></td>' +
-                    '<td data-th="Marca"><span class="bt-content">' + marca + '</span></td>' +
-                    '<td data-th="Modelo"><span class="bt-content">' + modelo + '</span></td>' +
-                    '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input class="col-9" style="padding-left:0px;" type="number" step="1" min="1" id="cant" name="cant" value="' + cantidad + '" ></div></span></td>' +
-                    '<td data-th="Acciones"><span class="bt-content text-center">' +
-                    '<button class="btn btn-danger remove"' +
-                    'type="button">Eliminar</button>' +
-                    '</td>' +
-                    '</tr>');
-                var total = $('#total_final').val();
-                var total_final = parseInt(total) + parseInt(cantidad);
-                document.getElementById("total_final").value = total_final;
-                /*INSERTA EN OBJETO Y AÑADE A ARREGLO*/
-                var producto = {
-                    "id_producto": id_producto,
-                    "cantidad_producto": cantidad,
-                    "id_sucursal": id_sucursal
-                };
-                productos.push(producto);
+                    close: false,
 
-                console.log(productos);
+                    className: 'shadow border-none radius-0 border-l-4 brc-danger',
 
+                    bodyClass: 'border-0 p-0',
+                    headerClass: 'd-none'
+                })
             }
+
         } else {
             //SI HAY ERROR DE VALIDACIÓN, ENVÍA EL MENSAJE DE ERROR
             $("#agregar_pedido_form")[0].reportValidity();
@@ -388,6 +445,7 @@
 
     $('#table').on('change', '#cant', function(index) {
         var valores = "";
+        var cantidad_suc = $('#productos option:selected').attr("data-cantidad");
         $(this).parents("tr").each(function(index2) {
             var marca = $(this).attr("data-marca");
             var modelo = $(this).attr("data-marca");
@@ -397,33 +455,65 @@
             var cantidad = $(this).find("#cant").val();
             var cantidad_anterior = $(this).attr("data-cantidad");
             var total = parseInt($(this).find("#cant").val());
-
             alert(cantidad_anterior);
+             if ($(this).find("#cant")[0].checkValidity()) {
+                if (parseInt(cantidad_suc) >= cantidad) {
+                    $(this).html("");
+                    var tr = '<td data-th="Producto"><span class="bt-content">' + producto + '</span></td>' +
+                        '<td data-th="Marca"><span class="bt-content">' + marca + '</span></td>' +
+                        '<td data-th="Modelo"><span class="bt-content">' + modelo + '</span></td>' +
+                        '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input class="col-9" style="padding-left:0px;" type="number" step="1" min="1" max="9999" id="cant" name="cant" value="' + cantidad + '" ></div></span></td>' +
+                        '<td data-th="Acciones"><span class="bt-content text-center">' +
+                        '<button class="btn btn-danger remove"' +
+                        'type="button">Eliminar</button>' +
+                        '</td>';
+                    $(this).attr('data-cantidad', cantidad);
+                    $(this).append(tr);
+                    var total2 = $('#total_final').val();
+                    var total_final = parseInt(total2) - parseInt(cantidad_anterior);
+                    total_final = total_final + total;
+                    document.getElementById("total_final").value = total_final;
 
-            $(this).html("");
-            var tr = '<td data-th="Producto"><span class="bt-content">' + producto + '</span></td>' +
-                '<td data-th="Marca"><span class="bt-content">' + marca + '</span></td>' +
-                '<td data-th="Modelo"><span class="bt-content">' + modelo + '</span></td>' +
-                '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input class="col-9" style="padding-left:0px;" type="number" step="1" min="1" id="cant" name="cant" value="' + cantidad + '" ></div></span></td>' +
-                '<td data-th="Acciones"><span class="bt-content text-center">' +
-                '<button class="btn btn-danger remove"' +
-                'type="button">Eliminar</button>' +
-                '</td>';
-            $(this).attr('data-cantidad', cantidad);
-            $(this).append(tr);
-            var total2 = $('#total_final').val();
-            var total_final = parseInt(total2) - parseInt(cantidad_anterior);
-            total_final = total_final + total;
-            document.getElementById("total_final").value = total_final;
+                    /*ACTUALIZAR ARREGLO*/
+                    productos = productos.map(function(objeto) {
+                        return objeto.id_producto == id_producto && objeto.id_sucursal == id_sucursal ? {
+                            "id_producto": objeto.id_producto,
+                            "cantidad_producto": cantidad,
+                            "id_sucursal": id_sucursal
+                        } : objeto;
+                    });
+                } else {
+                    $.aceToaster.add({
+                        placement: 'br',
+                        body: "<div class='p-3 m-2 d-flex'>\
+                         <span class='align-self-center text-center mr-3 py-2 px-1 border-1 bgc-danger radius-round'>\
+                            <i class='fa fa-times text-180 w-4 text-white mx-2px'></i>\
+                         </span>\
+                         <div>\
+                            <h4 class='text-dark-tp3'>Error</h4>\
+                            <span class='text-dark-tp3 text-110'>No es posible agregar esa cantidad. La cantidad que desea agregar es mayor al stock actual</span>\
+                         </div>\
+                        </div>\
+                        <button data-dismiss='toast' class='btn text-grey btn-h-light-danger position-tr mr-1 mt-1'><i class='fa fa-times'></i></button>",
 
-            /*ACTUALIZAR ARREGLO*/
-            productos = productos.map(function(objeto) {
-                return objeto.id_producto == id_producto && objeto.id_sucursal == id_sucursal ? {
-                    "id_producto": objeto.id_producto,
-                    "cantidad_producto": cantidad,
-                    "id_sucursal": id_sucursal
-                } : objeto;
-            });
+                        width: 480,
+                        delay: 5000,
+
+                        close: false,
+
+                        className: 'shadow border-none radius-0 border-l-4 brc-danger',
+
+                        bodyClass: 'border-0 p-0',
+                        headerClass: 'd-none'
+                    })
+
+                }
+            } else {
+                 
+                $(this).find("#cant")[0].reportValidity();
+                $(this).find("#cant").val(cantidad_anterior);
+            }
+
 
         });
     });

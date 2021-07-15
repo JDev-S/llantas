@@ -159,5 +159,15 @@ class CreditoController extends Controller
         
     }
 
-
+    public function actualizar_abono(Request $input)
+    {
+        $comentario=$input['comentario'];
+        $id_abono=$input['id_abono'];
+        $id_credito=$input['id_credito'];
+        $monto=$input['monto'];
+        
+        $ingresar=DB::update('update abono_credito set monto="'.$monto.'", comentario="'.$comentario.'" where abono_credito.id_abono_credito=? and abono_credito.id_credito=? ',[$id_abono,$id_credito]);
+        
+        echo "se actualizo monto";
+    }
 }

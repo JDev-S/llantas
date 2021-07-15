@@ -300,6 +300,7 @@
                                                                     <th><b>Fecha</b></th>
                                                                     <th><b>Monto</b></th>
                                                                     <th><b>Comentario</b></th>
+                                                                    <th><b>Editar monto</b></th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody class="text-95 " id="detalles_abonos">
@@ -785,12 +786,14 @@
                     '<td >' + objeto.comentario + '</td>' +
                     
                     '</tr>';*/
-               llenado2+= `<tr id="R${++rowIdx}" data-id_abono="${objeto.id_abono_credito}" data-id_credito="${objeto.id_credito}" data-fecha="${objeto.fecha}" data-pago="${objeto.monto}"  data-comentario="${objeto.comentario}" ">` +
+                llenado2 += `<tr id="R${++rowIdx}" data-id_abono="${objeto.id_abono_credito}" data-id_credito="${objeto.id_credito}" data-fecha="${objeto.fecha}" data-pago="${objeto.monto}"  data-comentario="${objeto.comentario}" ">` +
                     '<td data-th="Producto"><span class="bt-content">' + objeto.id_abono_credito + '</span></td>' +
                     '<td data-th="Producto"><span class="bt-content">' + objeto.id_credito + '</span></td>' +
-                     '<td data-th="Producto"><span class="bt-content">' + objeto.fecha + '</span></td>' +
-                    '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input class="col-9" style="padding-left:0px;" type="number" min="0.01" max="999999999.00" step="any" lang="en" id="cant" name="cant" value="' + objeto.monto + '" ></div></span></td>' +
+                    '<td data-th="Producto"><span class="bt-content">' + objeto.fecha + '</span></td>' +
+                    '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input  style="padding-left:0px; width:106px;" type="number" min="0.01" max="999999999.00" disabled step="any" lang="en" id="cant" name="cant" value="' + objeto.monto + '" >' +
+                    '</div></span></td>' +
                     '<td data-th="Producto"><span class="bt-content">' + objeto.comentario + '</span></td>' +
+                    '<td data-th="Producto"><span class="bt-content"><input type="checkbox" id="check_cant" name="check_cant" ></span></td>' +
                     '</tr>';
             }
         });
@@ -820,33 +823,96 @@
 
 
     });
-    
+
     /*Actualizar fila al cambiar valor del input cantidad*/
 
-    $('#detalles_abonos').on('change', '#cant', function(index) {
-       
+    $('#detalles_abonos').on('change', '#check_cant', function(index) {
+
         $(this).parents("tr").each(function(index2) {
             var id_abono = $(this).attr("data-id_abono");
             var id_credito = $(this).attr("data-id_credito");
             var data_fecha = $(this).attr("data-fecha");
             var data_pago = $(this).attr("data-pago");
+            $(this).find("#cant").prop('disabled', false);
+            var pago_nuevo = $(this).find("#cant").val();
             var data_comentario = $(this).attr("data-comentario");
-            
+
             alert(id_abono);
 
             $(this).html("");
-            var tr = '<td data-th="Producto"><span class="bt-content">' + objeto.id_abono_credito + '</span></td>' +
-                    '<td data-th="Producto"><span class="bt-content">' + objeto.id_credito + '</span></td>' +
-                     '<td data-th="Producto"><span class="bt-content">' + objeto.fecha + '</span></td>' +
-                    '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input class="col-9" style="padding-left:0px;" type="number" min="0.01" max="999999999.00" step="any" lang="en" id="cant" name="cant" value="' + objeto.monto + '" ></div></span></td>' +
-                    '<td data-th="Producto"><span class="bt-content">' + objeto.comentario + '</span></td>' +
-            $(this).attr('data-pago', data_pago);
+            var tr = '<td data-th="Producto"><span class="bt-content">' + id_abono + '</span></td>' +
+                '<td data-th="Producto"><span class="bt-content">' + id_credito + '</span></td>' +
+                '<td data-th="Producto"><span class="bt-content">' + data_fecha + '</span></td>' +
+                '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input style="padding-left:0px; width:106px;" type="number" min="0.01" max="999999999.00" step="any" lang="en" id="cant"  name="cant" value="' + pago_nuevo + '" >' +
+                '</div></span></td>' +
+                '<td data-th="Producto"><span class="bt-content">' + data_comentario + '</span></td>' +
+                '<td data-th="Producto"><span class="bt-content"><input type="checkbox" id="check_cant" name="check_cant" checked ></span></td>' +
+                $(this).attr('data-pago', pago_nuevo);
             $(this).append(tr);
 
         });
     });
 
+
+    $('#detalles_abonos').on('change', '#cant', function(index) {
+
+        $(this).parents("tr").each(function(index2) {
+            var id_abono = $(this).attr("data-id_abono");
+            var id_credito = $(this).attr("data-id_credito");
+            var data_fecha = $(this).attr("data-fecha");
+            var data_pago = $(this).attr("data-pago");
+            $(this).find("#cant").prop('disabled', false);
+            var pago_nuevo = $(this).find("#cant").val();
+            var data_comentario = $(this).attr("data-comentario");
+            const tiempoTranscurrido = Date.now();
+            const hoy = new Date(tiempoTranscurrido);
+            var comentario_nuevo = "Se actualizo el abono: " + hoy.toDateString();
+
+            alert(id_abono);
+
+            $(this).html("");
+            var tr = '<td data-th="Producto"><span class="bt-content">' + id_abono + '</span></td>' +
+                '<td data-th="Producto"><span class="bt-content">' + id_credito + '</span></td>' +
+                '<td data-th="Producto"><span class="bt-content">' + data_fecha + '</span></td>' +
+                '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input  style="padding-left:0px; width:106px;" type="number" min="0.01" max="999999999.00" step="any" lang="en" id="cant" disabled  name="cant" value="' + pago_nuevo + '" >' +
+                '</div></span></td>' +
+                '<td data-th="Producto"><span class="bt-content">' + comentario_nuevo + '</span></td>' +
+                '<td data-th="Producto"><span class="bt-content"><input type="checkbox" id="check_cant" name="check_cant" ></span></td>' +
+                $(this).attr('data-comentario', comentario_nuevo);
+            actualizar_monto_abono(comentario_nuevo, pago_nuevo, id_credito, id_abono);
+            $(this).append(tr);
+
+        });
+    });
+
+    /*ACTUALIZAR EL MONTO DEL ABONO*/
+    function actualizar_monto_abono(comentario, monto, id_credito, id_abono) {
+        alert(comentario + "  " + monto + "  " + id_credito + "   " + id_abono);
+        var token = '{{csrf_token()}}';
+        var data = {
+            monto: monto,
+            comentario: comentario,
+            id_credito: id_credito,
+            id_abono: id_abono,
+            _token: token
+        };
+        $.ajax({
+            type: "POST",
+            url: "/actualizar_abono",
+            data: data,
+            success: function(msg) {
+                alert(msg);
+                
+            }
+        });
+
+
+    }
+
 </script>
+
+
+
 
 <script type="text/javascript">
     $('#modalNuevo').on('show.bs.modal', function(event) {
@@ -903,7 +969,7 @@
                          </span>\
                          <div>\
                             <h4 class='text-dark-tp3'>Error</h4>\
-                            <span class='text-dark-tp3 text-110'>"+msg+".</span>\
+                            <span class='text-dark-tp3 text-110'>" + msg + ".</span>\
                          </div>\
                         </div>\
                         <button data-dismiss='toast' class='btn text-grey btn-h-light-danger position-tr mr-1 mt-1'><i class='fa fa-times'></i></button>",

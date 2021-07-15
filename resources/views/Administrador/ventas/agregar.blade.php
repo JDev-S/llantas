@@ -549,74 +549,153 @@
             var bandera = 0;
             let pago = $('input[name="pago"]:checked').val();
             alert("Imprimo valor de pago: " + pago + "tipo de pago " + typeof(pago));
+            alert("cantidad_sucu" + cantidad_suc);
+            alert("cantidad_ingresada" + cantidad);
+            /*VERIFICAR QUE LA CANTIDAD INGRESADA SEA MENOR QUE LA EXISTENTE*/
+            if (parseInt(cantidad_suc) >= parseInt(cantidad)) {
+                /*PROCEDER A INSERTAR*/
+                /*VERIFICAR SI LA TABLA TIENE FILAS*/
+                if ($("#responsive-table tbody tr").length != 0) {
+                    /*EVALUAR SI EXISTE EL PRODUCTO AGREGADO EN LA TABLA*/
+                    $("#responsive-table tbody tr").each(function(index_tr) {
+                        if (bandera == 0) {
+                            var t_idsucursal = ($(this).attr("data-id_sucursal"));
+                            var t_idproducto = ($(this).attr("data-id_producto"));
 
-            /VERIFICAR SI LA TABLA TIENE FILAS/
-            if ($("#responsive-table tbody tr").length != 0) {
-                /EVALUAR SI ESXISTE EL PRODUCTO AGREGADO EN LA TABLA/
-                $("#responsive-table tbody tr").each(function(index_tr) {
-                    if (bandera == 0) {
-                        var t_idsucursal = ($(this).attr("data-id_sucursal"));
-                        var t_idproducto = ($(this).attr("data-id_producto"));
+                            /*SI EL PRODUCTO EXISTE, LO ACTUALIZA*/
+                            if (id_sucursal == t_idsucursal && id_producto == t_idproducto) {
+                                //var t_cantidad = document.getElementById("cant").value;
+                                bandera = 1;
+                                var t_cantidad = ($(this).attr("data-cantidad"));
+                                alert("Imprimo t_cant:" + t_cantidad);
+                                alert("Imprimo cantidad_arriba:" + cantidad);
+                                alert("Suma cantidades: suma del input cant + suma del input arriba : " + t_cantidad + " + " + cantidad);
 
-                        /SI EL PRODUCTO EXISTE, LO ACTUALIZA/
-                        if (id_sucursal == t_idsucursal && id_producto == t_idproducto) {
-                            //var t_cantidad = document.getElementById("cant").value;
-                            var t_cantidad = ($(this).attr("data-cantidad"));
-                            alert("Imprimo t_cant:" + t_cantidad);
-                            alert("Imprimo cantidad_arriba:" + cantidad);
-                            alert("Suma cantidades: suma del input cant + suma del input arriba : " + t_cantidad + " + " + cantidad);
-                            cantidad = parseInt(t_cantidad) + parseInt(cantidad);
-                            alert("Valor nuevo: " + cantidad);
-                            bandera = 1;
-                            $(this).attr('data-cantidad', cantidad);
-                            $(this).attr('data-total', parseInt(cantidad) * parseInt(precio));
-                            //$(this).dataset.cantidad = cantidad;
-                            $(this).html("");
-                            /LIMPIA EL CONTENIDO DE TR PARA EVITAR DUPLICADOS/
-                            var tr = '<td data-th="Producto"><span class="bt-content">' + nombre_producto + '</span></td>' +
-                                '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input  class="col-9" style="padding-left:0px;" min="1" max="9999" step="1" type="number" id="cant" name="cant" value="' + cantidad + '" ></div></span></td>' +
-                                '<td data-th="Precio unitario"><span class="bt-content">' + precio + '</span></td>' +
-                                '<td data-th="Total"><span class="bt-content">' + parseInt(cantidad) * parseInt(precio) + '</span></td>' +
-                                '<td data-th="Acciones"><span class="bt-content text-center">' +
-                                '<button class="btn btn-danger remove"' +
-                                'type="button">Eliminar</button>' +
-                                '</td>';
-                            $(this).append(tr);
+                                /*VERIFICAR QUE LA SUMA DE PRODUCTOS AGREGADOS SEA MENOR AL STOCK*/
+                                if (parseInt(cantidad_suc) >= (parseInt(cantidad) + parseInt(t_cantidad))) {
+                                    /*SI EL STOCK ES MAYOR, SE PROCEDE A ACTUALIZAR*/
+                                    cantidad = parseInt(t_cantidad) + parseInt(cantidad);
+                                    alert("Valor nuevo: " + cantidad);
 
-                            var total = $('#total_final').val();
-                            var total_final = total - (parseInt(t_cantidad) * parseInt(precio));
-                            total_final = total_final + (parseInt(cantidad) * parseInt(precio));
-                            document.getElementById("total_final").value = total_final;
-                            /*ACTUALIZAR ARREGLO*/
-                            productos = productos.map(function(objeto) {
-                                return objeto.id_producto == id_producto && objeto.id_sucursal == id_sucursal ? {
-                                    "id_producto": objeto.id_producto,
-                                    "cantidad_producto": cantidad,
-                                    "precio_unidad": objeto.precio_unidad,
-                                    "total": parseInt(cantidad) * parseInt(objeto.precio_unidad),
-                                    "nombre_producto": nombre_producto,
-                                    "id_sucursal": id_sucursal
-                                } : objeto;
-                            });
-                            console.log("ANTES DEL IF ");
-                            console.log(productos);
+                                    $(this).attr('data-cantidad', cantidad);
+                                    $(this).attr('data-total', parseInt(cantidad) * parseInt(precio));
+                                    //$(this).dataset.cantidad = cantidad;
+                                    $(this).html("");
+                                    /*LIMPIA EL CONTENIDO DE TR PARA EVITAR DUPLICADOS*/
+                                    var tr = '<td data-th="Producto"><span class="bt-content">' + nombre_producto + '</span></td>' +
+                                        '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input  class="col-9" style="padding-left:0px;" min="1" max="9999" step="1" type="number" id="cant" name="cant" value="' + cantidad + '" ></div></span></td>' +
+                                        '<td data-th="Precio unitario"><span class="bt-content">' + precio + '</span></td>' +
+                                        '<td data-th="Total"><span class="bt-content">' + parseInt(cantidad) * parseInt(precio) + '</span></td>' +
+                                        '<td data-th="Acciones"><span class="bt-content text-center">' +
+                                        '<button class="btn btn-danger remove"' +
+                                        'type="button">Eliminar</button>' +
+                                        '</td>';
+                                    $(this).append(tr);
 
-                            if (pago == undefined || pago == "2" || pago == "1") {
-                                alert("no es llantimax");
+                                    var total = $('#total_final').val();
+                                    var total_final = total - (parseInt(t_cantidad) * parseInt(precio));
+                                    total_final = total_final + (parseInt(cantidad) * parseInt(precio));
+                                    document.getElementById("total_final").value = total_final;
+                                    /*ACTUALIZAR ARREGLO*/
+                                    productos = productos.map(function(objeto) {
+                                        return objeto.id_producto == id_producto && objeto.id_sucursal == id_sucursal ? {
+                                            "id_producto": objeto.id_producto,
+                                            "cantidad_producto": cantidad,
+                                            "precio_unidad": objeto.precio_unidad,
+                                            "total": parseInt(cantidad) * parseInt(objeto.precio_unidad),
+                                            "nombre_producto": nombre_producto,
+                                            "id_sucursal": id_sucursal
+                                        } : objeto;
+                                    });
+                                    console.log("ANTES DEL IF ");
+                                    console.log(productos);
 
-                                limpiar();
-                            } else {
-                                alert("es llantimax");
+                                    if (pago == undefined || pago == "2" || pago == "1") {
+                                        alert("no es llantimax");
 
-                                mostrar_formulario_credito();
+                                        limpiar();
+                                    } else {
+                                        alert("es llantimax");
+
+                                        mostrar_formulario_credito();
+                                    }
+
+                                } else {
+                                    /*NO HAY STOCK SUFICIENTE*/
+                                    $.aceToaster.add({
+                                        placement: 'br',
+                                        body: "<div class='p-3 m-2 d-flex'>\
+                         <span class='align-self-center text-center mr-3 py-2 px-1 border-1 bgc-danger radius-round'>\
+                            <i class='fa fa-times text-180 w-4 text-white mx-2px'></i>\
+                         </span>\
+                         <div>\
+                            <h4 class='text-dark-tp3'>Error</h4>\
+                            <span class='text-dark-tp3 text-110'>No es posible agregar esa cantidad. La cantidad que desea agregar es mayor al stock actual</span>\
+                         </div>\
+                        </div>\
+                        <button data-dismiss='toast' class='btn text-grey btn-h-light-danger position-tr mr-1 mt-1'><i class='fa fa-times'></i></button>",
+
+                                        width: 480,
+                                        delay: 5000,
+
+                                        close: false,
+
+                                        className: 'shadow border-none radius-0 border-l-4 brc-danger',
+
+                                        bodyClass: 'border-0 p-0',
+                                        headerClass: 'd-none'
+                                    })
+                                }
                             }
                         }
+                    });
+                    /*SI NO EXISTE EL ELEMENTO, ENTONCES LO INSERTA*/
+                    if (bandera == 0) {
+                        alert("nueva fila");
+                        // Nueva fila dentro de tbody.
+                        $('#table').append(`<tr id="R${++rowIdx}" data-id_sucursal="${id_sucursal}" data-id_producto="${id_producto}" data-precio="${precio}" data-producto="${nombre_producto}"  data-total="${parseInt(cantidad) * parseInt(precio)}" data-cantidad="${cantidad}">` +
+                            '<td data-th="Producto"><span class="bt-content">' + nombre_producto + '</span></td>' +
+                            '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input class="col-9" style="padding-left:0px;" type="number" min="1" max="9999" step="1" id="cant" name="cant" value="' + cantidad + '" ></div></span></td>' +
+                            '<td data-th="Precio unitario"><span class="bt-content">' + precio + '</span></td>' +
+                            '<td data-th="Total"><span class="bt-content">' + parseInt(cantidad) * parseInt(precio) + '</span></td>' +
+                            '<td data-th="Acciones"><span class="bt-content text-center">' +
+                            '<button class="btn btn-danger remove"' +
+                            'type="button">Eliminar</button>' +
+                            '</td>' +
+                            '</tr>');
+                        var total = $('#total_final').val();
+                        var total_final = parseInt(total) + (parseInt(cantidad) * parseInt(precio));
+                        document.getElementById("total_final").value = total_final;
+                        /INSERTA EN OBJETO Y AÑADE A ARREGLO/
+                        var producto = {
+                            "id_producto": id_producto,
+                            "cantidad_producto": cantidad,
+                            "precio_unidad": precio,
+                            "total": parseInt(cantidad) * parseInt(precio),
+                            "nombre_producto": nombre_producto,
+                            "id_sucursal": id_sucursal
+                        };
+                        productos.push(producto);
+
+                        console.log(productos);
+
+                        if (pago == undefined || pago == "2" || pago == "1") {
+                            alert("no es llantimax");
+
+                            limpiar();
+                        } else {
+                            alert("es llantimax");
+
+                            mostrar_formulario_credito();
+                        }
+
+
                     }
-                });
-                /SI NO EXISTE EL ELEMENTO, ENTONCES LO INSERTA/
-                if (bandera == 0) {
-                    alert("nueva fila");
+                } else {
                     // Nueva fila dentro de tbody.
+
+                    alert(typeof(id_producto));
+
                     $('#table').append(`<tr id="R${++rowIdx}" data-id_sucursal="${id_sucursal}" data-id_producto="${id_producto}" data-precio="${precio}" data-producto="${nombre_producto}"  data-total="${parseInt(cantidad) * parseInt(precio)}" data-cantidad="${cantidad}">` +
                         '<td data-th="Producto"><span class="bt-content">' + nombre_producto + '</span></td>' +
                         '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input class="col-9" style="padding-left:0px;" type="number" min="1" max="9999" step="1" id="cant" name="cant" value="' + cantidad + '" ></div></span></td>' +
@@ -652,50 +731,36 @@
 
                         mostrar_formulario_credito();
                     }
-
-
                 }
             } else {
-                // Nueva fila dentro de tbody.
+                /*DEVOLVER MENSAJE QUE NO ES POSIBLE INSERTAR*/
+                $.aceToaster.add({
+                    placement: 'br',
+                    body: "<div class='p-3 m-2 d-flex'>\
+                         <span class='align-self-center text-center mr-3 py-2 px-1 border-1 bgc-danger radius-round'>\
+                            <i class='fa fa-times text-180 w-4 text-white mx-2px'></i>\
+                         </span>\
+                         <div>\
+                            <h4 class='text-dark-tp3'>Error</h4>\
+                            <span class='text-dark-tp3 text-110'>No es posible agregar esa cantidad. La cantidad que desea agregar es mayor al stock actual</span>\
+                         </div>\
+                        </div>\
+                        <button data-dismiss='toast' class='btn text-grey btn-h-light-danger position-tr mr-1 mt-1'><i class='fa fa-times'></i></button>",
 
-                alert(typeof(id_producto));
+                    width: 480,
+                    delay: 5000,
 
-                $('#table').append(`<tr id="R${++rowIdx}" data-id_sucursal="${id_sucursal}" data-id_producto="${id_producto}" data-precio="${precio}" data-producto="${nombre_producto}"  data-total="${parseInt(cantidad) * parseInt(precio)}" data-cantidad="${cantidad}">` +
-                    '<td data-th="Producto"><span class="bt-content">' + nombre_producto + '</span></td>' +
-                    '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input class="col-9" style="padding-left:0px;" type="number" min="1" max="9999" step="1" id="cant" name="cant" value="' + cantidad + '" ></div></span></td>' +
-                    '<td data-th="Precio unitario"><span class="bt-content">' + precio + '</span></td>' +
-                    '<td data-th="Total"><span class="bt-content">' + parseInt(cantidad) * parseInt(precio) + '</span></td>' +
-                    '<td data-th="Acciones"><span class="bt-content text-center">' +
-                    '<button class="btn btn-danger remove"' +
-                    'type="button">Eliminar</button>' +
-                    '</td>' +
-                    '</tr>');
-                var total = $('#total_final').val();
-                var total_final = parseInt(total) + (parseInt(cantidad) * parseInt(precio));
-                document.getElementById("total_final").value = total_final;
-                /INSERTA EN OBJETO Y AÑADE A ARREGLO/
-                var producto = {
-                    "id_producto": id_producto,
-                    "cantidad_producto": cantidad,
-                    "precio_unidad": precio,
-                    "total": parseInt(cantidad) * parseInt(precio),
-                    "nombre_producto": nombre_producto,
-                    "id_sucursal": id_sucursal
-                };
-                productos.push(producto);
+                    close: false,
 
-                console.log(productos);
+                    className: 'shadow border-none radius-0 border-l-4 brc-danger',
 
-                if (pago == undefined || pago == "2" || pago == "1") {
-                    alert("no es llantimax");
+                    bodyClass: 'border-0 p-0',
+                    headerClass: 'd-none'
+                })
 
-                    limpiar();
-                } else {
-                    alert("es llantimax");
-
-                    mostrar_formulario_credito();
-                }
             }
+
+
         } else {
             $("#agregar_ventas_form")[0].reportValidity();
         }
@@ -704,9 +769,13 @@
     /*Actualizar fila al cambiar valor del input cantidad*/
 
     $('#table').on('change', '#cant', function(index) {
+
         let pago = $('input[name="pago"]:checked').val();
+        var cantidad_suc = $('#productos option:selected').attr("data-cantidad");
         var valores = "";
+        var valor_anterior_aux="";
         $(this).parents("tr").each(function(index2) {
+            var input_cantidad = $(this).find("#cant");
             var id_sucursal = $(this).attr("data-id_sucursal");
             var id_producto = $(this).attr("data-id_producto");
             var nombre_producto = $(this).attr("data-producto");
@@ -715,47 +784,82 @@
             var cantidad = $(this).find("#cant").val();
             var cantidad_anterior = $(this).attr("data-cantidad");
             var total = parseInt($(this).find("#cant").val()) * parseInt($(this).attr("data-precio"));
+            alert(input_cantidad[0].checkValidity());
+            alert($(this).find("#cant")[0].checkValidity());
+            if ($(this).find("#cant")[0].checkValidity()) {
+                
 
-            alert(cantidad_anterior);
+                alert(cantidad_anterior);
 
-            $(this).html("");
-            var tr = '<td data-th="Producto"><span class="bt-content">' + producto + '</span></td>' +
-                '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input class="col-9" style="padding-left:0px;" type="number" step="1" min="1" id="cant" name="cant" value="' + cantidad + '" ></div></span></td>' +
-                '<td data-th="Precio unitario"><span class="bt-content">' + precio_compra + '</span></td>' +
-                '<td data-th="Total"><span class="bt-content">' + total + '</span></td>' +
-                '<td data-th="Acciones"><span class="bt-content text-center">' +
-                '<button class="btn btn-danger remove"' +
-                'type="button">Eliminar</button>' +
-                '</td>';
-            $(this).attr('data-cantidad', cantidad);
-            $(this).attr('data-total', total);
-            $(this).append(tr);
-            var total2 = $('#total_final').val();
-            var total_final = parseInt(total2) - parseInt(cantidad_anterior) * parseInt(precio_compra);
-            total_final = total_final + total;
-            document.getElementById("total_final").value = total_final;
-            /*ACTUALIZAR ARREGLO*/
-            productos = productos.map(function(objeto) {
-                return objeto.id_producto == id_producto && objeto.id_sucursal == id_sucursal ? {
-                    "id_producto": objeto.id_producto,
-                    "cantidad_producto": cantidad,
-                    "precio_unidad": objeto.precio_unidad,
-                    "total": parseInt(cantidad) * parseInt(objeto.precio_unidad),
-                    "nombre_producto": nombre_producto,
-                    "id_sucursal": id_sucursal
-                } : objeto;
-            });
-            alert(pago);
+                if (parseInt(cantidad_suc) >= cantidad) {
+                    $(this).html("");
+                    var tr = '<td data-th="Producto"><span class="bt-content">' + producto + '</span></td>' +
+                        '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input class="col-9" style="padding-left:0px;" type="number" step="1" min="1" id="cant" name="cant" value="' + cantidad + '" ></div></span></td>' +
+                        '<td data-th="Precio unitario"><span class="bt-content">' + precio_compra + '</span></td>' +
+                        '<td data-th="Total"><span class="bt-content">' + total + '</span></td>' +
+                        '<td data-th="Acciones"><span class="bt-content text-center">' +
+                        '<button class="btn btn-danger remove"' +
+                        'type="button">Eliminar</button>' +
+                        '</td>';
+                    $(this).attr('data-cantidad', cantidad);
+                    $(this).attr('data-total', total);
+                    $(this).append(tr);
+                    var total2 = $('#total_final').val();
+                    var total_final = parseInt(total2) - parseInt(cantidad_anterior) * parseInt(precio_compra);
+                    total_final = total_final + total;
+                    document.getElementById("total_final").value = total_final;
+                    /*ACTUALIZAR ARREGLO*/
+                    productos = productos.map(function(objeto) {
+                        return objeto.id_producto == id_producto && objeto.id_sucursal == id_sucursal ? {
+                            "id_producto": objeto.id_producto,
+                            "cantidad_producto": cantidad,
+                            "precio_unidad": objeto.precio_unidad,
+                            "total": parseInt(cantidad) * parseInt(objeto.precio_unidad),
+                            "nombre_producto": nombre_producto,
+                            "id_sucursal": id_sucursal
+                        } : objeto;
+                    });
+                    alert(pago);
 
-            if (pago == undefined || pago == "2" || pago == "1") {
-                alert("no es llantimax");
+                    if (pago == undefined || pago == "2" || pago == "1") {
+                        alert("no es llantimax");
 
-                limpiar();
+                        limpiar();
+                    } else {
+                        alert("es llantimax");
+
+                        mostrar_formulario_credito();
+                    }
+                } else {
+                    $.aceToaster.add({
+                        placement: 'br',
+                        body: "<div class='p-3 m-2 d-flex'>\
+                         <span class='align-self-center text-center mr-3 py-2 px-1 border-1 bgc-danger radius-round'>\
+                            <i class='fa fa-times text-180 w-4 text-white mx-2px'></i>\
+                         </span>\
+                         <div>\
+                            <h4 class='text-dark-tp3'>Error</h4>\
+                            <span class='text-dark-tp3 text-110'>No es posible agregar esa cantidad. La cantidad que desea agregar es mayor al stock actual</span>\
+                         </div>\
+                        </div>\
+                        <button data-dismiss='toast' class='btn text-grey btn-h-light-danger position-tr mr-1 mt-1'><i class='fa fa-times'></i></button>",
+
+                        width: 480,
+                        delay: 5000,
+
+                        close: false,
+
+                        className: 'shadow border-none radius-0 border-l-4 brc-danger',
+
+                        bodyClass: 'border-0 p-0',
+                        headerClass: 'd-none'
+                    })
+                }
             } else {
-                alert("es llantimax");
-
-                mostrar_formulario_credito();
+                $(this).find("#cant")[0].reportValidity();
+                $(this).find("#cant").val(cantidad_anterior);   
             }
+
 
         });
     });
@@ -937,7 +1041,7 @@
                             data: data,
                             success: function(msg) {
                                 console.log(msg);
-                               console.log( typeof(msg));
+                                console.log(typeof(msg));
                                 console.log(msg === "si");
                                 if (msg === "si") {
                                     $.aceToaster.add({
@@ -988,40 +1092,40 @@
                                 }
 
                             }
-                        }).fail( function( jqXHR, textStatus, errorThrown ) {
+                        }).fail(function(jqXHR, textStatus, errorThrown) {
 
-  if (jqXHR.status === 0) {
+                            if (jqXHR.status === 0) {
 
-    alert('Not connect: Verify Network.');
+                                alert('Not connect: Verify Network.');
 
-  } else if (jqXHR.status == 404) {
+                            } else if (jqXHR.status == 404) {
 
-    alert('Requested page not found [404]');
+                                alert('Requested page not found [404]');
 
-  } else if (jqXHR.status == 500) {
+                            } else if (jqXHR.status == 500) {
 
-    alert('Internal Server Error [500].');
+                                alert('Internal Server Error [500].');
 
-  } else if (textStatus === 'parsererror') {
+                            } else if (textStatus === 'parsererror') {
 
-    alert('Requested JSON parse failed.');
-      alert(msg);
+                                alert('Requested JSON parse failed.');
+                                alert(msg);
 
-  } else if (textStatus === 'timeout') {
+                            } else if (textStatus === 'timeout') {
 
-    alert('Time out error.');
+                                alert('Time out error.');
 
-  } else if (textStatus === 'abort') {
+                            } else if (textStatus === 'abort') {
 
-    alert('Ajax request aborted.');
+                                alert('Ajax request aborted.');
 
-  } else {
+                            } else {
 
-    alert('Uncaught Error: ' + jqXHR.responseText);
+                                alert('Uncaught Error: ' + jqXHR.responseText);
 
-  }
+                            }
 
-});
+                        });
                     } else {
                         $.aceToaster.add({
                             placement: 'br',
