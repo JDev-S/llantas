@@ -23,6 +23,8 @@ Route::post('/actualizar_usuario','LoginController@actualizar_usuario')->name('a
 
 /*Mandar a la principal*/
 Route::get('/principal','LoginController@mostrar_principal')->middleware('admin:1')->name('principal');
+/*MANDAR A LA PRINCIPAL DEL GERENTE SUCURSAL  principal_sucursal*/
+Route::get('/principal_sucursal','LoginController@mostrar_principal_sucursal')->middleware('gerente:2')->name('principal_sucursal');
 /*RECUPERAR LA CONTRASEÑA*/
 Route::post('/obtener_contrasenia','LoginController@obtener_contraseña')->name('obtener_contrasenia');
 
@@ -38,6 +40,8 @@ Route::post('/actualizar_cliente', 'ClientesController@actualizar_cliente')->nam
 /*Llantas*/
 /*Mostrar Llantas*/
 Route::get('/mostrar_llantas','LlantasController@mostrar_llantas')->middleware('admin:1')->name('mostrar_llantas');
+/*Mostrar Llantas sucursales*/
+Route::get('/mostrar_llantas_sucursales','LlantasController@mostrar_llantas_sucursales')->middleware('gerente:2')->name('mostrar_llantas_sucursales');
 /*Agregar una llanta*/
 Route::post('/agregar_llantas', 'LlantasController@agregar_llanta')->name('agregar_llantas');
 /*ELIMINAR LLANTA*/
@@ -48,6 +52,8 @@ Route::post('/actualizar_Llanta', 'LlantasController@actualizar_Llanta')->name('
 /*SERVICIOS*/
 /*Mostrar servicios*/
 Route::get('/mostrar_servicios','ServicioController@mostrar_servicios')->middleware('admin:1')->name('mostrar_servicios');
+/*Mostrar sercicios sucursales*/
+Route::get('/mostrar_servicios_sucursales','ServicioController@mostrar_servicios_sucursales')->middleware('gerente:2')->name('mostrar_servicios_sucursales');
 /*Agregar un servicio*/
 Route::post('/agregar_servicios', 'ServicioController@agregar_servicio')->name('agregar_servicios');
 /*ELIMINAR SERVICIO*/
@@ -58,16 +64,24 @@ Route::post('/actualizar_Servicio', 'ServicioController@actualizar_Servicio')->n
 /*Refacciones*/
 /*Mostrar refacciones*/
 Route::get('/mostrar_refacciones','RefaccionesController@mostrar_refacciones')->middleware('admin:1')->name('mostrar_refacciones');
+/*Mostrar refacciones sucursales*/
+Route::get('/mostrar_refacciones_sucursales','RefaccionesController@mostrar_refacciones_sucursales')->middleware('gerente:2')->name('mostrar_refacciones_sucursales');
 /*Agregar una refaccion*/
 Route::post('/agregar_refacciones', 'RefaccionesController@agregar_refaccion')->name('agregar_refacciones');
+/*Agregar una refaccion a sucursal*/
+Route::post('/agregar_refacciones_sucursal', 'RefaccionesController@agregar_refacciones_sucursal')->name('agregar_refacciones_sucursal');
 /*ELIMINAR REFACCION*/
 Route::post('/eliminar_Refaccion', 'RefaccionesController@eliminar_Refaccion')->name('eliminar_Refaccion');
 /*ACTUALIZAR REFACCION*/
 Route::post('/actualizar_refaccion', 'RefaccionesController@actualizar_refaccion')->name('actualizar_refaccion');
+/*Actualizar refaccion sucursal*/
+Route::post('/actualizar_refaccion_sucursal', 'RefaccionesController@actualizar_refaccion_sucursal')->name('actualizar_refaccion_sucursal');
 
 /*Baterias*/
 /*Mostrar Baterias*/
 Route::get('/mostrar_baterias','BateriasController@mostrar_baterias')->middleware('admin:1')->name('mostrar_baterias');
+/*Mostrar Baterias sucursales*/
+Route::get('/mostrar_baterias_sucursales','BateriasController@mostrar_baterias_sucursales')->middleware('gerente:2')->name('mostrar_baterias_sucursales');
 /*Agregar una bateria*/
 Route::post('/agregar_baterias', 'BateriasController@agregar_bateria')->name('agregar_baterias');
 /*ELIMINAR BATERIA*/
@@ -78,6 +92,8 @@ Route::post('/actualizar_Bateria', 'BateriasController@actualizar_Bateria')->nam
 /*INVENTARIO*/
 /*Mostrar inventario*/
 Route::get('/mostrar_inventario','InventarioController@mostrar_inventarios')->middleware('admin:1')->name('mostrar_inventario');
+/*Mostrar inventario por sucursal*/
+Route::get('/mostrar_inventarios_sucursal','InventarioController@mostrar_inventarios_sucursal')->middleware('gerente:2')->name('mostrar_inventarios_sucursal');
 /*Mostrar formulario de inventario*/
 Route::get('/agregar_inventario','InventarioController@mostrar_formulario')->middleware('admin:1')->name('agregar_inventario');
 /*Agregar un producto en inventario*/

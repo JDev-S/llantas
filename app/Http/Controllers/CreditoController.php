@@ -166,8 +166,25 @@ class CreditoController extends Controller
         $id_credito=$input['id_credito'];
         $monto=$input['monto'];
         
+        
         $ingresar=DB::update('update abono_credito set monto="'.$monto.'", comentario="'.$comentario.'" where abono_credito.id_abono_credito=? and abono_credito.id_credito=? ',[$id_abono,$id_credito]);
         
-        echo "se actualizo monto";
+        $suma_abonado=CreditoController::obtener_suma_montos($id_credito);
+        $total_venta=CreditoController::obtener_total_venta($id_credito);
+        $monto_deber_nuevo=floatval($total_venta)-floatval($suma_abonado);
+            if($monto_deber_nuevo==0)
+            {
+                $query=DB::select("select id_venta from credito where id_credito='".$id_credito."'");
+                $id_venta=$query[0]->id_venta;
+                $actualizar = DB::update("UPDATE credito SET status_credito='Liquidado' WHERE id_credito=? AND id_venta=?", [$id_credito,$id_venta]);
+            }
+            else
+            {
+                $query=DB::select("select id_venta from credito where id_credito='".$id_credito."'");
+                $id_venta=$query[0]->id_venta;
+                $actualizar = DB::update("UPDATE credito SET status_credito='No liquidado' WHERE id_credito=? AND id_venta=?", [$id_credito,$id_venta]);
+            }
+        
+        echo "se actualizo monto, Debe:".$monto_deber_nuevo;
     }
 }

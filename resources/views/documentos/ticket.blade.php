@@ -142,7 +142,7 @@
 									'.$auto.'
                                      <br />';
     
-                                    if($metodo_pago=="crédito(3%+)")
+                                    if($metodo_pago=="TDC")
                                     {
                                         echo '<b>Comentario:</b> 
 									   '.$comentario.'
@@ -187,7 +187,7 @@
 				</tr>';
                 }
                 
-                if($metodo_pago=="crédito(3%+)")
+                if($metodo_pago=="TDC")
                 {
                      $valor1=  intval($total_venta)-(intval($total_venta)*0.03);
                     if ($valor1<0) return "-".formato_moneda(-$valor1);

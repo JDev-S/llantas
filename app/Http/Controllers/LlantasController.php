@@ -15,7 +15,7 @@ class LlantasController extends Controller
         return '$' . number_format($valor, 2);
     }
     
-        public function mostrar_llantas()
+     public function mostrar_llantas()
      {
          $aProducto_llanta = array();
         
@@ -109,6 +109,104 @@ class LlantasController extends Controller
 
        $sucursal_usuario= Session::get('sucursal_usuario');
         return view('/Administrador/productos/llantas/index',compact('aProducto_llantas','sucursal_usuario'));
+     }
+    
+    
+     public function mostrar_llantas_sucursales()
+     {
+         $aProducto_llanta = array();
+         $id_sucursal=Session::get('id_sucursal_usuario');
+        
+        $productos = DB::select('select id_productos_llantimax, categoria, nombre, marca, id_marca, modelo, precio, fotografia_miniatura, caracteristica, descripcion, sucursal, cantidad from ((SELECT productos_llantimax.id_productos_llantimax, categoria.categoria, productos_llantimax.nombre, marca.marca,marca.id_marca, producto.modelo, productos_servicios.precio, producto.fotografia_miniatura, caracteristica.caracteristica, IFNULL(descripcion_categoria_caracteristica.descripcion, "") as descripcion FROM productos_llantimax inner join productos_servicios on productos_servicios.id_producto_servicio=productos_llantimax.id_productos_llantimax inner join producto on producto.id_producto=productos_servicios.id_producto_servicio INNER JOIN categoria on categoria.id_categoria=producto.id_categoria INNER JOIN caracteristica on categoria.id_categoria=caracteristica.id_categoria left join descripcion_categoria_caracteristica on descripcion_categoria_caracteristica.id_producto_descripcion=producto.id_producto and descripcion_categoria_caracteristica.id_categoria=caracteristica.id_categoria and descripcion_categoria_caracteristica.id_caracteristica=caracteristica.id_caracteristica inner join marca on marca.id_marca=producto.id_marca where categoria.id_categoria=1))as t1 left join inventario on t1.id_productos_llantimax=inventario.id_producto left join sucursal on sucursal.id_sucursal=inventario.id_sucursal where inventario.id_sucursal='.$id_sucursal. ' ORDER BY  t1.id_productos_llantimax');
+        
+         //var_dump($productos);
+         //die();
+         
+         $oProducto_llanta = new \stdClass();
+         
+         $auxId_producto = -1;
+         $auxCategoria='';
+         
+         $oProducto_llanta->medida = '';
+         $oProducto_llanta->capacidad_carga = '';
+         $oProducto_llanta->indice_velocidad = '';
+         $oProducto_llanta->numero_rin = '';
+         
+          foreach($productos as $producto)
+          {
+               if($producto->id_productos_llantimax!==$auxId_producto && $auxId_producto!==-1)
+              {
+                   if($auxCategoria=='Llantas')
+                   {    
+                      
+                       array_push($aProducto_llanta,$oProducto_llanta);
+                      $oProducto_llanta = new \stdClass();
+
+                      $oProducto_llanta->medida = '';
+                      $oProducto_llanta->capacidad_carga = '';
+                      $oProducto_llanta->indice_velocidad = '';
+                      $oProducto_llanta->numero_rin = '';
+                   }
+              }
+              
+              $auxId_producto = $producto->id_productos_llantimax;
+              
+              if($producto->categoria=='Llantas'){
+                  $oProducto_llanta->id_productos_llantimax = $producto->id_productos_llantimax;
+                  //$oProducto_llanta->sucursal = $producto->sucursal;
+                  $oProducto_llanta->categoria = $producto->categoria;
+                  $oProducto_llanta->nombre = $producto->nombre;
+                  $oProducto_llanta->marca = $producto->marca;
+                  $oProducto_llanta->id_marca = $producto->id_marca;
+                  $oProducto_llanta->modelo = $producto->modelo;
+                  $oProducto_llanta->precio = $producto->precio; //LlantasController::formato_moneda($producto->precio);
+                  $oProducto_llanta->cantidad = $producto->cantidad;
+                  $oProducto_llanta->fotografia_miniatura = $producto->fotografia_miniatura;
+                  //$oProducto_llanta->sucursal=$producto->sucursal;
+                  $auxCategoria='Llantas';
+
+                  if($producto->caracteristica=='Medida')
+                  {
+                       $oProducto_llanta->medida = $producto->descripcion;
+                  }
+                  else
+                  {
+                      if($producto->caracteristica=='Capacidad de carga')
+                      {
+                          $oProducto_llanta->capacidad_carga = $producto->descripcion;
+                      }
+                      else
+                      {
+                           if($producto->caracteristica=='Indice de velocidad')
+                           {
+                                $oProducto_llanta->indice_velocidad = $producto->descripcion;
+                           }
+                          else
+                          {
+                             if($producto->caracteristica=='Numero de rin')
+                             {
+                                    $oProducto_llanta->numero_rin = $producto->descripcion;
+                             } 
+                          }
+                      }
+                  }    
+                  
+              }
+              
+              if($producto === end($productos))
+              {
+                  if($producto->categoria=='Llantas')
+                  {
+                     
+                       array_push($aProducto_llanta,$oProducto_llanta);
+                  }
+              }
+          }
+
+         $aProducto_llantas=$aProducto_llanta;   
+
+       $sucursal_usuario= Session::get('sucursal_usuario');
+        return view('/Gerente/productos/llantas/index',compact('aProducto_llantas','sucursal_usuario'));
      }
 
     public function agregar_llanta(Request $input)

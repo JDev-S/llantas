@@ -176,7 +176,7 @@
 				</tr>';
                 }
                 
-                if($nombre_mp=="crédito(3%+)")
+                if($nombre_mp=="TDC")
                 {
                      $valor1=  intval($total_venta)-(intval($total_venta)*0.03);
                     if ($valor1<0) return "-".formato_moneda(-$valor1);

@@ -69,7 +69,7 @@ select inventario.id_producto as id_producto, productos_llantimax.nombre as nomb
        DB::beginTransaction();
         try{
             /*GENERAR VENTA*/
-            if($id_metodo_pago==3)
+            if($id_metodo_pago==1)
             {
                // echo 'total_venta '.$total_venta;
                 $total_final=intval($total_venta)*0.03;

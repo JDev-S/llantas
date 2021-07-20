@@ -985,7 +985,7 @@
                         console.log(productos);
 
 
-                        if (metodo_pago == "3") {
+                        if (metodo_pago == "1") {
                             fecha_credito = document.getElementById('fecha').value;
                             comentario_credito = document.getElementById('descripcion').value;
                             if (fecha_credito == "" || comentario_credito == "") {

@@ -253,7 +253,7 @@
                                                     <div class="row mt-4">
 
                                                         <div class="col-10 col-sm-5 text-dark-l1 text-90 order-first order-sm-last" style="padding-left: 30px; padding-right: 0px;">
-                                                            <div class="row my-2 ">
+                                                            <!--<div class="row my-2 ">
                                                                 <div class="col-6 text-left">
                                                                     SubTotal
                                                                 </div>
@@ -270,7 +270,7 @@
                                                                 <div class="col-5 align-content-center" id="total_extra">
 
                                                                 </div>
-                                                            </div>
+                                                            </div>-->
 
                                                             <div class="row my-2 align-items-center bgc-green-d3 p-2 radius-1">
                                                                 <div class="col-6 text-right text-white text-100">
@@ -810,7 +810,7 @@
         var c = numeral(comision);
         var d = c.format('$0,0.00');
 
-        document.getElementById("subtotal").innerHTML = "";
+       /* document.getElementById("subtotal").innerHTML = "";
         document.getElementById("subtotal").innerHTML = '<span class="text-120 text-secondary-d3 float-left" >' +
             b +
             '</span>';
@@ -818,7 +818,7 @@
         document.getElementById('total_extra').innerHTML = "";
         document.getElementById('total_extra').innerHTML = '<span class="text-120 text-secondary-d3 float-left" >' +
             d +
-            '</span>';
+            '</span>';*/
 
 
 
@@ -902,6 +902,7 @@
             data: data,
             success: function(msg) {
                 alert(msg);
+                
                 
             }
         });

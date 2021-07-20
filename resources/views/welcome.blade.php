@@ -83,7 +83,7 @@
 
                     <a class="navbar-brand text-white" href="/principal">
                         <i class="fas fa-car"></i>
-                        
+
                         <span>Llantimax</span>
                     </a><!-- /.navbar-brand -->
 
@@ -96,7 +96,7 @@
                 <!-- mobile #navbarMenu toggler button -->
                 <button class="navbar-toggler ml-1 mr-2 px-1" type="button" data-toggle="collapse" data-target="#navbarMenu" aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navbar menu">
                     <span class="pos-rel">
-                        <img class="border-2 brc-white-tp1 radius-round" width="36" src="..\assets\image\avatar\avatar6.jpg" alt="Jason's Photo">
+                        <img class="border-2 brc-white-tp1 radius-round" width="36" src="..\assets\image\avatar\user_llantimax.png" alt="Jason's Photo">
                         <span class="bgc-warning radius-round border-2 brc-white p-1 position-tr mr-n1px mt-n1px"></span>
                     </span>
                 </button>
@@ -122,17 +122,17 @@
                                 <div class="dropdown-menu dropdown-caret dropdown-menu-right dropdown-animated brc-primary-m3 py-1">
                                     <div class="d-none d-lg-block d-xl-none">
                                         <div class="dropdown-header">
-                                            Welcome, <?php echo Session::get('nombre_completo'); ?>
+                                            Bienvenido, <?php echo Session::get('nombre_completo'); ?>
                                         </div>
                                         <div class="dropdown-divider"></div>
                                     </div>
 
-
+                                    <div class="dropdown-divider brc-primary-l2"></div>
                                     <?php
-                                    echo'<button class="mt-1 dropdown-item btn btn-outline-grey bgc-h-primary-l3 btn-h-light-primary btn-a-light-primary"  data-toggle="modal" data-target="#edit" data-id="'.Session::get("id_usuario").'" data-name="'.Session::get("nombre_completo").'" data-correo="'.Session::get("correo_electronico").'" data-contrasenia="'.Session::get("contrasenia").'" >
+                                    echo'<a class="dropdown-item btn btn-outline-grey bgc-h-secondary-l3 btn-h-light-secondary btn-a-light-secondary"  data-toggle="modal" data-target="#edit" data-id="'.Session::get("id_usuario").'" data-name="'.Session::get("nombre_completo").'" data-correo="'.Session::get("correo_electronico").'" data-contrasenia="'.Session::get("contrasenia").'" >
                                         <i class="fa fa-user text-primary-m1 text-105 mr-1"></i>
                                         Perfil
-                                    </button>';
+                                    </a>';
                                     ?>
                                     <div class="dropdown-divider brc-primary-l2"></div>
 
@@ -159,6 +159,11 @@
 
 
                         <ul class="nav has-active-border active-on-right">
+                            <?php 
+                            if(Session::get('rol_usuario')==1)
+                            {
+                                                            
+                            echo'
 
                             <li class="nav-item">
 
@@ -184,11 +189,7 @@
 
                                     <b class="caret fa fa-angle-left rt-n90"></b>
 
-                                    <!-- or you can use custom icons. first add `d-style` to 'A' -->
-                                    <!--
-               	 	<b class="caret d-n-collapsed fa fa-minus text-80"></b>
-               	 	<b class="caret d-collapsed fa fa-plus text-80"></b>
-               	 -->
+                                   
                                 </a>
 
                                 <div class="hideable submenu collapse">
@@ -253,11 +254,7 @@
 
                                     <b class="caret fa fa-angle-left rt-n90"></b>
 
-                                    <!-- or you can use custom icons. first add `d-style` to 'A' -->
-                                    <!--
-               	 	<b class="caret d-n-collapsed fa fa-minus text-80"></b>
-               	 	<b class="caret d-collapsed fa fa-plus text-80"></b>
-               	 -->
+                                   
                                 </a>
 
                                 <div class="hideable submenu collapse">
@@ -319,7 +316,6 @@
                                             </a>
                                         </li>
 
-
                                         <li class="nav-item">
                                             <a href="/pedido_proveedor" class="nav-link">
                                                 <span class="nav-text">
@@ -329,12 +325,8 @@
                                         </li>
                                     </ul>
                                 </div>
-
                                 <b class="sub-arrow"></b>
-
                             </li>
-
-
                             <li class="nav-item">
 
                                 <a href="#" class="nav-link dropdown-toggle collapsed">
@@ -345,11 +337,6 @@
 
                                     <b class="caret fa fa-angle-left rt-n90"></b>
 
-                                    <!-- or you can use custom icons. first add `d-style` to 'A' -->
-                                    <!--
-               	 	<b class="caret d-n-collapsed fa fa-minus text-80"></b>
-               	 	<b class="caret d-collapsed fa fa-plus text-80"></b>
-               	 -->
                                 </a>
 
                                 <div class="hideable submenu collapse">
@@ -381,17 +368,6 @@
                                 </a>
                                 <b class="sub-arrow"></b>
                             </li>
-
-                            <!--<li class="nav-item">
-
-                                <a href="gallery.html" class="nav-link">
-                                    <i class="nav-icon far fa-image"></i>
-                                    <span class="nav-text fadeable">
-                                        <span>Gallery</span>
-                                    </span>
-                                </a>
-                                <b class="sub-arrow"></b>
-                            </li>-->
 
                             <li class="nav-item">
 
@@ -427,13 +403,262 @@
                                                 </span>
                                             </a>
                                         </li>
+                            
+                                    </ul>
+                                </div>
+                                <b class="sub-arrow"></b>
+                            </li>';
+                            }
+                            else
+                            {
+                                                            
+                            echo'
+
+                            <li class="nav-item">
+
+                                <a href="/principal_sucursal" class="nav-link">
+                                    <i class="nav-icon fas fa-home"></i>
+                                    <span class="nav-text fadeable">
+                                        <span>Principal</span>
+                                    </span>
+                                </a>
+
+                                <b class="sub-arrow"></b>
+
+                            </li>
+
+
+                            <li class="nav-item">
+
+                                <a href="#" class="nav-link dropdown-toggle collapsed">
+                                    <i class="nav-icon fas fa-cube"></i>
+                                    <span class="nav-text fadeable">
+                                        <span>Productos</span>
+                                    </span>
+
+                                    <b class="caret fa fa-angle-left rt-n90"></b>
+
+                                
+                                </a>
+
+                                <div class="hideable submenu collapse">
+                                    <ul class="submenu-inner">
+                                        <li class="nav-item">
+                                            <a href="/mostrar_llantas_sucursal" class="nav-link">
+                                                <span class="nav-text">
+                                                    <span>Mostrar llantas</span>
+                                                </span>
+                                            </a>
+                                        </li>
+
+
+                                        <li class="nav-item">
+                                            <a href="/mostrar_baterias_sucursales" class="nav-link">
+                                                <span class="nav-text">
+                                                    <span>Mostrar Baterias</span>
+                                                </span>
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a href="/mostrar_refacciones_sucursales" class="nav-link">
+                                                <span class="nav-text">
+                                                    <span>Mostrar Refacciones</span>
+                                                </span>
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a href="/mostrar_servicios_sucursales" class="nav-link">
+                                                <span class="nav-text">
+                                                    <span>Mostrar servicios</span>
+                                                </span>
+                                            </a>
+                                        </li>
+
+
+                                        <li class="nav-item">
+                                            <a href="/mostrar_inventarios_sucursal" class="nav-link">
+                                                <span class="nav-text">
+                                                    <span>Mostrar inventario</span>
+                                                </span>
+                                            </a>
+                                        </li>
+
+                                    </ul>
+                                </div>
+
+                                <b class="sub-arrow"></b>
+
+                            </li>
+
+
+                            <li class="nav-item">
+
+                                <a href="#" class="nav-link dropdown-toggle collapsed">
+                                    <i class="nav-icon fa fa-desktop"></i>
+                                    <span class="nav-text fadeable">
+                                        <span>Administración</span>
+                                    </span>
+
+                                    <b class="caret fa fa-angle-left rt-n90"></b>
+
+                                   
+                                </a>
+
+                                <div class="hideable submenu collapse">
+                                    <ul class="submenu-inner">
+                                        <li class="nav-item">
+                                            <a href="/mostrar_clientes" class="nav-link">
+                                                <span class="nav-text">
+                                                    <span>Mostrar clientes</span>
+                                                </span>
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a href="/mostrar_proveedores" class="nav-link">
+                                                <span class="nav-text">
+                                                    <span>Mostrar proveedores</span>
+                                                </span>
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a href="/agregar_catalogo" class="nav-link">
+                                                <span class="nav-text">
+                                                    <span>Proveedor catalogo</span>
+                                                </span>
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a href="/mostrar_creditos" class="nav-link">
+                                                <span class="nav-text">
+                                                    <span>Mostrar créditos</span>
+                                                </span>
+                                            </a>
+                                        </li>
                                     </ul>
                                 </div>
                                 <b class="sub-arrow"></b>
                             </li>
 
 
+                            <li class="nav-item">
 
+                                <a href="#" class="nav-link dropdown-toggle collapsed">
+                                    <i class="nav-icon fas fa-shipping-fast"></i>
+                                    <span class="nav-text fadeable">
+                                        <span>Compras a proveedor</span>
+                                    </span>
+                                    <b class="caret fa fa-angle-left rt-n90"></b>
+                                </a>
+
+                                <div class="hideable submenu collapse">
+                                    <ul class="submenu-inner">
+                                        <li class="nav-item">
+                                            <a href="/mostrar_pedido_proveedor" class="nav-link">
+                                                <span class="nav-text">
+                                                    <span>Pedidos proveedores</span>
+                                                </span>
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a href="/pedido_proveedor" class="nav-link">
+                                                <span class="nav-text">
+                                                    <span>Generar pedido</span>
+                                                </span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <b class="sub-arrow"></b>
+                            </li>
+                            <li class="nav-item">
+
+                                <a href="#" class="nav-link dropdown-toggle collapsed">
+                                    <i class="nav-icon fas fa-cash-register"></i>
+                                    <span class="nav-text fadeable">
+                                        <span>Ventas</span>
+                                    </span>
+
+                                    <b class="caret fa fa-angle-left rt-n90"></b>
+
+                                </a>
+
+                                <div class="hideable submenu collapse">
+                                    <ul class="submenu-inner">
+                                        <li class="nav-item">
+                                            <a href="/mostrar_venta" class="nav-link">
+                                                <span class="nav-text">
+                                                    <span>Mostrar ventas</span>
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="/agregar_venta" class="nav-link">
+                                                <span class="nav-text">
+                                                    <span>Agregar venta</span>
+                                                </span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <b class="sub-arrow"></b>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/mostrar_reportes" class="nav-link">
+                                    <i class="nav-icon fas fa-file-pdf"></i>
+                                    <span class="nav-text fadeable">
+                                        <span>Reportes</span>
+                                    </span>
+                                </a>
+                                <b class="sub-arrow"></b>
+                            </li>
+
+                            <li class="nav-item">
+
+                                <a href="#" class="nav-link dropdown-toggle collapsed">
+                                    <i class="nav-icon fa fa-people-carry"></i>
+                                    <span class="nav-text fadeable">
+                                        <span>Pedidos sucursales</span>
+                                    </span>
+
+                                    <b class="caret fa fa-angle-left rt-n90"></b>
+                                </a>
+
+                                <div class="hideable submenu collapse">
+                                    <ul class="submenu-inner">
+                                        <li class="nav-item">
+                                            <a href="/mostrar_pedido_sucursal" class="nav-link">
+                                                <span class="nav-text">
+                                                    <span>Mostrar pedidos</span>
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="/mostrar_pedido_solicitado" class="nav-link">
+                                                <span class="nav-text">
+                                                    <span>Pedidos solicitados</span>
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="/pedido_sucursal" class="nav-link">
+                                                <span class="nav-text">
+                                                    <span>Generar pedido</span>
+                                                </span>
+                                            </a>
+                                        </li>
+                            
+                                    </ul>
+                                </div>
+                                <b class="sub-arrow"></b>
+                            </li>';
+                            }
+                            ?>
                         </ul>
 
                     </div><!-- /.sidebar scroll -->
@@ -524,7 +749,7 @@
                         <div class="form-row col-md-12">
                             <div class="form-group col-md-6">
                                 <label for="codigo_llanta">Correo eléctronico</label>
-                               
+
                                 <input type="email" class="form-control" id="update_correo" name="update_correo" placeholder="Correo eléctronico" required>
                             </div>
                         </div>
@@ -533,7 +758,7 @@
                         <div class="form-row col-md-12">
                             <div class="form-group col-md-6">
                                 <label for="codigo_llanta">Contraseña</label>
-                                
+
                                 <input type="password" class="form-control" id="update_contrasenia" name="update_contrasenia" placeholder="Contraseña" required>
                             </div>
                         </div>

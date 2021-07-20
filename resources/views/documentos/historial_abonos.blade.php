@@ -173,8 +173,8 @@
 				</tr>';
                 }
 
-                     $valor1=  intval($total_venta)-(intval($total_venta)*0.03);
-                    if ($valor1<0) return "-".formato_moneda(-$valor1);
+                     $valor3=  $total_venta;
+                    if ($valor3<0) return "-".formato_moneda(-$valor3);
                     echo
                     '<tr class="total">
                         <td></td>
@@ -186,32 +186,14 @@
                                 <td width="40%" style="padding-bottom: 0px;"><b>Subtotal:</b></td>
                                 <td style="padding-bottom: 0px;">' ;
 
-                                    echo '$'.number_format($valor1, 2).
-                                '</td>
-                            </tr>
-                            </table>
-                          </td>
-				    </tr>';
-                    
-                     $valor2=  intval($total_venta)*0.03;
-                    if ($valor2<0) return "-".formato_moneda(-$valor2);
-                    echo
-                    '<tr class="total">
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td style="text-align:center;font-size:12px;padding-top: 0px;padding-bottom: 0px;"> 
-                            <table>
-                            <tr>
-                                <td width="40%" style="padding-top: 0px;padding-bottom: 0px;"><b>Comisión(3%):</b></td>
-                                <td style="padding-top: 0px;padding-bottom: 0px;" >' ;
-
                                     echo '$'.number_format($valor2, 2).
                                 '</td>
                             </tr>
                             </table>
                           </td>
 				    </tr>';
+                    
+
                $valor1=  $total_venta;
                     if ($valor1<0) return "-".formato_moneda(-$valor1);
                     echo

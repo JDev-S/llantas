@@ -14,7 +14,6 @@ use Swift_Message;
 class LoginController extends Controller
 {
      public function Login(Request $input)
-
 	{
          if(session('correo_electronico')!= "")
          {
@@ -33,23 +32,26 @@ class LoginController extends Controller
 
         if($cantidad>0)
         {        
-            $query2 = "select usuario.contrasenia,usuario.correo_electronico,usuario.id_sucursal,usuario.id_usuario,usuario.nombre_completo,sucursal.sucursal from usuario inner join sucursal on sucursal.id_sucursal=usuario.id_sucursal where correo_electronico='$email'";
+            $query2 = "select usuario.contrasenia,usuario.id_rol,usuario.correo_electronico,usuario.id_sucursal,usuario.id_usuario,usuario.nombre_completo,sucursal.sucursal from usuario inner join sucursal on sucursal.id_sucursal=usuario.id_sucursal where correo_electronico='$email'";
             $data2=DB::select($query2);            
             //if (Hash::check($contrasenia, $data2[0]->password)) {
             if($contrasenia==$data2[0]->contrasenia){
            //echo 'essta registrado';
+            
             Session::put('correo_electronico',$email);
             Session::put('contrasenia',$contrasenia);
             Session::put('id_sucursal_usuario',$data2[0]->id_sucursal);
             Session::put('id_usuario',$data2[0]->id_usuario);
             Session::put('nombre_completo',$data2[0]->nombre_completo); 
             Session::put('sucursal_usuario',$data2[0]->sucursal); 
+            Session::put('rol_usuario',$data2[0]->id_rol);
             $correo_electronico=Session::get('correo_electronico');
             $pass=Session::get('contrasenia');
             $id_sucursal_usuario=Session::get('id_sucursal_usuario');
             $id_usuario=Session::get('id_usuario'); 
             $nombre_completo=Session::get('nombre_completo');
             $sucursal_usuario=Session::get('sucursal_usuario');
+            $rol_usuario=Session::get('rol_usuario');
             //echo '<br/>';
             //echo $correo_electronico."          ".$pass."  ".$id_sucursal_usuario.' '.$id_usuario;
                 
@@ -81,14 +83,27 @@ class LoginController extends Controller
          return view('/Administrador/index');
     }
     
+    public function mostrar_principal_sucursal()
+    {
+        return view('/Gerente/index');
+    }
+    
     public function mostrar_login()
     {
         if(session('correo_electronico')!= "")
          {
              //echo 'hay alguien activo';
-            
-             return redirect('/principal');
+            if(session('rol_usuario')==1)
+            {
+               return redirect('/principal'); 
+            }
+            else
+            {
+               return redirect('/principal_sucursal'); 
+            }
+             
          }
+       
         else
         {
             return view('login');

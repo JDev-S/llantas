@@ -91,8 +91,8 @@
                                             <div class="carousel-item active minw-100 h-100">
                                                 <!-- default carousel section that you see when you open login page -->
                                                 <div style="background-image: url(assets/image/login-bg-1.svg);" class="px-3 bgc-blue-l4 d-flex flex-column align-items-center justify-content-center">
-                                                    <a class="mt-5 mb-2" href="dashboard.html">
-                                                        <i class="fa fa-leaf text-success-m2 fa-3x"></i>
+                                                    <a class="mt-5 mb-2" href="/">
+                                                        <img src="/img/llantita.png" alt="llantita">
                                                     </a>
 
                                                     <h2 class="text-primary-d1">

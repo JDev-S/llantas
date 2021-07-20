@@ -141,6 +141,134 @@ class BateriasController extends Controller
        
         return view('/Administrador/productos/baterias/index',compact('aProducto_baterias','sucursal_usuario'));
      }
+    
+    
+        public function mostrar_baterias_sucursales()
+     {
+         $aProducto_bateria = array();
+        $id_sucursal=Session::get('id_sucursal_usuario');
+        $productos = DB::select('select id_productos_llantimax, categoria, nombre, marca,id_marca, modelo, precio, fotografia_miniatura, caracteristica, descripcion, sucursal, cantidad from ((SELECT productos_llantimax.id_productos_llantimax, categoria.categoria, productos_llantimax.nombre, marca.marca, marca.id_marca, producto.modelo, productos_servicios.precio, producto.fotografia_miniatura, caracteristica.caracteristica, IFNULL(descripcion_categoria_caracteristica.descripcion, "") as descripcion FROM productos_llantimax inner join productos_servicios on productos_servicios.id_producto_servicio=productos_llantimax.id_productos_llantimax inner join producto on producto.id_producto=productos_servicios.id_producto_servicio INNER JOIN categoria on categoria.id_categoria=producto.id_categoria INNER JOIN caracteristica on categoria.id_categoria=caracteristica.id_categoria left join descripcion_categoria_caracteristica on descripcion_categoria_caracteristica.id_producto_descripcion=producto.id_producto and descripcion_categoria_caracteristica.id_categoria=caracteristica.id_categoria and descripcion_categoria_caracteristica.id_caracteristica=caracteristica.id_caracteristica inner join marca on marca.id_marca=producto.id_marca where categoria.id_categoria=2))as t1 left join inventario on t1.id_productos_llantimax=inventario.id_producto left join sucursal on sucursal.id_sucursal=inventario.id_sucursal where inventario.id_sucursal='.$id_sucursal.' ORDER BY  t1.id_productos_llantimax');
+        
+         //var_dump($productos);
+         //die();
+         $oProducto_bateria = new \stdClass();
+         
+         $auxId_producto = -1;
+         $auxCategoria='';
+         
+         $oProducto_bateria->voltaje='';
+         $oProducto_bateria->capacidad_arranque='';
+         $oProducto_bateria->capacidad_arranque_frio='';
+         $oProducto_bateria->medidas='';
+         $oProducto_bateria->peso='';
+         $oProducto_bateria->tamanio='';
+         
+          foreach($productos as $producto)
+          {
+               if($producto->id_productos_llantimax!==$auxId_producto && $auxId_producto!==-1)
+              {
+                       if($auxCategoria=='Bateria')
+                       {
+                            array_push($aProducto_bateria,$oProducto_bateria);
+                            $oProducto_bateria = new \stdClass();
+                           
+                            $oProducto_bateria->voltaje='';
+                            $oProducto_bateria->capacidad_arranque='';
+                            $oProducto_bateria->capacidad_arranque_frio='';
+                            $oProducto_bateria->medidas='';
+                            $oProducto_bateria->peso='';
+                            $oProducto_bateria->tamanio='';
+                       }
+              }
+              
+              $auxId_producto = $producto->id_productos_llantimax;
+              
+              if($producto->categoria=='Bateria'){
+                  
+                  $oProducto_bateria->id_productos_llantimax = $producto->id_productos_llantimax;
+                  //$oProducto_bateria->sucursal = $producto->sucursal;
+                  $oProducto_bateria->categoria = $producto->categoria;
+                  $oProducto_bateria->nombre = $producto->nombre;
+                  $oProducto_bateria->marca = $producto->marca;
+                  $oProducto_bateria->id_marca = $producto->id_marca;
+                  $oProducto_bateria->modelo = $producto->modelo;
+                  $oProducto_bateria->precio = $producto->precio;//BateriasController::formato_moneda($producto->precio);
+                  $oProducto_bateria->cantidad = $producto->cantidad;
+                  $oProducto_bateria->fotografia_miniatura = $producto->fotografia_miniatura;
+                  //$oProducto_bateria->sucursal=$producto->sucursal;
+                  $auxCategoria='Bateria';
+
+                  if($producto->caracteristica=='Voltaje')
+                  {
+                       $oProducto_bateria->voltaje = $producto->descripcion;
+                  }
+                  else
+                  {
+                      if($producto->caracteristica=='Capacidad de arranque')
+                      {
+                          $oProducto_bateria->capacidad_arranque = $producto->descripcion;
+                      }
+                      else
+                      {
+                           if($producto->caracteristica=='Capacidad de arranque en frio')
+                           {
+                                $oProducto_bateria->capacidad_arranque_frio = $producto->descripcion;
+                           }
+                           else
+                           {
+                              if($producto->caracteristica=='Medidas')
+                              {
+                                    $oProducto_bateria->medidas = $producto->descripcion;
+                              }
+                               else
+                               {
+                                   if($producto->caracteristica=='Peso')
+                                   {
+                                       $oProducto_bateria->peso = $producto->descripcion;
+                                   }
+                                   else
+                                   {
+                                       if($producto->caracteristica=='Tamaño')
+                                       {
+                                           $oProducto_bateria->tamanio = $producto->descripcion;
+                                       }
+                                   }
+                               }
+                           }
+                      }
+                  }
+              }
+              
+              if($producto === end($productos))
+              {
+                      if($producto->categoria=='Bateria')
+                      {
+                           array_push($aProducto_bateria,$oProducto_bateria);
+                      }
+                      
+                  
+              }
+          }
+          //print_r($aProducto_llanta);
+          //echo '<br>';
+          //echo '<br>';
+          //echo '<br>';
+          //print_r($aProducto_bateria);
+          //echo '<br>';
+          //echo '<br>';
+          //echo '<br>';
+         //$aProducto_llantas = InventarioController::agregar_sucursales_llanta($aProducto_llanta);
+         //print_r($aProducto_llantas);
+          //echo '<br>';
+          //echo '<br>';
+          //echo '<br>';
+         //$aProducto_baterias = BateriasController::agregar_sucursales_bateria($aProducto_bateria);
+           $aProducto_baterias=$aProducto_bateria;
+        //print_r($aProducto_baterias);
+        $sucursal_usuario= Session::get('sucursal_usuario');
+       
+        return view('/Gerente/productos/baterias/index',compact('aProducto_baterias','sucursal_usuario'));
+     }
 
     public function agregar_bateria(Request $input)
 	{

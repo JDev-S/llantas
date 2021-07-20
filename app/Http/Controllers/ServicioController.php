@@ -16,6 +16,14 @@ class ServicioController extends Controller
         $sucursal_usuario= Session::get('sucursal_usuario');
 		return view('/Administrador/servicios/index',compact('servicios','sucursal_usuario'));
     }
+    
+     public function mostrar_servicios_sucursales()
+    {
+        $id_sucursal=Session::get('id_sucursal_usuario');
+        $servicios=DB::select('select inventario.id_sucursal,productos_llantimax.id_productos_llantimax,productos_llantimax.nombre as nombre, productos_servicios.precio as precio, servicio_cliente.id_servicio, servicio_cliente.descripcion as descripcion from productos_llantimax inner join productos_servicios on productos_llantimax.id_productos_llantimax=productos_servicios.id_producto_servicio inner join servicio_cliente on servicio_cliente.id_servicio=productos_servicios.id_producto_servicio inner join inventario on inventario.id_producto=productos_llantimax.id_productos_llantimax where inventario.id_sucursal='.$id_sucursal);
+        $sucursal_usuario= Session::get('sucursal_usuario');
+		return view('/Gerente/servicios/index',compact('servicios','sucursal_usuario'));
+    }
 
     public function agregar_servicio(Request $input)
 	{
