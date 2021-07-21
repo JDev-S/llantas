@@ -472,7 +472,7 @@
             data: data,
             success: function(msg) {
                 alert(msg);
-                location.href = "/mostrar_pedido_proveedor";
+                location.href = "/mostrar_pedido_proveedor_sucursal";
             }
         });
     }

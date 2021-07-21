@@ -39,6 +39,13 @@ select inventario.id_producto as id_producto, productos_llantimax.nombre as nomb
         return view('/Administrador/ventas/agregar',compact('clientes'));
     }
     
+    public function mostrar_vista_sucursal()
+    {
+        $id_sucursal=Session::get('id_sucursal_usuario');
+        $clientes=DB::select("select clientes.id_cliente,clientes.nombre_completo,clientes.telefono,clientes.correo_electronico,clientes.id_sucursal,sucursal.sucursal from clientes inner join sucursal on sucursal.id_sucursal=clientes.id_sucursal where clientes.id_sucursal=".$id_sucursal);
+        return view('/Gerente/ventas/agregar',compact('clientes'));
+    }
+    
     
       /*MÉTODO PARA INSERTAR EN VENTA Y DETALLE DE LA VENTA*/
     public function insertar_venta(Request $input)
@@ -227,38 +234,42 @@ select inventario.id_producto as id_producto, productos_llantimax.nombre as nomb
 		return view('/Administrador/ventas/index',compact('ventas','detalles','sucursal_usuario'));
     }
     
-   /* function array_productos($array_productos)
-    {
-        $array_lista_productos = array();
-        foreach($array_productos as $producto){
-            $id_producto = $producto['id_producto'];
-            $consulta = DB::select('select productos_servicios.precio as precio from productos_llantimax inner join productos_servicios on productos_llantimax.id_productos_llantimax=productos_servicios.id_producto_servicio where productos_llantimax.id_productos_llantimax='.$id_producto.
-            ' union select productos_independientes.precio as precio from productos_llantimax inner join productos_independientes on productos_llantimax.id_productos_llantimax=productos_independientes.id_producto_independiente where productos_llantimax.id_productos_llantimax='.$id_producto
-            );
-            
-            $id_producto = $producto['id_producto'];
-            $cantidad = $producto['cantidad_producto'];
-            $precio = $consulta[0]->precio;
-            $this->total_venta=$this->total_venta+$precio;
-            $totalin=(int)$precio* (int)$cantidad;
-            
-            echo ' '.$totalin.' ';
-           
-            $array_lista_productos.array_push(array("id_producto" => $producto['id_producto'],
-                                              "cantidad_producto" => $producto['cantidad_producto'],
-                                              "precio_unidad" => $consulta[0]->precio,
-                                              "total" => $totalin
-                                             ));
-        }
-         die();
-        //return $array_lista_productos;
-    }*/
     
+        public function mostrar_ventas_realizadas_sucursal()
+        {
+            $id_sucursal=Session::get('id_sucursal_usuario');
+            $ventas=DB::select("select venta.id_venta,
+           usuario.nombre_completo as vendedor,
+           sucursal.sucursal,
+           clientes.nombre_completo as cliente,
+           clientes.telefono,
+           clientes.correo_electronico,
+           venta.total_venta,
+           metodo_pago.metodo_pago,
+           venta.fecha_venta,
+           venta.factura 
+           FROM venta 
+           INNER join usuario on usuario.id_usuario=venta.id_usuario and usuario.id_sucursal=venta.id_sucursal_usuario 
+           INNER JOIN sucursal on sucursal.id_sucursal=venta.id_sucursal INNER JOIN clientes on venta.id_cliente=clientes.id_cliente and venta.id_sucursal_cliente=clientes.id_sucursal inner join metodo_pago on venta.id_metodo_pago=metodo_pago.id_metodo_pago where sucursal.id_sucursal=".$id_sucursal." order by venta.fecha_venta desc
+           ");
+
+             $detalles=DB::select("SELECT productos_llantimax.id_productos_llantimax, productos_llantimax.nombre, cantidad_producto, precio_unidad, total,detalle_venta.id_venta FROM detalle_venta INNER JOIN productos_llantimax on productos_llantimax.id_productos_llantimax=detalle_venta.id_producto");
+            $sucursal_usuario= Session::get('sucursal_usuario');
+            return view('/Gerente/ventas/index',compact('ventas','detalles','sucursal_usuario'));
+        }
+
     function mostrar_reportes()
     {
         $reportes="";
         $sucursal_usuario= Session::get('sucursal_usuario');
         return view('/Administrador/ventas/reporte_ventas',compact('reportes','sucursal_usuario'));
+    }
+    
+    function mostrar_reportes_sucursal()
+    {
+        $reportes="";
+        $sucursal_usuario= Session::get('sucursal_usuario');
+        return view('/Gerente/ventas/reporte_ventas',compact('reportes','sucursal_usuario'));
     }
     
     function mostrar_reportes_ventas(Request $input)
@@ -271,7 +282,17 @@ select inventario.id_producto as id_producto, productos_llantimax.nombre as nomb
 		return response()->json($json);
     }
     
-
+    function mostrar_reportes_ventas_sucursal(Request $input)
+    {
+        $fecha_inicio=$input['fecha_inicio'];
+        $fecha_fin=$input['fecha_fin'];
+        $id_sucursal=Session::get('id_sucursal_usuario');
+        $query=DB::select("SELECT venta.id_sucursal, sucursal.sucursal, SUM(total_venta) as venta FROM venta INNER JOIN sucursal ON sucursal.id_sucursal=venta.id_sucursal WHERE sucursal.id_sucursal=".$id_sucursal." and fecha_venta BETWEEN '".$fecha_inicio."' AND '".$fecha_fin."' GROUP BY id_sucursal");
+        $json=json_encode($query);
+		return response()->json($json);
+    }
+    
+    
     
     public function exportar_ticket($ticket)
     {

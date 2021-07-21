@@ -56,7 +56,7 @@
 
                 </style>
                 <!----- BOTON DE AGREGAR--->
-                <a href="/agregar_venta" class="text-blue " type="button" style="margin-right:20px; border:0px;"><i class="fa fa-plus-circle fa-2x" aria-hidden="true"></i></a>
+                <a href="/agregar_venta_sucursal" class="text-blue " type="button" style="margin-right:20px; border:0px;"><i class="fa fa-plus-circle fa-2x" aria-hidden="true"></i></a>
             </div>
             <table class="table text-dark-m2 text-95 bgc-white ml-n1px" id="table">
                 <!-- table -->

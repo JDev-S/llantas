@@ -83,7 +83,8 @@
                                     <div class="form-group col-md-2 ml-2 justify-content-center">
                                         <select class="form-control selectpicker form-control" title="-- Sucursal --" data-size="5" data-header="Seleccione sucursal" data-style="btn-primary" onChange="javascript:mostrar_productos_sucursal()" id="sucursal" name="sucursal" data-container="body" required>
                                             <?php
-                                        $query2 = "select * from sucursal ";
+                                        $id_sucursal=Session::get('id_sucursal_usuario');
+                                        $query2 = "select * from sucursal where id_sucursal=".$id_sucursal;
                                         $data2=DB::select($query2);      
                                         ?>
                                             @foreach($data2 as $item)
@@ -1068,7 +1069,7 @@
                                         url,
                                         '_blank' // <- This is what makes it open in a new window.
                                     );
-                                    location.href = "/mostrar_venta";
+                                    location.href = "/mostrar_ventas_realizadas_sucursal";
                                 } else {
                                     $.aceToaster.add({
                                         placement: 'rc',
@@ -1088,7 +1089,7 @@
                                         progress: 'position-bl bgc-white-tp4 py-2px m-1px',
                                         progressReverse: true
                                     })
-                                    //location.href = "/mostrar_venta";
+                                    location.href = "/mostrar_venta";
                                 }
 
                             }

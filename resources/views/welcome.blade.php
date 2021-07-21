@@ -509,7 +509,7 @@
                                 <div class="hideable submenu collapse">
                                     <ul class="submenu-inner">
                                         <li class="nav-item">
-                                            <a href="/mostrar_clientes" class="nav-link">
+                                            <a href="/mostrar_clientes_sucursal" class="nav-link">
                                                 <span class="nav-text">
                                                     <span>Mostrar clientes</span>
                                                 </span>
@@ -517,7 +517,7 @@
                                         </li>
 
                                         <li class="nav-item">
-                                            <a href="/mostrar_proveedores" class="nav-link">
+                                            <a href="/mostrar_proveedor_sucursal" class="nav-link">
                                                 <span class="nav-text">
                                                     <span>Mostrar proveedores</span>
                                                 </span>
@@ -525,7 +525,7 @@
                                         </li>
 
                                         <li class="nav-item">
-                                            <a href="/agregar_catalogo" class="nav-link">
+                                            <a href="/agregar_catalogo_sucursales" class="nav-link">
                                                 <span class="nav-text">
                                                     <span>Proveedor catalogo</span>
                                                 </span>
@@ -533,7 +533,7 @@
                                         </li>
 
                                         <li class="nav-item">
-                                            <a href="/mostrar_creditos" class="nav-link">
+                                            <a href="/mostrar_creditos_sucursal" class="nav-link">
                                                 <span class="nav-text">
                                                     <span>Mostrar créditos</span>
                                                 </span>
@@ -558,7 +558,7 @@
                                 <div class="hideable submenu collapse">
                                     <ul class="submenu-inner">
                                         <li class="nav-item">
-                                            <a href="/mostrar_pedido_proveedor" class="nav-link">
+                                            <a href="/mostrar_pedido_proveedor_sucursal" class="nav-link">
                                                 <span class="nav-text">
                                                     <span>Pedidos proveedores</span>
                                                 </span>
@@ -566,7 +566,7 @@
                                         </li>
 
                                         <li class="nav-item">
-                                            <a href="/pedido_proveedor" class="nav-link">
+                                            <a href="/mostrar_catalogo_proveedores_sucursal" class="nav-link">
                                                 <span class="nav-text">
                                                     <span>Generar pedido</span>
                                                 </span>
@@ -591,14 +591,14 @@
                                 <div class="hideable submenu collapse">
                                     <ul class="submenu-inner">
                                         <li class="nav-item">
-                                            <a href="/mostrar_venta" class="nav-link">
+                                            <a href="/mostrar_ventas_realizadas_sucursal" class="nav-link">
                                                 <span class="nav-text">
                                                     <span>Mostrar ventas</span>
                                                 </span>
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="/agregar_venta" class="nav-link">
+                                            <a href="/agregar_venta_sucursal" class="nav-link">
                                                 <span class="nav-text">
                                                     <span>Agregar venta</span>
                                                 </span>
@@ -609,7 +609,7 @@
                                 <b class="sub-arrow"></b>
                             </li>
                             <li class="nav-item">
-                                <a href="/mostrar_reportes" class="nav-link">
+                                <a href="/mostrar_reportes_sucursal" class="nav-link">
                                     <i class="nav-icon fas fa-file-pdf"></i>
                                     <span class="nav-text fadeable">
                                         <span>Reportes</span>
@@ -632,21 +632,21 @@
                                 <div class="hideable submenu collapse">
                                     <ul class="submenu-inner">
                                         <li class="nav-item">
-                                            <a href="/mostrar_pedido_sucursal" class="nav-link">
+                                            <a href="/mostrar_pedidos_sucursales_sucursal" class="nav-link">
                                                 <span class="nav-text">
                                                     <span>Mostrar pedidos</span>
                                                 </span>
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="/mostrar_pedido_solicitado" class="nav-link">
+                                            <a href="/mostrar_pedidos_solicitados_sucursal" class="nav-link">
                                                 <span class="nav-text">
                                                     <span>Pedidos solicitados</span>
                                                 </span>
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="/pedido_sucursal" class="nav-link">
+                                            <a href="/pedido_sucursal_sucursal" class="nav-link">
                                                 <span class="nav-text">
                                                     <span>Generar pedido</span>
                                                 </span>

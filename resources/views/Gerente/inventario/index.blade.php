@@ -397,10 +397,12 @@
                             <div class="card-body px-3 pb-1">
                                 <div class="form-group row">
                                     <?php
-                        $query2 = "select * from sucursal ";
-                        $data2=DB::select($query2);      
-                        ?>
-                                    <div class="col-sm-3 col-form-label text-sm-right pr-0">
+                                    $id_sucursal=Session::get('id_sucursal_usuario');
+                                    $sucursal_usuario=Session::get('sucursal_usuario');
+                                $query2 = "select * from sucursal ";
+                                $data2=DB::select($query2);      
+                    
+                                   echo' <div class="col-sm-3 col-form-label text-sm-right pr-0">
                                         <label for="id-form-field-1" class="mb-0">
                                             Sucursal
                                         </label>
@@ -409,11 +411,12 @@
                                         <select class="form-control col-sm-8 col-md-10" id="sucursal_nueva" name="sucursal" onChange="javascript:obtener_valor()" required>
 
                                             <option value="0">Elige una sucursal</option>
-                                            @foreach($data2 as $item)
-                                            <option value="{{ $item->id_sucursal }}"> {{ $item->sucursal }} </option>
-                                            @endforeach
+                                           
+                                            <option value="'.$id_sucursal.'">'.$sucursal_usuario.' </option>
+                                           
                                         </select>
-                                    </div>
+                                    </div>';
+                                    ?>
                                 </div>
 
 
@@ -536,7 +539,7 @@
                 data: data,
                 success: function(msg) {
                     console.log(msg);
-                    location.href = "/mostrar_inventario"
+                    location.href = "/mostrar_inventarios_sucursal"
                 }
             });
 
@@ -822,11 +825,7 @@
             var botones = "";
             var cantidad = row.cantidad;
             var boton_eliminar = "";
-            if (cantidad > 0) {
-                boton_eliminar = '<button type="button" class="text-danger mx-1 "   data-cantidad="' + row.cantidad + '" data-id="' + row.id_productos_llantimax + '" data-suc="' + row.sucursal + '"  data-toggle="modal" data-target="#eliminarModal">' +
-                    '<i class="fa fa-trash-alt text-105"></i>' +
-                    '</button>';
-            }
+           
 
             if (categoria == "Llantas") {
                 botones = '<div class="action-buttons">' +
@@ -835,6 +834,11 @@
                     '</div>';
             } else
             if (categoria == "Refacción") {
+                 if (cantidad > 0) {
+                boton_eliminar = '<button type="button" class="text-danger mx-1 "   data-cantidad="' + row.cantidad + '" data-id="' + row.id_productos_llantimax + '" data-suc="' + row.sucursal + '"  data-toggle="modal" data-target="#eliminarModal">' +
+                    '<i class="fa fa-trash-alt text-105"></i>' +
+                    '</button>';
+            }
                 botones = '<div class="action-buttons">' +
                     '<button class="text-blue mx-1" data-target="#modalRefaccion" data-toggle="modal"data-id="' + row.id_productos_llantimax + '" data-foto="' + row.photo + '" data-nombre="' + row.nombre + '" data-marca="' + row.marca + '" data-modelo="' + row.modelo + '" data-cantidad="' + row.cantidad + '" data-sucursal="' + row.sucursal + '" data-categoria="' + row.categoria + '" data-descripcion="' + row.descripcion + '" data-precio="' + row.precio + '" ><i class="fa fa-search-plus text-105"></i></button>' +
                     boton_eliminar +
@@ -1038,7 +1042,7 @@
                 data: data,
                 success: function(msg) {
                     alert(msg);
-                    location.href = "/mostrar_inventario";
+                    location.href = "/mostrar_inventarios_sucursal";
                 }
             });
         } else {

@@ -985,7 +985,7 @@
                         console.log(productos);
 
 
-                        if (metodo_pago == "1") {
+                        if (metodo_pago == "3") {
                             fecha_credito = document.getElementById('fecha').value;
                             comentario_credito = document.getElementById('descripcion').value;
                             if (fecha_credito == "" || comentario_credito == "") {
@@ -1088,7 +1088,7 @@
                                         progress: 'position-bl bgc-white-tp4 py-2px m-1px',
                                         progressReverse: true
                                     })
-                                    //location.href = "/mostrar_venta";
+                                    location.href = "/mostrar_venta";
                                 }
 
                             }

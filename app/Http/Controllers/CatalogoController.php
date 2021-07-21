@@ -14,6 +14,11 @@ class CatalogoController extends Controller
             return view('/Administrador/proveedor/catalogo/agregar');
     }
     
+    public function agregar_catalogo_sucursales()
+    {
+        return view('/Gerente/proveedor/catalogo/agregar');
+    }
+    
     public function mostrar_productos_sucursal_catalogo(Request $input)
     {
         $sucursal = $input['sucursal'];

@@ -70,18 +70,6 @@
 
                         </div>
 
-                        <div class="form-group col-md-12">
-                            <label for="indice_velocidad">Sucursal</label>
-                            <?php
-                            $query2 = "select * from sucursal ";
-                            $data2=DB::select($query2);      
-                        ?>
-                            <select id="sucursal" name="sucursal" class="form-control" required>
-                                @foreach($data2 as $item)
-                                <option value="{{ $item->id_sucursal }}"> {{ $item->sucursal }} </option>
-                                @endforeach
-                            </select>
-                        </div>
 
                         <div class="form-row align-items-center col-md-12">
                             <div class="form-group col-md-6">
@@ -151,20 +139,6 @@
                             </div>
 
                         </div>
-
-                        <div class="form-group col-md-12">
-                            <label for="indice_velocidad">Sucursal</label>
-                            <?php
-                            $query2 = "select * from sucursal ";
-                            $data2=DB::select($query2);      
-                        ?>
-                            <select id="update_sucursal" name="update_sucursal" class="form-control" required>
-                                @foreach($data2 as $item)
-                                <option value="{{ $item->id_sucursal }}"> {{ $item->sucursal }} </option>
-                                @endforeach
-                            </select>
-                        </div>
-
 
                         <div class="form-row align-items-center col-md-12">
                             <div class="form-group col-md-6">
@@ -501,7 +475,6 @@
                 if ($("#agregar_cliente_form")[0].checkValidity()) {
                     event.preventDefault();
                     var nombre = document.getElementById("nombre").value;
-                    var sucursal = document.getElementById("sucursal").value;
                     var telefono = document.getElementById("telefono").value;
                     var correo = document.getElementById("correo").value;
                     //var habitual = document.getElementById("habitual").value;
@@ -511,7 +484,6 @@
                     var token = '{{csrf_token()}}';
                     var data = {
                         nombre: nombre,
-                        sucursal: sucursal,
                         telefono: telefono,
                         correo: correo,
                         habitual: habitual,
@@ -520,10 +492,10 @@
 
                     $.ajax({
                         type: "POST",
-                        url: "/agregar_clientes",
+                        url: "/agregar_cliente_sucursal",
                         data: data,
                         success: function(msg) {
-                            location.href = "/mostrar_clientes"
+                            location.href = "/mostrar_clientes_sucursal"
                         }
                     });
                 } else {
@@ -561,7 +533,7 @@
                     data: data,
                     success: function(msg) {
                         alert(msg);
-                        location.href = "/mostrar_clientes";
+                        location.href = "/mostrar_clientes_sucursal";
                     }
                 });
             }
@@ -588,7 +560,7 @@
                 modal.find('#update_telefono').val(telefono)
                 //update_habitual
                 $("input[name=update_habitual][value='" + habitual + "']").prop("checked", true);
-                $('#update_sucursal > option[value="' + id_sucursal + '"]').attr('selected', 'selected');
+               
             });
 
         </script>
@@ -601,7 +573,7 @@
                     var update_nombre = document.getElementById("update_nombre").value;
                     var update_correo = document.getElementById("update_correo").value;
                     var update_telefono = document.getElementById("update_telefono").value;
-                    var update_sucursal = document.getElementById("update_sucursal").value;
+                    
 
                     let habitual = $('input[name="update_habitual"]:checked').val();
                     alert(habitual);
@@ -612,7 +584,6 @@
                     formData.append("update_nombre", update_nombre);
                     formData.append("update_correo", update_correo);
                     formData.append("update_telefono", update_telefono);
-                    formData.append("update_sucursal", update_sucursal);
                     formData.append("update_habitual", habitual);
 
                     formData.append("_token", token);
@@ -622,13 +593,13 @@
                     $.ajax({
                         type: "POST",
                         contentType: false,
-                        url: "/actualizar_cliente",
+                        url: "/actualizar_cliente_sucursal",
                         data: formData,
                         processData: false,
                         cache: false,
                         success: function(msg) {
                             console.log(msg);
-                            location.href = "/mostrar_clientes";
+                            location.href = "/mostrar_clientes_sucursal";
                         }
                     });
 

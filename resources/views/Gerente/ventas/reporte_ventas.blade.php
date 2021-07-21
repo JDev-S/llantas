@@ -241,7 +241,7 @@
             };
             $.ajax({
                 type: "POST",
-                url: "/mostrar_reportes_ventas",
+                url: "/mostrar_reportes_ventas_sucursal",
                 data: data,
                 success: function(msg) {
                     jQuery(function($) {

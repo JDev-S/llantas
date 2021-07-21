@@ -91,7 +91,7 @@
                                     <div class="form-group col-md-2 ml-2 justify-content-center">
                                         <select class="form-control selectpicker form-control" title="-- Sucursal origen--" data-size="5" data-header="Seleccione sucursal" data-style="btn-primary" onChange="javascript:mostrar_productos_sucursal()" id="sucursal" name="sucursal" data-container="body" required>
                                             <option data-divider="true"></option>
-                                            @foreach($sucursales as $sucursal)
+                                            @foreach($sucursales2 as $sucursal)
                                             <option data-tokens="{{$sucursal->id_sucursal}}" value="{{$sucursal->id_sucursal}}">{{$sucursal->sucursal}}</option>
                                             @endforeach
                                         </select>
@@ -596,7 +596,7 @@
                 success: function(msg) {
 
                     alert(msg);
-                    location.href = "/mostrar_pedido_sucursal";
+                    location.href = "/mostrar_pedidos_sucursales_sucursal";
                 }
             });
         } else {

@@ -707,7 +707,7 @@
             data: data,
             success: function(msg) {
                 alert(msg);
-                location.href = "/mostrar_creditos";
+                location.href = "/mostrar_creditos_sucursal";
             }
         });
     }
@@ -1003,7 +1003,7 @@
                             progress: 'position-bl bgc-white-tp4 py-2px m-1px',
                             progressReverse: true
                         })
-                        location.href = "/mostrar_creditos";
+                        location.href = "/mostrar_creditos_sucursal";
                     }
 
                 }

@@ -640,7 +640,7 @@
                 success: function(msg) {
 
                     alert(msg);
-                    location.href = "/mostrar_pedido_solicitado";
+                    location.href = "/mostrar_pedidos_solicitados_sucursal";
                 }
             });
         } else {
@@ -678,7 +678,7 @@
             data: data,
             success: function(msg) {
                 alert(msg);
-                location.href = "/mostrar_pedido_solicitado";
+                location.href = "/mostrar_pedidos_solicitados_sucursal";
             }
         });
     }

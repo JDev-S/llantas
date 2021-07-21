@@ -21,6 +21,18 @@ class CreditoController extends Controller
 		return view('/Administrador/credito/index',compact('creditos','detalles','abonos','sucursal_usuario'));
     }
     
+    public function mostrar_creditos_sucursal()
+    {
+        $id_sucursal=Session::get('id_sucursal_usuario');
+        $creditos=DB::select('SELECT credito.id_credito, credito.id_venta, usuario.nombre_completo as nombre_usuario,sucursal.sucursal as sucursal_usuario,clientes.nombre_completo as nombre_cliente,clientes.correo_electronico,clientes.telefono,clientes.id_cliente,metodo_pago.metodo_pago, credito.status_credito, credito.comentario, credito.fecha_ultimo_dia, venta.total_venta, venta.fecha_venta, ifnull(SUM(abono_credito.monto),0.0) as monto FROM credito INNER JOIN venta on venta.id_venta=credito.id_venta LEFT JOIN abono_credito ON abono_credito.id_credito=credito.id_credito INNER JOIN usuario on usuario.id_usuario=venta.id_usuario and usuario.id_sucursal=venta.id_sucursal_usuario inner join sucursal on sucursal.id_sucursal=venta.id_sucursal_usuario inner join clientes on clientes.id_cliente=venta.id_cliente inner join metodo_pago on metodo_pago.id_metodo_pago=venta.id_metodo_pago where venta.id_sucursal='.$id_sucursal.' GROUP BY credito.id_credito order by venta.fecha_venta desc');
+        
+         $detalles=DB::select("SELECT productos_llantimax.id_productos_llantimax, productos_llantimax.nombre, cantidad_producto, precio_unidad, total,detalle_venta.id_venta FROM detalle_venta INNER JOIN productos_llantimax on productos_llantimax.id_productos_llantimax=detalle_venta.id_producto");
+        
+        $abonos=DB::select("select abono_credito.id_abono_credito,abono_credito.id_credito,abono_credito.fecha,abono_credito.monto,abono_credito.comentario from credito inner join abono_credito on credito.id_credito=abono_credito.id_credito order by abono_credito.fecha desc");
+        $sucursal_usuario= Session::get('sucursal_usuario');
+		return view('/Gerente/credito/index',compact('creditos','detalles','abonos','sucursal_usuario'));
+    }
+    
     public function agregar_abono(Request $input)
     {
         $id_credito = $input ['id_credito'];
@@ -83,10 +95,7 @@ class CreditoController extends Controller
         echo $status;
     }
     
-    public function obtener_monto_credito($id_credito)
-    {
-        
-    }
+
     
     function obtener_fecha_actual()
     {

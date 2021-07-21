@@ -83,14 +83,13 @@
                                     <div class="form-group col-md-2 ml-2 justify-content-center">
                                         <select class="form-control selectpicker form-control" title="-- Sucursal --" data-size="5" data-header="Seleccione sucursal" data-style="btn-primary" id="sucursal" name="sucursal" onchange="javascript:uso_sucursal()" data-container="body" required>
                                             <option data-divider="true"></option>
+                                           
+                                            
                                             <?php
-                                            $query = "select * from sucursal ";
-                                            $sucursales=DB::select($query);
-                                        ?>
-                                            <option value="0">General</option>
-                                            @foreach($sucursales as $sucursal)
-                                            <option data-tokens="{{$sucursal->id_sucursal}}" value="{{$sucursal->id_sucursal}}">{{$sucursal->sucursal}}</option>
-                                            @endforeach
+                                            $id_sucursal=Session::get('id_sucursal_usuario');
+                                            $sucursal_usuario=Session::get('sucursal_usuario');
+                                            echo '<option data-tokens="'.$id_sucursal.'" value="'.$id_sucursal.'">'.$sucursal_usuario.'</option>';
+                                            ?>
                                         </select>
                                     </div>
                                     <div class="form-group col-md-2 ml-2 justify-content-center" id="mostrar_categorias" name="mostrar_categorias">
@@ -613,7 +612,7 @@
                 success: function(msg) {
 
                     alert(msg);
-                    location.href = "/mostrar_proveedores";
+                    location.href = "/mostrar_proveedor_sucursal";
                 }
             });
         } else {

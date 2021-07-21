@@ -30,12 +30,18 @@ Route::post('/obtener_contrasenia','LoginController@obtener_contraseña')->name(
 
 /*Mostrar clientes*/
 Route::get('/mostrar_clientes','ClientesController@mostrar_clientes')->middleware('admin:1')->name('mostrar_clientes');
+/*Mostrar clientes sucursal*/
+Route::get('/mostrar_clientes_sucursal','ClientesController@mostrar_clientes_sucursal')->middleware('gerente:2')->name('mostrar_clientes_sucursal');
 /*Agregar un cliente*/
 Route::post('/agregar_clientes', 'ClientesController@agregar_cliente')->name('agregar_clientes');
+/*Agregar un cliente sucursal*/
+Route::post('/agregar_cliente_sucursal', 'ClientesController@agregar_cliente_sucursal')->name('agregar_cliente_sucursal');
 /*ELIMINAR CLIENTE*/
 Route::post('/eliminar_Cliente', 'ClientesController@eliminar_Cliente')->name('eliminar_Cliente');
 /*ACTUALIZAR CLIENTES*/
 Route::post('/actualizar_cliente', 'ClientesController@actualizar_cliente')->name('actualizar_cliente');
+/*ACTUALIZAR CLIENTE sucursal*/
+Route::post('/actualizar_cliente_sucursal', 'ClientesController@actualizar_cliente_sucursal')->name('actualizar_cliente_sucursal');
 
 /*Llantas*/
 /*Mostrar Llantas*/
@@ -107,8 +113,12 @@ Route::post('/eliminar_producto_inventario','InventarioController@eliminar_produ
 /* Vista para hacer la venta */
 /*Mostrar ventas*/
 Route::get('/mostrar_venta','VentasController@mostrar_ventas_realizadas')->middleware('admin:1')->name('mostrar_venta');
+/*Mostrar ventas sucursal*/
+Route::get('/mostrar_ventas_realizadas_sucursal','VentasController@mostrar_ventas_realizadas_sucursal')->middleware('gerente:2')->name('mostrar_ventas_realizadas_sucursal');
 /*Mostrar Formulario de generar venta*/
 Route::get('/agregar_venta','VentasController@mostrar_vista')->middleware('admin:1')->name('agregar_venta');
+/*Mostrar Formulario de generar venta sucursal*/
+Route::get('/agregar_venta_sucursal','VentasController@mostrar_vista_sucursal')->middleware('gerente:2')->name('agregar_venta_sucursal');
 /*MOSTRAR PRODUCTOS PARA VENDER*/
 Route::post('/mostrar_productos_ventas','VentasController@mostrar_productos_ventas')->name('mostrar_productos_ventas');
 /*INSERTR VENTA*/
@@ -120,8 +130,13 @@ Route::post('/eliminar_venta','VentasController@eliminar_venta')->name('eliminar
 /*Mostrar pedidos a proveedores*/
 Route::get('/mostrar_pedido_proveedor','PedidoController@mostrar_pedidos_proveedor')->middleware('admin:1')
 ->name('mostrar_pedido_proveedor');
+/*Mostrar pedidos a proveedores sucursales*/
+Route::get('/mostrar_pedido_proveedor_sucursal','PedidoController@mostrar_pedido_proveedor_sucursal')->middleware('gerente:2')
+->name('mostrar_pedido_proveedor_sucursal');
 /*Mostrar pedidos en proveedores*/
 Route::get('/pedido_proveedor','PedidoController@mostrar_catalogo_proveedores')->middleware('admin:1')->name('pedido_proveedor');
+/**/
+Route::get('/mostrar_catalogo_proveedores_sucursal','PedidoController@mostrar_catalogo_proveedores_sucursal')->middleware('gerente:2')->name('mostrar_catalogo_proveedores_sucursal');
 /*MANDAR PRODUCTOS POR SUCURSAL*/
 Route::post('/mostrar_catalogo_sucursal','PedidoController@mostrar_catalogo_sucursal')->name('mostrar_catalogo_sucursal');
 /*Agregar un pedido en el proveedor*/
@@ -134,9 +149,14 @@ Route::post('/eliminar_compra', 'PedidoController@eliminar_compra')->name('elimi
 /*MOSTRAR PEDIDOS A SUCURSALES*/
 Route::get('/mostrar_pedido_sucursal','PedidoController@mostrar_pedidos_sucursales')->middleware('admin:1')
 ->name('mostrar_pedido_sucursal');
+/*MOSTRAR PEDIDOS A SUCURSALES A SUCURSAL*/
+Route::get('/mostrar_pedidos_sucursales_sucursal','PedidoController@mostrar_pedidos_sucursales_sucursal')->middleware('gerente:2')->name('mostrar_pedidos_sucursales_sucursal');
 /*VENTANA PARA HACER UN PEDIDO*/
 Route::get('/pedido_sucursal','PedidoController@pedido_sucursal')->middleware('admin:1')
 ->name('pedido_sucursal');
+/*VENTANA PARA HACER UN PEDIDO SUCURSAL*/
+Route::get('/pedido_sucursal_sucursal','PedidoController@pedido_sucursal_sucursal')->middleware('gerente:2')
+->name('pedido_sucursal_sucursal');
 /*Mostrar_productos_sucursal_pedido*/
 Route::post('/mostrar_productos_pedidos', 'PedidoController@obtener_productos_sucursales')->name('mostrar_productos_pedidos');
 /*PETICION DE HACER PEDIDOS SUCURSALES*/
@@ -146,6 +166,9 @@ Route::post('/obtener_historiales','PedidoController@obtener_historiales')->name
 /*MOSTRAR PEDIDOS SOLICITADOS*/
 Route::get('/mostrar_pedido_solicitado','PedidoController@mostrar_pedidos_solicitados')->middleware('admin:1')
 ->name('mostrar_pedido_solicitado');
+/*MOSTRAR PEDIDOS SOLICITADOS SUCURSALES*/
+Route::get('/mostrar_pedidos_solicitados_sucursal','PedidoController@mostrar_pedidos_solicitados_sucursal')->middleware('gerente:2')
+->name('mostrar_pedidos_solicitados_sucursal');
 /*ACTUALIZAR STATUS DEL PEDIDO*/
 Route::post('/actualizar_status_pedido','PedidoController@actualizar_status_pedido')->name('actualizar_status_pedido');
 /*ELIMINAR PEDIDO A SUCURSAL*/
@@ -154,6 +177,8 @@ Route::post('/eliminar_pedido_sucursal','PedidoController@eliminar_pedido_sucurs
 /*Creditos a clientes*/
 /*Mostrar creditos a clientes*/
 Route::get('/mostrar_creditos','CreditoController@mostrar_creditos')->middleware('admin:1')->name('mostrar_creditos');
+/*Mostrar creditos a sucursales*/
+Route::get('/mostrar_creditos_sucursal','CreditoController@mostrar_creditos_sucursal')->middleware('gerente:2')->name('mostrar_creditos_sucursal');
 /*Hacer un abono credito*/
 Route::post('/insertar_abono', 'CreditoController@agregar_abono')->name('insertar_abono');
 /*ELIMINAR CREDITO*/
@@ -163,22 +188,34 @@ Route::post('/actualizar_abono', 'CreditoController@actualizar_abono')->name('ac
 
 /*Reporte de ventas*/
 Route::get('/mostrar_reportes','VentasController@mostrar_reportes')->middleware('admin:1')->name('mostrar_reportes');
+/*Mostrar reportes sucursal*/
+Route::get('/mostrar_reportes_sucursal','VentasController@mostrar_reportes_sucursal')->middleware('gerente:2')->name('mostrar_reportes_sucursal');
 /*MOSTRAR REPORTE DE VENTAS*/
 Route::post('/mostrar_reportes_ventas', 'VentasController@mostrar_reportes_ventas')->name('mostrar_reportes_ventas');
+/*MOSTRAR REPORTE DE VENTAS SUCURSAL*/
+Route::post('/mostrar_reportes_ventas_sucursal', 'VentasController@mostrar_reportes_ventas_sucursal')->name('mostrar_reportes_ventas_sucursal');
 
 /*Proovedores*/
 /*Mostrar proveedores*/
 Route::get('/mostrar_proveedores','ProveedorController@mostrar_proveedor')->middleware('admin:1')->name('mostrar_proveedores');
+/*Mostrar proveedores sucursal*/
+Route::get('/mostrar_proveedor_sucursal','ProveedorController@mostrar_proveedor_sucursal')->middleware('gerente:2')->name('mostrar_proveedor_sucursal');
 /*Agregar un proveedor*/
 Route::post('/agregar_proveedores', 'ProveedorController@agregar_proveedor')->name('agregar_proveedores');
+/*Agregar un proveedor_sucursal*/
+Route::post('/agregar_proveedores_sucursal', 'ProveedorController@agregar_proveedores_sucursal')->name('agregar_proveedores_sucursal');
 /*ELIMINAR PROVEEDOR*/
 Route::post('/eliminar_Proveedor', 'ProveedorController@eliminar_Proveedor')->name('eliminar_Proveedor');
 /*ACTUALIZAR PROVEEDOR*/
 Route::post('/actualizar_proveedor', 'ProveedorController@actualizar_proveedor')->name('actualizar_proveedor');
+/*ACTUALIZAR proveedor sucursal*/
+Route::post('/actualizar_proveedor_sucursal', 'ProveedorController@actualizar_proveedor_sucursal')->name('actualizar_proveedor_sucursal');
 
 /*Catalogo*/
 /*mostrar formulario para agregar catalogo*/
 Route::get('/agregar_catalogo','CatalogoController@mostrar_formulario')->middleware('admin:1')->name('agregar_catalogo');
+/*Mostrar productos en el formulario de catalogo sucursales*/
+Route::get('/agregar_catalogo_sucursales','CatalogoController@agregar_catalogo_sucursales')->middleware('gerente:2')->name('agregar_catalogo_sucursales');
 /*Mostrar productos en el formulario de catalogo*/
 Route::post('/mostrar_productos_catalogo','CatalogoController@mostrar_productos_sucursal_catalogo')-> name('mostrar_productos_catalogo');
 Route::post('/agregar_producto_catalogo','CatalogoController@agregar_producto_catalogo')->name('agregar_producto_catalogo');

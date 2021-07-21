@@ -140,20 +140,6 @@
 
 
                         </div>
-
-                        <div class="form-group col-md-12">
-                            <label for="indice_velocidad">Sucursal</label>
-                            <?php
-                            $query2 = "select * from sucursal ";
-                            $data2=DB::select($query2);      
-                        ?>
-                            <select id="sucursal" name="sucursal" class="form-control" required>
-                                <option value="0">General</option>
-                                @foreach($data2 as $item)
-                                <option value="{{ $item->id_sucursal }}"> {{ $item->sucursal }} </option>
-                                @endforeach
-                            </select>
-                        </div>
                     </form>
                 </div>
             </div>
@@ -217,19 +203,6 @@
 
                         </div>
 
-                        <div class="form-group col-md-12">
-                            <label for="indice_velocidad">Sucursal</label>
-                            <?php
-                            $query2 = "select * from sucursal ";
-                            $data2=DB::select($query2);      
-                        ?>
-                            <select id="update_sucursal" name="update_sucursal" class="form-control" required>
-                                <option value="0"> General </option>
-                                @foreach($data2 as $item)
-                                <option value="{{ $item->id_sucursal }}"> {{ $item->sucursal }} </option>
-                                @endforeach
-                            </select>
-                        </div>
                     </form>
                 </div>
             </div>
@@ -485,7 +458,10 @@
 
         function formatTableCellActions(value, row, index, field) {
             var eliminar = row.id_proveedor;
-            return '<div class="action-buttons">' +
+            var botones="";
+            if(row.id_sucursal!=0)
+                {
+                    botones='<div class="action-buttons">' +
                 '<button type="button" class="text-blue mx-1 " data-id="' + eliminar + '"  data-toggle="modal" data-target="#modalDetalle">' +
                  '<i class="far fa-list-alt"></i>' +
                 '</button>' +
@@ -496,7 +472,20 @@
                 '<button type="button" class="text-danger mx-1 " data-id="' + eliminar + '"  data-toggle="modal" data-target="#eliminarModal">' +
                 '<i class="fa fa-trash-alt text-105"></i>' +
                 '</button>' +
-                '</div>'
+                '</div>';
+                }
+            else{
+                 botones='<div class="action-buttons">' +
+                '<button type="button" class="text-blue mx-1 " data-id="' + eliminar + '"  data-toggle="modal" data-target="#modalDetalle">' +
+                 '<i class="far fa-list-alt"></i>' +
+                '</button>' +
+                // '<a class="text-success mx-1" href="#">\
+                //<i class="fa fa-pencil-alt text-105"></i>\
+                //</a>'+
+               
+                '</div>';
+            }
+            return botones;
         }
 
 
@@ -536,7 +525,7 @@
         if ($("#agregar_proveedor_form")[0].checkValidity()) {
             event.preventDefault();
             var nombre_empresa = document.getElementById("nombre_empresa").value;
-            var sucursal = document.getElementById("sucursal").value;
+            
             var telefono = document.getElementById("telefono").value;
             var direccion = document.getElementById("direccion").value;
             var nombre_contacto = document.getElementById("nombre_contacto").value;
@@ -545,7 +534,7 @@
             var token = '{{csrf_token()}}';
             var data = {
                 nombre_empresa: nombre_empresa,
-                sucursal: sucursal,
+               
                 telefono: telefono,
                 direccion: direccion,
                 nombre_contacto: nombre_contacto,
@@ -555,10 +544,10 @@
 
             $.ajax({
                 type: "POST",
-                url: "/agregar_proveedores",
+                url: "/agregar_proveedores_sucursal",
                 data: data,
                 success: function(msg) {
-                    location.href = "/mostrar_proveedores"
+                    location.href = "/mostrar_proveedor_sucursal"
                 }
             });
 
@@ -625,8 +614,7 @@
         modal.find('#update_empresa').val(empresa)
         modal.find('#update_direccion').val(direccion)
 
-        $('#update_sucursal > option[value="' + id_sucursal + '"]').attr('selected', 'selected');
-    });
+       });
 
 </script>
 <script type="text/javascript">
@@ -639,7 +627,7 @@
             var update_telefono = document.getElementById("update_telefono").value;
             var update_empresa = document.getElementById("update_empresa").value;
             var update_direccion = document.getElementById("update_direccion").value;
-            var update_sucursal = document.getElementById("update_sucursal").value;
+            
 
             var formData = new FormData();
             var token = '{{csrf_token()}}';
@@ -648,7 +636,7 @@
             formData.append("update_nombre", update_nombre);
             formData.append("update_correo", update_correo);
             formData.append("update_telefono", update_telefono);
-            formData.append("update_sucursal", update_sucursal);
+           
             formData.append("update_empresa", update_empresa);
             formData.append("update_direccion", update_direccion);
             formData.append("_token", token);
@@ -658,13 +646,13 @@
             $.ajax({
                 type: "POST",
                 contentType: false,
-                url: "/actualizar_proveedor",
+                url: "/actualizar_proveedor_sucursal",
                 data: formData,
                 processData: false,
                 cache: false,
                 success: function(msg) {
                     console.log(msg);
-                    location.href = "/mostrar_proveedores";
+                    location.href = "/mostrar_proveedor_sucursal";
                 }
             });
         } else {
