@@ -63,6 +63,7 @@ select inventario.id_producto as id_producto, productos_llantimax.nombre as nomb
         $comentario_credito=$input['descripcion'];
         $fecha_ultimo_dia=$input['fecha'];
         $auto=$input['auto'];
+        $comision=$input['comision'];
         
         $id_sucursal_cliente = VentasController::obtener_sucursal_cliente($id_cliente);
        
@@ -79,13 +80,13 @@ select inventario.id_producto as id_producto, productos_llantimax.nombre as nomb
             if($id_metodo_pago==1)
             {
                // echo 'total_venta '.$total_venta;
-                $total_final=intval($total_venta)*0.03;
+                $total_final=intval($total_venta)*floatval($comision);
                 $total_venta=intval($total_venta)+$total_final;
             }
             //echo 'total_venta_final : '.$total_venta."    30%mas    ".$total_final;
             
             
-            $ingresar = DB::insert('INSERT INTO venta(id_venta, id_usuario, id_sucursal_usuario, id_sucursal, id_cliente, id_sucursal_cliente, id_metodo_pago, total_venta, fecha_venta, factura,auto) VALUES(?,?,?,?,?,?,?,?,?,?,?)', [$id_venta, $id_usuario, $id_sucursal_usuario, $id_sucursal, $id_cliente, $id_sucursal_cliente, $id_metodo_pago, $total_venta, $fecha_venta, $factura,$auto]);
+            $ingresar = DB::insert('INSERT INTO venta(id_venta, id_usuario, id_sucursal_usuario, id_sucursal, id_cliente, id_sucursal_cliente, id_metodo_pago, total_venta, fecha_venta, factura,auto,comision) VALUES(?,?,?,?,?,?,?,?,?,?,?, ?)', [$id_venta, $id_usuario, $id_sucursal_usuario, $id_sucursal, $id_cliente, $id_sucursal_cliente, $id_metodo_pago, $total_venta, $fecha_venta, $factura,$auto,$comision]);
        
             //INSERTAR DETALLE DE LA VENTA
             foreach($array_productos as $propiedad){
@@ -475,5 +476,16 @@ where pedido_proveedor.id_pedido="'.$ticket.'"');
         return $pdf->stream('ejemplo.pdf');
         //return view('/documentos/pedido_sucursal', compact('ticket','fecha_pedido','nombre_solicitante','sucursal_solicitante','nombre_distribuido','sucursal_distribuidor','historial_pedidos','detalles_pedido_sucursal'));
         
+    }
+    
+    public function actualizar_venta(Request $input)
+    {
+        $id_venta = $input['update_id_venta'];
+        $fecha = $input['update_fecha'];
+        $total = $input['update_total'];
+        
+    
+        $ingresar=DB::update('update venta set fecha_venta="'.$fecha.'", total_venta="'.$total.'" where venta.id_venta=?',[$id_venta]);
+                
     }
 }

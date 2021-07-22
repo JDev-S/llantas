@@ -248,6 +248,53 @@
 </div>
 
 <!--FIN MODAL DETALLE -->
+<!--MODAL ACTUALIZAR Venta -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background:#2470bd;">
+                <h5 class="modal-title" id="exampleModalLabel" style="color:white;">Actualizar Venta</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="ccard h-100 d-flex flex-column mx-2 px-2 py-3">
+                    <form id="actualizar_venta_form">
+
+                        <div class="form-row align-items-center col-md-12">
+                            <div class="form-group col-md-6">
+                                <label for="rin">Fecha de la venta</label>
+                                <input type="hidden" id="update_id_venta" name="update_id_venta" required>
+                                <input type="date" class="form-control " id="update_fecha" name="update_fecha" required placeholder="Fecha venta">
+                            </div>
+
+                        </div>
+
+                        <div class="form-row align-items-center col-md-12">
+                            <div class="form-group col-md-6">
+                                <label for="rin">Total de la venta</label>
+                                <input class="form-control" min="0.01" max="999999999.00" step="any" lang="en" type="number" placeholder="Precio" style="border-color:#2470BD" id="update_total" name="update_total" required>
+                            </div>
+
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    Cerrar
+                </button>
+                <button type="submit" class="btn btn-primary" onclick="actualizar_venta();">
+                    Aceptar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--FIN MODAL ACTUALIZAR Venta-->
 <!--MODAL ELIMINAR-->
 <div class="modal fade" data-backdrop-bg="bgc-white" id="eliminarModal" tabindex="-1" aria-labelledby="dangerModalLabel" style="display: none;" aria-hidden="true">
     <div class="modal-dialog " role="document">
@@ -298,7 +345,35 @@
 <script src="\npm\bootstrap-table@1.18.3\dist\extensions\print\bootstrap-table-print.min.js"></script>
 <script src="\npm\bootstrap-table@1.18.3\dist\extensions\mobile\bootstrap-table-mobile.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
+<script src="\npm\eonasdan-bootstrap-datetimepicker@4.17.49\src\js\bootstrap-datetimepicker.min.js"></script>
+<script src="\npm\tiny-date-picker@3.2.8\dist\date-range-picker.min.js"></script>
+<script src="\npm\tableexport.jquery.plugin@1.10.22\tableExport.min.js"></script>
+<script src="\npm\dropzone@5.9.2\dist\dropzone.min.js"></script>
+<script src="\npm\bootstrap-table@1.18.3\dist\bootstrap-table.min.js"></script>
+<script src="\npm\bootstrap-table@1.18.3\dist\extensions\export\bootstrap-table-export.min.js"></script>
+<script src="\npm\bootstrap-table@1.18.3\dist\extensions\print\bootstrap-table-print.min.js"></script>
+<script src="\npm\bootstrap-table@1.18.3\dist\extensions\mobile\bootstrap-table-mobile.min.js"></script>
+<script src="\npm\tiny-date-picker@3.2.8\dist\date-range-picker.min.js"></script>
+<script src="\npm\moment@2.29.1\moment.min.js"></script>
+<script src="\npm\eonasdan-bootstrap-datetimepicker@4.17.49\src\js\bootstrap-datetimepicker.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
+<script type="text/javascript">
+    var TinyDatePicker = DateRangePicker.TinyDatePicker;
+    TinyDatePicker('#update_fecha', {
+            mode: 'dp-below',
+            lang: {
+                days: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vier', 'Sáb'],
+                months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                today: 'Hoy',
+                clear: 'Limpiar',
+                close: 'Cerrar',
+            },
+        })
+        .on('statechange', function(ev) {
 
+        })
+
+</script>
 <!-- "Bootstrap Table" page script to enable its demo functionality -->
 <script>
     jQuery(function($) {
@@ -311,13 +386,13 @@
             var myNumeral = numeral(objeto.total_venta);
             var currencyString = myNumeral.format('$0,0.00');
             var factura = "";
-            var fact="";
+            var fact = "";
             if (objeto.factura === 1) {
                 factura = "Sí";
-                fact='<input type="checkbox" checked="true" disabled>';
+                fact = '<input type="checkbox" checked="true" disabled>';
             } else {
                 factura = "No";
-                fact='<input type="checkbox" disabled>';
+                fact = '<input type="checkbox" disabled>';
             }
             arr.push({
                 //"id_productos_llantimax": '<button class="btn px-4 btn-info mb-1" data-target="#modalLlanta_' + objeto.id_productos_llantimax + '_' + objeto.sucursal + '" data-toggle="modal" type="button">' + objeto.id_productos_llantimax + '</button>',
@@ -330,8 +405,9 @@
                 "telefono": objeto.telefono,
                 "correo": objeto.correo_electronico,
                 "factura": factura,
-                "invoice":fact,
+                "invoice": fact,
                 "total_venta": currencyString,
+                "total":objeto.total_venta,
                 "metodo_pago": objeto.metodo_pago,
                 "fecha_venta": objeto.fecha_venta
                 //"fotografia_miniatura": '<img src="/img/' + objeto.fotografia_miniatura + '" width="80px" height="80px" alt="' + objeto.nombre + '">'
@@ -520,9 +596,7 @@
                 <button class="text-blue mx-1" data-target="#modalDetalle" data-id="' + row.id_venta + '" data-factura="' + row.factura + '" data-pago="' + row.metodo_pago + '" data-vendedor="' + row.vendedor + '"  data-suc="' + row.sucursal + '" data-cliente="' + row.cliente + '" data-telefono="' + row.telefono + '" data-total="' + row.total_venta + '" data-correo="' + row.correo + '" data-fecha="' + row.fecha_venta + '" data-toggle="modal">' +
                 '<i class="fa fa-search-plus text-105"></i>' +
                 '</button>' +
-                // '<a class="text-success mx-1" href="#">\
-                //<i class="fa fa-pencil-alt text-105"></i>\
-                //</a>'+
+                '<button class="text-blue mx-1" data-toggle="modal" data-target="#editModal" data-id="' + row.id_venta  + '" data-fecha="' + row.fecha_venta + '" data-total="' + row.total + '" ><i class="fa fa-pencil-alt"></i></button>' +
                 '<button type="button" class="text-danger mx-1 " data-id="' + row.id_venta + '"  data-toggle="modal" data-target="#eliminarModal">' +
                 '<i class="fa fa-trash-alt text-105"></i>' +
                 '</button>' +
@@ -707,7 +781,7 @@
 <script type="text/javascript">
     function mostrar_ticket() {
         //location.href="/imprimir","_blank";
-        var ticket=document.getElementById("detalle_id_venta").value;
+        var ticket = document.getElementById("detalle_id_venta").value;
         var url = '/exportar_ticket/' + ticket;
         window.open(
             url,
@@ -807,5 +881,71 @@
     });
 
 </script>
+<script type="text/javascript">
+    $('#editModal').on('show.bs.modal', function(event) {
+        /RECUPERAR METADATOS DEL BOTÓN/
+        var button = $(event.relatedTarget)
+        var id_venta = button.data('id')
+        var fecha_venta = button.data('fecha')
+        var total_venta = button.data('total')
+       
+
+        /*ASIGNAR VALOR A LOS METADATOS DEL MODAL*/
+        var modal = $(this)
+        modal.find('#update_id_venta').val(id_venta)
+        modal.find('#update_fecha').val(fecha_venta)
+        modal.find('#update_total').val(total_venta)
+       
+    });
+
+</script>
+<script type="text/javascript">
+    function actualizar_venta() {
+        if ($("#actualizar_venta_form")[0].checkValidity()) {
+            event.preventDefault();
+            var update_id_venta = document.getElementById("update_id_venta").value;
+            var update_fecha = document.getElementById("update_fecha").value;
+            var update_total = document.getElementById("update_total").value;
+
+            var principal = new Date(update_fecha); // M-D-YYYY
+            var d = principal.getDate();
+            var m = principal.getMonth() + 1;
+            var y = principal.getFullYear();
+            alert(y + "  " + "  " + m + "  " + d);
+            var fecha_inicio = y + '-' + (m <= 9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
+
+            var formData = new FormData();
+            var token = '{{csrf_token()}}';
+
+            formData.append("update_id_venta", update_id_venta);
+            formData.append("update_fecha", fecha_inicio);
+            formData.append("update_total", update_total);
+
+
+
+            formData.append("_token", token);
+            console.log(formData);
+
+            alert("ESTA BIEN TODO");
+            $.ajax({
+                type: "POST",
+                contentType: false,
+                url: "/actualizar_venta",
+                data: formData,
+                processData: false,
+                cache: false,
+                success: function(msg) {
+                    console.log(msg);
+                    location.href = "/mostrar_venta";
+                }
+            });
+
+        } else {
+            $("#actualizar_venta_form")[0].reportValidity();
+        }
+    }
+
+</script>
+
 @stop
 @stop

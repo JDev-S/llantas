@@ -275,7 +275,7 @@
                                                                 <i class="far fa-money-bill-alt fa-4x text-150 text-blue-d1 w-4 mx-2"></i>
                                                             </div>
 
-                                                            <div role="button" class="mr-1 p-3 border-2 btn btn-brc-tp shadow-sm btn-text-purple btn-light btn-h-lighter-purple btn-a-light-purple bgc-white" title="Tarjeta de crédito" onclick="limpiar()">
+                                                            <div role="button" class="mr-1 p-3 border-2 btn btn-brc-tp shadow-sm btn-text-purple btn-light btn-h-lighter-purple btn-a-light-purple bgc-white" title="Tarjeta de crédito" onclick="mostrar_comision()">
                                                                 <input type="radio" name="pago" id="pago" value="1" required>
                                                                 <i class="far fa-credit-card d-block text-150 text-purple-d1 w-4 mx-2"></i>
                                                             </div>
@@ -289,6 +289,9 @@
                                                 </div>
                                             </div>
                                             <div class="col-12 col-sm-5 text-dark-l1 text-90 order-first order-sm-last">
+                                                <div class="row my-2" id="comision">
+
+                                                </div>
 
                                                 <div class="row my-2 align-content-center" id="subtotal">
 
@@ -370,18 +373,15 @@
 
                         </div>
 
-                        <div class="form-group col-md-12">
-                            <label for="indice_velocidad">Sucursal</label>
-                            <?php
-                            $query2 = "select * from sucursal ";
-                            $data2=DB::select($query2);      
-                        ?>
-                            <select id="sucursal" name="sucursal" class="form-control" required>
-                                @foreach($data2 as $item)
-                                <option value="{{ $item->id_sucursal }}"> {{ $item->sucursal }} </option>
-                                @endforeach
-                            </select>
+                        <div class="form-row align-items-center col-md-12">
+                            <div class="form-group col-md-6">
+                                <label for="rin">RFC</label>
+                                <input type="text" class="form-control" id="rfc" name="rfc" placeholder="RFC" required>
+                            </div>
+
                         </div>
+
+
 
                         <div class="form-row align-items-center col-md-12">
                             <div class="form-group col-md-6">
@@ -499,6 +499,7 @@
                 document.getElementById("total_extra").innerHTML = "";
                 document.getElementById("subtotal").innerHTML = "";
                 document.getElementById("total_final").value = 0;
+                document.getElementById("comision").innerHTML = "";
 
                 productos = new Array();
 
@@ -611,15 +612,18 @@
                                     console.log("ANTES DEL IF ");
                                     console.log(productos);
 
-                                    if (pago == undefined || pago == "2" || pago == "1") {
+                                    if (pago == undefined || pago == "2") {
                                         alert("no es llantimax");
 
                                         limpiar();
-                                    } else {
+                                    } else
+                                    if (pago == "3") {
                                         alert("es llantimax");
 
                                         mostrar_formulario_credito();
+
                                     }
+
 
                                 } else {
                                     /*NO HAY STOCK SUFICIENTE*/
@@ -680,14 +684,16 @@
 
                         console.log(productos);
 
-                        if (pago == undefined || pago == "2" || pago == "1") {
+                        if (pago == undefined || pago == "2") {
                             alert("no es llantimax");
 
                             limpiar();
-                        } else {
+                        } else
+                        if (pago == "3") {
                             alert("es llantimax");
 
                             mostrar_formulario_credito();
+
                         }
 
 
@@ -723,14 +729,16 @@
 
                     console.log(productos);
 
-                    if (pago == undefined || pago == "2" || pago == "1") {
+                    if (pago == undefined || pago == "2") {
                         alert("no es llantimax");
 
                         limpiar();
-                    } else {
+                    } else
+                    if (pago == "3") {
                         alert("es llantimax");
 
                         mostrar_formulario_credito();
+
                     }
                 }
             } else {
@@ -774,7 +782,7 @@
         let pago = $('input[name="pago"]:checked').val();
         var cantidad_suc = $('#productos option:selected').attr("data-cantidad");
         var valores = "";
-        var valor_anterior_aux="";
+        var valor_anterior_aux = "";
         $(this).parents("tr").each(function(index2) {
             var input_cantidad = $(this).find("#cant");
             var id_sucursal = $(this).attr("data-id_sucursal");
@@ -788,7 +796,7 @@
             alert(input_cantidad[0].checkValidity());
             alert($(this).find("#cant")[0].checkValidity());
             if ($(this).find("#cant")[0].checkValidity()) {
-                
+
 
                 alert(cantidad_anterior);
 
@@ -822,14 +830,16 @@
                     });
                     alert(pago);
 
-                    if (pago == undefined || pago == "2" || pago == "1") {
+                    if (pago == undefined || pago == "2") {
                         alert("no es llantimax");
 
                         limpiar();
-                    } else {
+                    } else
+                    if (pago == "3") {
                         alert("es llantimax");
 
                         mostrar_formulario_credito();
+
                     }
                 } else {
                     $.aceToaster.add({
@@ -858,7 +868,7 @@
                 }
             } else {
                 $(this).find("#cant")[0].reportValidity();
-                $(this).find("#cant").val(cantidad_anterior);   
+                $(this).find("#cant").val(cantidad_anterior);
             }
 
 
@@ -895,14 +905,16 @@
             console.log("despues productos");
             console.log(productos);
 
-            if (pago == undefined || pago == "2" || pago == "1") {
+            if (pago == undefined || pago == "2") {
                 alert("no es llantimax");
 
                 limpiar();
-            } else {
+            } else
+            if (pago == "3") {
                 alert("es llantimax");
 
                 mostrar_formulario_credito();
+
             }
 
         });
@@ -1020,6 +1032,36 @@
                             fecha_credito = "";
                             comentario_credito = "";
                         }
+                        var comision = $('#comision_venta').val();
+
+                        if (metodo_pago == "1") {
+                            var comision = $('#comision_venta').val();
+                            if (comision == "") {
+                                $.aceToaster.add({
+                                    placement: 'br',
+                                    body: "<div class='p-3 m-2 d-flex'>\
+                         <span class='align-self-center text-center mr-3 py-2 px-1 border-1 bgc-danger radius-round'>\
+                            <i class='fa fa-times text-180 w-4 text-white mx-2px'></i>\
+                         </span>\
+                         <div>\
+                            <h4 class='text-dark-tp3'>Error</h4>\
+                            <span class='text-dark-tp3 text-110'>Porfavor ingrese la comisión a cobrar.</span>\
+                         </div>\
+                        </div>\
+                        <button data-dismiss='toast' class='btn text-grey btn-h-light-danger position-tr mr-1 mt-1'><i class='fa fa-times'></i></button>",
+                                    width: 480,
+                                    delay: 5000,
+                                    close: false,
+                                    className: 'shadow border-none radius-0 border-l-4 brc-danger',
+                                    bodyClass: 'border-0 p-0',
+                                    headerClass: 'd-none'
+                                })
+                                return 0;
+                            }
+
+                        } else {
+                            comision = "";
+                        }
 
                         alert("Generando venta");
                         var token = '{{csrf_token()}}';
@@ -1032,6 +1074,7 @@
                             array_productos: productos,
                             fecha: fecha_credito,
                             descripcion: comentario_credito,
+                            comision: comision,
                             auto: auto,
                             _token: token
                         };
@@ -1089,7 +1132,7 @@
                                         progress: 'position-bl bgc-white-tp4 py-2px m-1px',
                                         progressReverse: true
                                     })
-                                    location.href = "/mostrar_venta";
+                                    location.href = "/mostrar_ventas_realizadas_sucursal";
                                 }
 
                             }
@@ -1297,6 +1340,34 @@
                             fecha_credito = "";
                             comentario_credito = "";
                         }
+                        if (metodo_pago == "1") {
+                            var comision = $('#comision_venta').val();
+                            if (comision == "") {
+                                $.aceToaster.add({
+                                    placement: 'br',
+                                    body: "<div class='p-3 m-2 d-flex'>\
+                         <span class='align-self-center text-center mr-3 py-2 px-1 border-1 bgc-danger radius-round'>\
+                            <i class='fa fa-times text-180 w-4 text-white mx-2px'></i>\
+                         </span>\
+                         <div>\
+                            <h4 class='text-dark-tp3'>Error</h4>\
+                            <span class='text-dark-tp3 text-110'>Porfavor ingrese la comisión a cobrar.</span>\
+                         </div>\
+                        </div>\
+                        <button data-dismiss='toast' class='btn text-grey btn-h-light-danger position-tr mr-1 mt-1'><i class='fa fa-times'></i></button>",
+                                    width: 480,
+                                    delay: 5000,
+                                    close: false,
+                                    className: 'shadow border-none radius-0 border-l-4 brc-danger',
+                                    bodyClass: 'border-0 p-0',
+                                    headerClass: 'd-none'
+                                })
+                                return 0;
+                            }
+
+                        } else {
+                            comision = "";
+                        }
                         var telefono = $('#cliente option:selected').attr("data-telefono");
                         var correo = $('#cliente option:selected').attr("data-correo");
                         var nombre_cliente = $('#cliente option:selected').attr("data-nombre");
@@ -1318,6 +1389,7 @@
                             sucursal_cliente: sucursal_cliente,
                             correo_cliente: correo,
                             telefono: telefono,
+                            comision: comision,
                             _token: token
                         };
                         datos.push(data);
@@ -1417,7 +1489,8 @@
         if ($("#agregar_cliente_form")[0].checkValidity()) {
             event.preventDefault();
             var nombre = document.getElementById("nombre").value;
-            var sucursal = document.getElementById("sucursal").value;
+            var rfc = document.getElementById("rfc").value;
+
             var telefono = document.getElementById("telefono").value;
             var correo = document.getElementById("correo").value;
             //var habitual = document.getElementById("habitual").value;
@@ -1427,7 +1500,8 @@
             var token = '{{csrf_token()}}';
             var data = {
                 nombre: nombre,
-                sucursal: sucursal,
+
+                rfc: rfc,
                 telefono: telefono,
                 correo: correo,
                 habitual: habitual,
@@ -1436,43 +1510,10 @@
 
             $.ajax({
                 type: "POST",
-                url: "/agregar_clientes",
+                url: "/agregar_cliente_sucursal",
                 data: data,
                 success: function(msg) {
-
-                    var clientes = JSON.parse(msg);
-                    clientes.forEach(objeto => {
-
-                        $('#cliente').append('<option  value="' + objeto.id_cliente + '" data-nombre="' + objeto.nombre_completo + '" data-suc="' + objeto.sucursal + '" data-telefono="' + objeto.telefono + '" data-correo="' + objeto.correo_electronico + '">' + objeto.nombre_completo + '</option>');
-                        $("#cliente").selectpicker("refresh");
-
-                    });
-
-                    $.aceToaster.add({
-                        placement: 'rc',
-                        body: "<p class='p-3 mb-0 text-center text-white'>\
-                            <span class='d-inline-block mb-3 border-2 bgc-white radius-round p-25'>\
-                                <i class='fa fa-check fa-2x mx-1px text-success'></i>\
-                            </span><br />\
-                            <span class='text-125'>Cliente registrado correctamente</span>\
-                        </p>\
-                        <button data-dismiss='toast' class='close position-tr mt-1 mr-2 text-white'>&times;</button>\
-                        ",
-
-                        width: 360,
-                        delay: 4000,
-
-                        close: false,
-
-                        className: 'bgc-success-d2 shadow ',
-
-                        bodyClass: 'border-0 p-0',
-                        headerClass: 'd-none',
-
-                        progress: 'position-bl bgc-white-tp4 py-2px m-1px',
-                        progressReverse: true
-                    })
-
+                    location.href = "/mostrar_clientes_sucursal"
                 }
             });
         } else {
@@ -1487,6 +1528,7 @@
 
         document.getElementById("fecha_ultima").innerHTML = "";
         document.getElementById("comentario").innerHTML = "";
+        document.getElementById("comision").innerHTML = "";
         document.getElementById("fecha_ultima").innerHTML = '<input type="date" name="fecha" id="fecha">';
         document.getElementById("comentario").innerHTML = '<textarea class="form-control" id="descripcion" name="descripcion" required placeholder="Descripción"></textarea>'
         //var total = $('#total_final').val();
@@ -1494,10 +1536,10 @@
         for (var t = 0; t < productos.length; t++) {
             total_venta += parseInt(productos[t]['total']);
         }
-        var comision = parseInt(total_venta) * 0.03;
-        alert(comision + "    " + total_venta);
-        var total_extra = parseInt(total_venta) + comision;
-        document.getElementById("total_extra").innerHTML = "";
+        //var comision = parseInt(total_venta) * 0.03;
+        //alert(comision + "    " + total_venta);
+        //var total_extra = parseInt(total_venta) + comision;
+        /*document.getElementById("total_extra").innerHTML = "";
         document.getElementById("total_extra").innerHTML = '<div class="col-6 text-left">' +
             'Comisión (3%)' +
             '</div>' +
@@ -1506,7 +1548,7 @@
             '<span class="text-125 text-secondary-d3 float-left  ">' +
             '$' + comision.toFixed(2) +
             '</span>' +
-            '</div>';
+            '</div>';*/
 
         document.getElementById("subtotal").innerHTML = "";
         document.getElementById("subtotal").innerHTML = '<div class="col-4 text-left">' +
@@ -1517,11 +1559,33 @@
             '$' + total_venta +
             '</span>' +
             '</div>';
-        document.getElementById("total_final").value = total_extra;
+        document.getElementById("total_final").value = total_venta;
     }
 
     function limpiar() {
 
+        var total_venta = 0;
+        for (var t = 0; t < productos.length; t++) {
+            total_venta += parseInt(productos[t]['total']);
+        }
+        document.getElementById("fecha_ultima").innerHTML = '';
+        document.getElementById("comision").innerHTML = "";
+        document.getElementById("comentario").innerHTML = '';
+        document.getElementById("total_extra").innerHTML = "";
+        document.getElementById("subtotal").innerHTML = "";
+        document.getElementById("subtotal").innerHTML = '<div class="col-4 text-left">' +
+            'SubTotal' +
+            '</div>' +
+            '<div class="col-5 align-content-center">' +
+            '<span class="text-125 text-secondary-d3 float-right">' +
+            '$' + total_venta +
+            '</span>' +
+            '</div>';
+        alert(total_venta);
+        document.getElementById("total_final").value = total_venta;
+    }
+
+    function mostrar_comision() {
         var total_venta = 0;
         for (var t = 0; t < productos.length; t++) {
             total_venta += parseInt(productos[t]['total']);
@@ -1538,12 +1602,64 @@
             '$' + total_venta +
             '</span>' +
             '</div>';
-        alert(total_venta);
-        document.getElementById("total_final").value = total_venta;
+        document.getElementById("comision").innerHTML = "";
+        document.getElementById("comision").innerHTML = '<select class="form-control selectpicker form-control" title="-- Comisión --" data-size="5" data-header="Seleccione comisión" data-style="btn-primary" onChange="javascript:mostrar_total_extra()" id="comision_venta" name="comision_venta" data-container="body" required>' +
+            '</select>';
+
+        $('#comision_venta').append('<option value="0.01">1%</option>');
+        $("#comision_venta").selectpicker("refresh");
+        $('#comision_venta').append('<option value="0.02">2%</option>');
+        $("#comision_venta").selectpicker("refresh");
+        $('#comision_venta').append('<option value="0.03">3%</option>');
+        $("#comision_venta").selectpicker("refresh");
+        $('#comision_venta').append('<option value="0.04">4%</option>');
+        $("#comision_venta").selectpicker("refresh");
+        $('#comision_venta').append('<option value="0.05">5%</option>');
+        $("#comision_venta").selectpicker("refresh");
 
     }
 
+    function mostrar_total_extra() {
+
+        document.getElementById("fecha_ultima").innerHTML = "";
+        document.getElementById("comentario").innerHTML = "";
+        document.getElementById("fecha_ultima").innerHTML = '';
+        document.getElementById("comentario").innerHTML = ''
+
+        var total_venta = 0;
+        for (var t = 0; t < productos.length; t++) {
+            total_venta += parseInt(productos[t]['total']);
+        }
+        var comision = $('#comision_venta').val();
+        var comision_total = parseInt(total_venta) * parseFloat(comision);
+        //alert(comision + "    " + total_venta);
+        var total_extra = parseInt(total_venta) + comision_total;
+        document.getElementById("total_extra").innerHTML = "";
+        document.getElementById("total_extra").innerHTML = '<div class="col-6 text-left">' +
+            'Comisión' +
+            '</div>' +
+
+            '<div class="col-5" style=" padding-left: 0px;">' +
+            '<span class="text-125 text-secondary-d3 float-left  ">' +
+            '$' + comision_total.toFixed(2) +
+            '</span>' +
+            '</div>';
+
+        document.getElementById("subtotal").innerHTML = "";
+        document.getElementById("subtotal").innerHTML = '<div class="col-4 text-left">' +
+            'SubTotal' +
+            '</div>' +
+            '<div class="col-5 align-content-center">' +
+            '<span class="text-125 text-secondary-d3 float-right">' +
+            '$' + total_venta +
+            '</span>' +
+            '</div>';
+
+        document.getElementById("total_final").value = total_extra;
+    }
+
 </script>
+
 
 
 <script>

@@ -12,7 +12,7 @@ class ClientesController extends Controller
      public function mostrar_clientes ()
     {
          
-        $clientes=DB::select('select clientes.id_cliente as id_cliente, clientes.fecha_registro as fecha, clientes.nombre_completo as nombre_completo, clientes.telefono as telefono,clientes.correo_electronico as correo,sucursal.sucursal as sucursal,clientes.cliente_habitual  from clientes inner join sucursal on sucursal.id_sucursal=clientes.id_sucursal');
+        $clientes=DB::select('select clientes.id_cliente as id_cliente, clientes.fecha_registro as fecha, clientes.nombre_completo as nombre_completo, clientes.telefono as telefono,clientes.correo_electronico as correo,sucursal.sucursal as sucursal,clientes.cliente_habitual, clientes.rfc as rfc  from clientes inner join sucursal on sucursal.id_sucursal=clientes.id_sucursal');
         $sucursal_usuario= Session::get('sucursal_usuario');
          
 		return view('/Administrador/clientes/index',compact('clientes','sucursal_usuario'));
@@ -21,7 +21,7 @@ class ClientesController extends Controller
     public function mostrar_clientes_sucursal ()
     {
         $id_sucursal=Session::get('id_sucursal_usuario');
-        $clientes=DB::select('select clientes.id_cliente as id_cliente, clientes.fecha_registro as fecha, clientes.nombre_completo as nombre_completo, clientes.telefono as telefono,clientes.correo_electronico as correo,sucursal.sucursal as sucursal,clientes.cliente_habitual  from clientes inner join sucursal on sucursal.id_sucursal=clientes.id_sucursal where sucursal.id_sucursal='.$id_sucursal);
+        $clientes=DB::select('select clientes.id_cliente as id_cliente, clientes.fecha_registro as fecha, clientes.nombre_completo as nombre_completo, clientes.telefono as telefono,clientes.correo_electronico as correo,sucursal.sucursal as sucursal,clientes.cliente_habitual, clientes.rfc as rfc  from clientes inner join sucursal on sucursal.id_sucursal=clientes.id_sucursal where sucursal.id_sucursal='.$id_sucursal);
         $sucursal_usuario= Session::get('sucursal_usuario');
          
 		return view('/Gerente/clientes/index',compact('clientes','sucursal_usuario'));
@@ -37,6 +37,7 @@ class ClientesController extends Controller
         $correo = $input['correo'];
         $sucursal = $input['sucursal'];
         $cliente_habitual=$input['habitual'];
+        $rfc=$input['rfc'];
         
         $dia=date("d");
         $mes=date("m");
@@ -45,7 +46,7 @@ class ClientesController extends Controller
             
    //echo $fecha.' '.$nombre_cliente.' '.$telefono.' '.$correo.' '.$sucursal.' '.$cliente_habitual;
         
-        $ingresar=DB::insert('insert into clientes (id_cliente, fecha_registro, nombre_completo, telefono,correo_electronico, id_sucursal, cliente_habitual) values( ?, ?, ?, ?, ?, ?, ?)', [null,$fecha,$nombre_cliente, $telefono, $correo, $sucursal, $cliente_habitual]);
+        $ingresar=DB::insert('insert into clientes (id_cliente, fecha_registro, nombre_completo, telefono,correo_electronico, id_sucursal, cliente_habitual,rfc) values( ?, ?, ?, ?, ?, ?, ?, ?)', [null,$fecha,$nombre_cliente, $telefono, $correo, $sucursal, $cliente_habitual,$rfc]);
         
         //INSERT INTO clientes(id_cliente, fecha_registro, nombre_completo, telefono,correo_electronico, id_sucursal, cliente_habitual) VALUES (1, '12/04/2021', 'Maximiliano Gabriel', '123456','max@gmail.com',2,1);
 
@@ -61,6 +62,7 @@ class ClientesController extends Controller
         $correo = $input['correo'];
         $sucursal = Session::get('id_sucursal_usuario');
         $cliente_habitual=$input['habitual'];
+        $rfc=$input['rfc'];
         
         $dia=date("d");
         $mes=date("m");
@@ -69,7 +71,7 @@ class ClientesController extends Controller
             
    //echo $fecha.' '.$nombre_cliente.' '.$telefono.' '.$correo.' '.$sucursal.' '.$cliente_habitual;
         
-        $ingresar=DB::insert('insert into clientes (id_cliente, fecha_registro, nombre_completo, telefono,correo_electronico, id_sucursal, cliente_habitual) values( ?, ?, ?, ?, ?, ?, ?)', [null,$fecha,$nombre_cliente, $telefono, $correo, $sucursal, $cliente_habitual]);
+        $ingresar=DB::insert('insert into clientes (id_cliente, fecha_registro, nombre_completo, telefono,correo_electronico, id_sucursal, cliente_habitual,rfc) values( ?, ?, ?, ?, ?, ?, ?, ?)', [null,$fecha,$nombre_cliente, $telefono, $correo, $sucursal, $cliente_habitual,$rfc]);
         
         //INSERT INTO clientes(id_cliente, fecha_registro, nombre_completo, telefono,correo_electronico, id_sucursal, cliente_habitual) VALUES (1, '12/04/2021', 'Maximiliano Gabriel', '123456','max@gmail.com',2,1);
 
@@ -93,10 +95,11 @@ class ClientesController extends Controller
         $sucursal = $input['update_sucursal'];
         $cliente_habitual=$input['update_habitual'];
         $id_cliente=$input['update_id_cliente'];
+        $rfc=$input['update_rfc'];
         
         //$query=DB::update("update categoria set nombre_categoria='$nombre_categoria', eliminado='$eliminado' where id_categoria=?",[$id_categoria]);
         
-        $ingresar=DB::update('update clientes set nombre_completo="'.$nombre_cliente.'", telefono="'.$telefono.'", correo_electronico="'.$correo.'", id_sucursal="'.$sucursal.'", cliente_habitual="'.$cliente_habitual.'" where clientes.id_cliente=?',[$id_cliente]);
+        $ingresar=DB::update('update clientes set nombre_completo="'.$nombre_cliente.'", telefono="'.$telefono.'", rfc="'.$rfc.'", correo_electronico="'.$correo.'", id_sucursal="'.$sucursal.'", cliente_habitual="'.$cliente_habitual.'" where clientes.id_cliente=?',[$id_cliente]);
                 
       }
     
@@ -108,10 +111,11 @@ class ClientesController extends Controller
         $sucursal = Session::get('id_sucursal_usuario');
         $cliente_habitual=$input['update_habitual'];
         $id_cliente=$input['update_id_cliente'];
+        $rfc=$input['update_rfc'];
         
         //$query=DB::update("update categoria set nombre_categoria='$nombre_categoria', eliminado='$eliminado' where id_categoria=?",[$id_categoria]);
         
-        $ingresar=DB::update('update clientes set nombre_completo="'.$nombre_cliente.'", telefono="'.$telefono.'", correo_electronico="'.$correo.'", id_sucursal="'.$sucursal.'", cliente_habitual="'.$cliente_habitual.'" where clientes.id_cliente=?',[$id_cliente]);
+        $ingresar=DB::update('update clientes set nombre_completo="'.$nombre_cliente.'", telefono="'.$telefono.'", rfc="'.$rfc.'", correo_electronico="'.$correo.'", id_sucursal="'.$sucursal.'", cliente_habitual="'.$cliente_habitual.'" where clientes.id_cliente=?',[$id_cliente]);
                 
       }
     

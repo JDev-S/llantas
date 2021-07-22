@@ -125,6 +125,8 @@ Route::post('/mostrar_productos_ventas','VentasController@mostrar_productos_vent
 Route::post('/insertar_venta', 'VentasController@insertar_venta')->name('insertar_venta');
 /*ELIMINAR VENTA*/
 Route::post('/eliminar_venta','VentasController@eliminar_venta')->name('eliminar_venta');
+/*ACTUALIZAR VENTA TEMPORAL*/
+Route::post('/actualizar_venta', 'VentasController@actualizar_venta')->name('actualizar_venta');
 
 /*PEDIDOS A PROVEEDORES*/
 /*Mostrar pedidos a proveedores*/
