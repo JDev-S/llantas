@@ -444,7 +444,7 @@
                                 <div class="hideable submenu collapse">
                                     <ul class="submenu-inner">
                                         <li class="nav-item">
-                                            <a href="/mostrar_llantas_sucursal" class="nav-link">
+                                            <a href="/mostrar_llantas_sucursales" class="nav-link">
                                                 <span class="nav-text">
                                                     <span>Mostrar llantas</span>
                                                 </span>

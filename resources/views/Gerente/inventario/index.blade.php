@@ -2,7 +2,59 @@
 @section('contenido')
 @section('styles')
 <link rel="stylesheet" type="text/css" href="\npm\bootstrap-table@1.18.3\dist\bootstrap-table.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+<style type="text/css">
+    .dropdown-toggle::after {
+        display: inline-block;
+        margin-left: 0.255em;
+        vertical-align: 0.255em;
+        content: "";
+        border-top: 0.3em solid;
+        border-right: 0.3em solid transparent;
+        border-bottom: 0px;
+        border-left: 0.3em solid transparent;
+        color: white;
+    }
+
+    placeholder.btn-danger,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-danger:active,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-danger:focus,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-danger:hover,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-dark,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-dark:active,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-dark:focus,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-dark:hover,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-info,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-info:active,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-info:focus,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-info:hover,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-primary,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-primary:active,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-primary:focus,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-primary:hover,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-secondary,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-secondary:active,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-secondary:focus,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-secondary:hover,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-success,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-success:active,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-success:focus,
+    .bootstrap-select>.dropdown-toggle.bs-placeholder.btn-success:hover {
+        color: white;
+    }
+
+    .btn-primary {
+        background-color: #2470BD;
+        border-color: #2470BD;
+    }
+
+    .table-responsive {
+        max-height: 358px;
+    }
+
+</style>
 @stop
+
 <div class="page-content container container-plus">
     <div class="page-header">
         <h1 class="page-title text-primary-d2">
@@ -429,7 +481,7 @@
                                         </label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <select class="form-control col-sm-8 col-md-10" id="mostrar_productos" name="producto" required>
+                                        <select class="form-control selectpicker form-control" title="-- Productos --" data-size="5" data-live-search="true" data-header="Seleccione producto" data-style="btn-primary" id="mostrar_productos" name="producto" data-container="body" required>
 
                                         </select>
                                     </div>
@@ -471,8 +523,7 @@
 
 <!-- include vendor scripts used in "Bootstrap Table" page. see "/views//pages/partials/table-bootstrap/@vendor-scripts.hbs" -->
 <script src="\npm\tableexport.jquery.plugin@1.10.22\tableExport.min.js"></script>
-
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
 <script src="\npm\bootstrap-table@1.18.3\dist\bootstrap-table.min.js"></script>
 <script src="\npm\bootstrap-table@1.18.3\dist\extensions\export\bootstrap-table-export.min.js"></script>
 <script src="\npm\bootstrap-table@1.18.3\dist\extensions\print\bootstrap-table-print.min.js"></script>
@@ -500,17 +551,30 @@
                 console.log(msg);
                 //var datos=JSON.parse(msg);
                 //console.log(datos);
-                var productos = "";
+                /*var productos = "";
                 document.getElementById('mostrar_productos').innerHTML = '';
 
-                for (i = 0; i < msg.length; i++) {
-
-                    productos += '<option value="' + msg[i]['id_productos_llantimax'] + '">' + msg[i]['categoria'] + ' ' + msg[i]['nombre'] + ' ' + msg[i]['marca'] + ' ' + msg[i]['modelo'] + '</option>';
-
-                }
                 document.getElementById('mostrar_productos').innerHTML = productos
                 console.log("MOSTRAR LOS PRODUCTOS");
-                console.log(productos);
+                console.log(productos);*/
+                $('#mostrar_productos').selectpicker('selectAll');
+                var selected = [];
+                selected = $('#mostrar_productos').val()
+                //alert(selected.length);
+
+                for (i = 0; i < selected.length; i++) {
+                    $('#mostrar_productos').find('[value=' + selected[i] + ']').remove();
+                    $('#mostrar_productos').selectpicker('refresh');
+                }
+
+                for (j = 0; j < msg.length; j++) {
+
+                    console.log('<option value="' + msg[j]['id_productos_llantimax'] + '">' + msg[j]['categoria'] + ' ' + msg[j]['nombre'] + ' ' + msg[j]['marca'] + ' ' + msg[j]['modelo'] + '</option>');
+
+                    $('#mostrar_productos').append('<option   value="' + msg[j]['id_productos_llantimax'] + '" data-subtext="Categoria: ' + msg[j]['categoria'] + '; Marca: ' + msg[j]['marca'] + '; Modelo: ' + msg[j]['modelo'] + '" showSubtext="true">' + msg[j]['nombre'] + '</option>');
+                    $("#mostrar_productos").selectpicker("refresh");
+                }
+
             }
         });
 
@@ -521,7 +585,7 @@
         if ($("#agregar_inventario_form")[0].checkValidity()) {
             event.preventDefault();
             var sucursal = document.getElementById("sucursal_nueva").value;
-            var producto = document.getElementById("mostrar_productos").value;
+            var producto = $('#mostrar_productos').val();
             var cantidad = document.getElementById("nueva_cantidad").value;
             console.log("sucursal :" + sucursal + "  producto:" + producto + "   cantidad:" + cantidad);
 
@@ -825,7 +889,7 @@
             var botones = "";
             var cantidad = row.cantidad;
             var boton_eliminar = "";
-           
+
 
             if (categoria == "Llantas") {
                 botones = '<div class="action-buttons">' +
@@ -834,11 +898,11 @@
                     '</div>';
             } else
             if (categoria == "Refacción") {
-                 if (cantidad > 0) {
-                boton_eliminar = '<button type="button" class="text-danger mx-1 "   data-cantidad="' + row.cantidad + '" data-id="' + row.id_productos_llantimax + '" data-suc="' + row.sucursal + '"  data-toggle="modal" data-target="#eliminarModal">' +
-                    '<i class="fa fa-trash-alt text-105"></i>' +
-                    '</button>';
-            }
+                if (cantidad > 0) {
+                    boton_eliminar = '<button type="button" class="text-danger mx-1 "   data-cantidad="' + row.cantidad + '" data-id="' + row.id_productos_llantimax + '" data-suc="' + row.sucursal + '"  data-toggle="modal" data-target="#eliminarModal">' +
+                        '<i class="fa fa-trash-alt text-105"></i>' +
+                        '</button>';
+                }
                 botones = '<div class="action-buttons">' +
                     '<button class="text-blue mx-1" data-target="#modalRefaccion" data-toggle="modal"data-id="' + row.id_productos_llantimax + '" data-foto="' + row.photo + '" data-nombre="' + row.nombre + '" data-marca="' + row.marca + '" data-modelo="' + row.modelo + '" data-cantidad="' + row.cantidad + '" data-sucursal="' + row.sucursal + '" data-categoria="' + row.categoria + '" data-descripcion="' + row.descripcion + '" data-precio="' + row.precio + '" ><i class="fa fa-search-plus text-105"></i></button>' +
                     boton_eliminar +
