@@ -2,6 +2,28 @@
 @section('contenido')
 @section('styles')
 <link rel="stylesheet" type="text/css" href="\npm\bootstrap-table@1.18.3\dist\bootstrap-table.min.css">
+<style>
+    .table .thead-blue th {
+        color: #fff;
+        background-color: #3195f1;
+        border-color: #0d7adf;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    .text-red {
+        color: red;
+    }
+
+    /*.thead-blue thead tr th{ 
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background-color: #ffffff;
+    }*/
+
+</style>
 @stop
 <div class="page-content container container-plus">
     <div class="page-header">
@@ -57,7 +79,7 @@
                                 <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre completo del cliente" required>
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="modelo">Telefono</label>
+                                <label for="modelo">Teléfono</label>
                                 <input type="text" class="form-control mb-2" id="telefono" name="telefono" placeholder="Telefono" required>
                             </div>
                         </div>
@@ -283,14 +305,8 @@
                     sortable: true
                 },
                 {
-                    field: 'fecha',
-                    title: 'Fecha',
-                    align: 'center',
-                    sortable: true
-                },
-                {
                     field: 'telefono',
-                    title: 'Telefono',
+                    title: 'Teléfono',
                     align: 'center',
                     sortable: true
                 },
@@ -300,6 +316,20 @@
                     align: 'center',
                     sortable: true
                 },
+                {
+                    field: 'rfc',
+                    title: 'RFC',
+                    align: 'center',
+                    sortable: true
+                },
+                {
+                    field: 'fecha',
+                    title: 'Fecha',
+                    align: 'center',
+                    sortable: true
+                },
+
+
                 {
                     field: 'sucursal',
                     title: 'Sucursal',
@@ -312,12 +342,7 @@
                     align: 'center',
                     sortable: true
                 },
-                {
-                    field: 'rfc',
-                    title: 'RFC',
-                    align: 'center',
-                    sortable: true
-                },
+                
                 {
                     field: 'tools',
                     title: '<i class="fa fa-cog text-secondary-d1 text-130"></i>',
@@ -341,7 +366,7 @@
 
 
             toolbar: "#table-toolbar",
-            theadClasses: "bgc-white text-grey text-uppercase text-80",
+            theadClasses: "thead-blue",
             clickToSelect: true,
 
             checkboxHeader: true,
@@ -501,7 +526,7 @@
             event.preventDefault();
             var nombre = document.getElementById("nombre").value;
             var rfc = document.getElementById("rfc").value;
-            
+
             var telefono = document.getElementById("telefono").value;
             var correo = document.getElementById("correo").value;
             //var habitual = document.getElementById("habitual").value;
@@ -511,7 +536,7 @@
             var token = '{{csrf_token()}}';
             var data = {
                 nombre: nombre,
-                
+
                 rfc: rfc,
                 telefono: telefono,
                 correo: correo,
@@ -604,7 +629,7 @@
             var update_nombre = document.getElementById("update_nombre").value;
             var update_correo = document.getElementById("update_correo").value;
             var update_telefono = document.getElementById("update_telefono").value;
-            
+
             var update_rfc = document.getElementById("update_rfc").value;
 
             let habitual = $('input[name="update_habitual"]:checked').val();
@@ -616,7 +641,7 @@
             formData.append("update_nombre", update_nombre);
             formData.append("update_correo", update_correo);
             formData.append("update_telefono", update_telefono);
-            
+
             formData.append("update_habitual", habitual);
             formData.append("update_rfc", update_rfc);
 

@@ -36,14 +36,17 @@ select inventario.id_producto as id_producto, productos_llantimax.nombre as nomb
     public function mostrar_vista()
     {
         $clientes=DB::select("select clientes.id_cliente,clientes.nombre_completo,clientes.telefono,clientes.correo_electronico,clientes.id_sucursal,sucursal.sucursal from clientes inner join sucursal on sucursal.id_sucursal=clientes.id_sucursal");
-        return view('/Administrador/ventas/agregar',compact('clientes'));
+        $id_venta = VentasController::generar_folio();
+        return view('/Administrador/ventas/agregar',compact('clientes','id_venta'));
+        
     }
     
     public function mostrar_vista_sucursal()
     {
         $id_sucursal=Session::get('id_sucursal_usuario');
         $clientes=DB::select("select clientes.id_cliente,clientes.nombre_completo,clientes.telefono,clientes.correo_electronico,clientes.id_sucursal,sucursal.sucursal from clientes inner join sucursal on sucursal.id_sucursal=clientes.id_sucursal where clientes.id_sucursal=".$id_sucursal);
-        return view('/Gerente/ventas/agregar',compact('clientes'));
+        $id_venta = VentasController::generar_folio();
+        return view('/Gerente/ventas/agregar',compact('clientes','id_venta'));
     }
     
     
@@ -297,7 +300,7 @@ select inventario.id_producto as id_producto, productos_llantimax.nombre as nomb
     
     public function exportar_ticket($ticket)
     {
-      $venta=DB::select('select venta.id_venta, usuario.nombre_completo as vendedor, sucursal.sucursal, clientes.nombre_completo as cliente,venta.Auto, clientes.telefono, clientes.correo_electronico, venta.total_venta, metodo_pago.metodo_pago, venta.fecha_venta, venta.factura FROM venta INNER join usuario on usuario.id_usuario=venta.id_usuario and usuario.id_sucursal=venta.id_sucursal_usuario INNER JOIN sucursal on sucursal.id_sucursal=venta.id_sucursal INNER JOIN clientes on venta.id_cliente=clientes.id_cliente and venta.id_sucursal_cliente=clientes.id_sucursal inner join metodo_pago on venta.id_metodo_pago=metodo_pago.id_metodo_pago where venta.id_venta="'.$ticket.'"');
+      $venta=DB::select('select venta.id_venta,venta.comision, usuario.nombre_completo as vendedor, sucursal.sucursal, clientes.nombre_completo as cliente,venta.Auto, clientes.telefono, clientes.correo_electronico, venta.total_venta, metodo_pago.metodo_pago, venta.fecha_venta, venta.factura FROM venta INNER join usuario on usuario.id_usuario=venta.id_usuario and usuario.id_sucursal=venta.id_sucursal_usuario INNER JOIN sucursal on sucursal.id_sucursal=venta.id_sucursal INNER JOIN clientes on venta.id_cliente=clientes.id_cliente and venta.id_sucursal_cliente=clientes.id_sucursal inner join metodo_pago on venta.id_metodo_pago=metodo_pago.id_metodo_pago where venta.id_venta="'.$ticket.'"');
         
        $id_venta = $venta[0]->id_venta;
        $vendedor = $venta[0]->vendedor;
@@ -311,7 +314,8 @@ select inventario.id_producto as id_producto, productos_llantimax.nombre as nomb
         $auto=$venta[0]->Auto;
         $comentario="";
         $fecha_pago="";
-        if($metodo_pago=="crédito(3%+)")
+        $comision=$venta[0]->comision;
+        if($metodo_pago=="Crédito")
         {
             echo 'Entro';
             
@@ -326,7 +330,7 @@ select inventario.id_producto as id_producto, productos_llantimax.nombre as nomb
     
       $detalles=DB::select('SELECT productos_llantimax.id_productos_llantimax, productos_llantimax.nombre, cantidad_producto, precio_unidad, total,detalle_venta.id_venta FROM detalle_venta INNER JOIN productos_llantimax on productos_llantimax.id_productos_llantimax=detalle_venta.id_producto where detalle_venta.id_venta="'.$ticket.'"');
         
-        $pdf= \PDF::loadView('/documentos/ticket', compact('detalles','id_venta','vendedor','sucursal','cliente','telefono','correo','total_venta','metodo_pago','fecha_venta','auto','comentario','fecha_pago'));
+        $pdf= \PDF::loadView('/documentos/ticket', compact('detalles','id_venta','vendedor','sucursal','cliente','telefono','correo','total_venta','metodo_pago','fecha_venta','auto','comentario','fecha_pago','comision'));
         $pdf->setPaper('A4', 'Portrait');//Portrait  Landscape
         return $pdf->stream('ejemplo.pdf');
         //return view('/documentos/ticket', compact('detalles','id_venta','vendedor','sucursal','cliente','telefono','correo','total_venta','metodo_pago','fecha_venta'));
@@ -347,12 +351,18 @@ select inventario.id_producto as id_producto, productos_llantimax.nombre as nomb
         $metodo_pago = $venta[0]->metodo_pago;
         $fecha_venta = $venta[0]->fecha_venta;
         $credito=$venta[0]->id_credito;
+        
 
         $detalles=DB::select('SELECT productos_llantimax.id_productos_llantimax, productos_llantimax.nombre, cantidad_producto, precio_unidad, total,detalle_venta.id_venta FROM detalle_venta INNER JOIN productos_llantimax on productos_llantimax.id_productos_llantimax=detalle_venta.id_producto where detalle_venta.id_venta="'.$ticket.'"');
         
         $abonos=DB::select('select abono_credito.id_abono_credito,abono_credito.id_credito,abono_credito.fecha,abono_credito.monto,abono_credito.comentario from credito inner join abono_credito on credito.id_credito=abono_credito.id_credito where credito.id_credito="'.$credito.'"');
         
-         $pdf= \PDF::loadView('/documentos/historial_abonos', compact('abonos','detalles','id_venta','vendedor','sucursal','cliente','telefono','correo','total_venta','metodo_pago','fecha_venta','credito'));
+        $sumas_abonos=DB::select('select IFNULL(sum(monto),"0") as monto from abono_credito where abono_credito.id_credito="'.$credito.'"');
+
+        $suma_abonado=$sumas_abonos[0]->monto;
+        $restante=intval($total_venta)-intval($suma_abonado);
+        
+         $pdf= \PDF::loadView('/documentos/historial_abonos', compact('abonos','detalles','id_venta','vendedor','sucursal','cliente','telefono','correo','total_venta','metodo_pago','fecha_venta','credito','suma_abonado','restante'));
         $pdf->setPaper('A4', 'Portrait');//Portrait  Landscape
         return $pdf->stream('ejemplo.pdf');
         //return view('/documentos/historial_abonos', compact('abonos','detalles','id_venta','vendedor','sucursal','cliente','telefono','correo','total_venta','metodo_pago','fecha_venta','credito'));

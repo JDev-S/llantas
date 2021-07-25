@@ -53,6 +53,28 @@
     }
 
 </style>
+<style>
+    .table .thead-blue th {
+        color: #fff;
+        background-color: #3195f1;
+        border-color: #0d7adf;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    .text-red {
+        color: red;
+    }
+
+    /*.thead-blue thead tr th{ 
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background-color: #ffffff;
+    }*/
+
+</style>
 @stop
 
 <div class="page-content container container-plus">
@@ -139,7 +161,7 @@
 
                     <div class="form-row align-items-center">
                         <div class="form-group col-md-5">
-                            <label for="modelo">Categoria</label>
+                            <label for="modelo">Categoría</label>
                             <input type="text" class="form-control" id="categoria" name="categoria" disabled>
                         </div>
                         <div class="form-group col-md-2">
@@ -237,7 +259,7 @@
 
                     <div class="form-row align-items-center">
                         <div class="form-group col-md-5">
-                            <label for="modelo">Categoria</label>
+                            <label for="modelo">Categoría</label>
                             <input type="text" class="form-control" id="categoria" name="categoria" disabled>
                         </div>
                         <div class="form-group col-md-2">
@@ -380,7 +402,7 @@
 
                     <div class="form-row align-items-center">
                         <div class="form-group col-md-5">
-                            <label for="modelo">Categoria</label>
+                            <label for="modelo">Categoría</label>
                             <input type="text" class="form-control" id="categoria" name="categoria" disabled>
                         </div>
                         <div class="form-group col-md-2">
@@ -493,7 +515,7 @@
                                         </label>
                                     </div>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control col-sm-8 col-md-10" id="nueva_cantidad" name="nueva_cantidad" required>
+                                        <input min="1" max="9999" step="1" type="number" class="form-control col-sm-8 col-md-10" id="nueva_cantidad" name="nueva_cantidad" required>
                                     </div>
                                 </div>
 
@@ -710,7 +732,7 @@
                 },
                 {
                     field: 'categoria',
-                    title: 'Categoria',
+                    title: 'Categoría',
                     align: 'center',
                     sortable: true
                 },
@@ -733,13 +755,6 @@
                     sortable: true
                 },
                 {
-                    field: 'fotografia_miniatura',
-                    title: 'Foto',
-                    align: 'center',
-                    sortable: true,
-                    printIgnore: true,
-                },
-                {
                     field: 'sucursal',
                     title: 'Sucursal',
                     align: 'center',
@@ -750,6 +765,13 @@
                     title: 'Cantidad',
                     align: 'center',
                     sortable: true
+                },
+                {
+                    field: 'fotografia_miniatura',
+                    title: 'Foto',
+                    align: 'center',
+                    sortable: true,
+                    printIgnore: true,
                 },
 
                 {
@@ -775,7 +797,7 @@
 
 
             toolbar: "#table-toolbar",
-            theadClasses: "bgc-white text-grey text-uppercase text-80",
+            theadClasses: "thead-blue",
             clickToSelect: true,
 
             checkboxHeader: true,

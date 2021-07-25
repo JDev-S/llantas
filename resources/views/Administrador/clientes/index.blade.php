@@ -2,6 +2,28 @@
 @section('contenido')
 @section('styles')
 <link rel="stylesheet" type="text/css" href="\npm\bootstrap-table@1.18.3\dist\bootstrap-table.min.css">
+<style>
+    .table .thead-blue th {
+        color: #fff;
+        background-color: #3195f1;
+        border-color: #0d7adf;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    .text-red {
+        color: red;
+    }
+
+    /*.thead-blue thead tr th{ 
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background-color: #ffffff;
+    }*/
+
+</style>
 @stop
 <div class="page-content container container-plus">
     <div class="page-header">
@@ -57,7 +79,7 @@
                                 <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre completo del cliente" required>
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="modelo">Telefono</label>
+                                <label for="modelo">Teléfono</label>
                                 <input type="text" class="form-control mb-2" id="telefono" name="telefono" placeholder="Telefono" required>
                             </div>
                         </div>
@@ -307,14 +329,8 @@
                     sortable: true
                 },
                 {
-                    field: 'fecha',
-                    title: 'Fecha',
-                    align: 'center',
-                    sortable: true
-                },
-                {
                     field: 'telefono',
-                    title: 'Telefono',
+                    title: 'Teléfono',
                     align: 'center',
                     sortable: true
                 },
@@ -325,6 +341,20 @@
                     sortable: true
                 },
                 {
+                    field: 'rfc',
+                    title: 'RFC',
+                    align: 'center',
+                    sortable: true
+                },
+                {
+                    field: 'fecha',
+                    title: 'Fecha',
+                    align: 'center',
+                    sortable: true
+                },
+
+
+                {
                     field: 'sucursal',
                     title: 'Sucursal',
                     align: 'center',
@@ -333,12 +363,6 @@
                 {
                     field: 'habi',
                     title: 'Cliente habitual',
-                    align: 'center',
-                    sortable: true
-                },
-                {
-                    field: 'rfc',
-                    title: 'RFC',
                     align: 'center',
                     sortable: true
                 },
@@ -365,7 +389,7 @@
 
 
             toolbar: "#table-toolbar",
-            theadClasses: "bgc-white text-grey text-uppercase text-80",
+            theadClasses: "thead-blue",
             clickToSelect: true,
 
             checkboxHeader: true,

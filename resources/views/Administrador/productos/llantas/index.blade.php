@@ -274,97 +274,97 @@
             <div class="modal-body">
                 <div class="ccard h-100 d-flex flex-column mx-2 px-2 py-3">
                     <form id="actualizar_llanta_form">
-                    <div class="form-row col-md-12">
-                        <div class="form-group col-md-6">
-                            <label for="codigo_llanta">Código de llanta</label>
-                            <input type="hidden" class="form-control" id="update_foto" name="update_foto">
-                            <input type="hidden" class="form-control" id="update_id_llanta" name="update_id_llanta">
-                            <input type="text" class="form-control" id="update_nombre_llanta" name="update_nombre_llanta" placeholder="Codigo de llanta" required>
+                        <div class="form-row col-md-12">
+                            <div class="form-group col-md-6">
+                                <label for="codigo_llanta">Código de llanta</label>
+                                <input type="hidden" class="form-control" id="update_foto" name="update_foto">
+                                <input type="hidden" class="form-control" id="update_id_llanta" name="update_id_llanta">
+                                <input type="text" class="form-control" id="update_nombre_llanta" name="update_nombre_llanta" placeholder="Codigo de llanta" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="modelo">Modelo</label>
+                                <input type="text" class="form-control mb-2" id="update_modelo" name="update_modelo" required placeholder="Modelo">
+                            </div>
                         </div>
-                        <div class="form-group col-md-6">
-                            <label for="modelo">Modelo</label>
-                            <input type="text" class="form-control mb-2" id="update_modelo" name="update_modelo" required placeholder="Modelo">
-                        </div>
-                    </div>
 
-                    <div class="form-row align-items-center md-12 ml-2">
-                        <div class="form-group col-6">
-                            <label for="marca">Marca</label>
-                            <?php
+                        <div class="form-row align-items-center md-12 ml-2">
+                            <div class="form-group col-6">
+                                <label for="marca">Marca</label>
+                                <?php
                         $query2 = "select * from marca ";
                         $data2=DB::select($query2);      
                         ?>
-                            <select id="update_marca" name="update_marca" class="form-control" required>
-                                @foreach($data2 as $item)
-                                <option value="{{ $item->id_marca }}"> {{ $item->marca }} </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group col-5 mt-3 mb-0 my-0">
-                            <input type="text" disabled class="form-control" id="update_marca2" name="update_marca2" placeholder="Marca nueva">
-                        </div>
-                        <div class="md-1 mt-4">
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" id="update_check_marca" name="update_check_marca">
+                                <select id="update_marca" name="update_marca" class="form-control" required>
+                                    @foreach($data2 as $item)
+                                    <option value="{{ $item->id_marca }}"> {{ $item->marca }} </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group col-5 mt-3 mb-0 my-0">
+                                <input type="text" disabled class="form-control" id="update_marca2" name="update_marca2" placeholder="Marca nueva">
+                            </div>
+                            <div class="md-1 mt-4">
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="update_check_marca" name="update_check_marca">
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="form-row align-items-center col-md-12">
-                        <div class="form-group col-md-4">
-                            <label for="rin">Rin</label>
-                            <input type="text" class="form-control" id="update_numero_rin" name="update_numero_rin"  required placeholder="Rin">
+                        <div class="form-row align-items-center col-md-12">
+                            <div class="form-group col-md-4">
+                                <label for="rin">Rin</label>
+                                <input type="text" class="form-control" id="update_numero_rin" name="update_numero_rin" required placeholder="Rin">
+                            </div>
+                            <div class="form-group col-md-8">
+                                <label for="medida">Medida</label>
+                                <input type="text" class="form-control" id="update_medida" name="update_medida" required>
+                            </div>
                         </div>
-                        <div class="form-group col-md-8">
-                            <label for="medida">Medida</label>
-                            <input type="text" class="form-control" id="update_medida" name="update_medida" required>
-                        </div>
-                    </div>
-                    <div class="form-group col-md-12">
-                        <label for="capacidad_carga">Capacidad de carga</label>
-                        <?php
+                        <div class="form-group col-md-12">
+                            <label for="capacidad_carga">Capacidad de carga</label>
+                            <?php
                             $query2 = "select * from capacidad_carga ";
                             $data2=DB::select($query2);      
                         ?>
-                        <select id="update_capacidad_carga" name="update_capacidad_carga" class="form-control" required>
-                            @foreach($data2 as $item)
-                            <option value="Codigo: {{ $item->codigo }}_ Libras:{{ $item->libras }}_ Kilogramos:{{ $item->kilogramos }}"> Codigo: {{ $item->codigo }}_ Libras: {{ $item->libras }}_ Kilogramos: {{ $item->kilogramos }} </option>
-                            @endforeach
-                        </select>
-                    </div>
+                            <select id="update_capacidad_carga" name="update_capacidad_carga" class="form-control" required>
+                                @foreach($data2 as $item)
+                                <option value="Codigo: {{ $item->codigo }}_ Libras:{{ $item->libras }}_ Kilogramos:{{ $item->kilogramos }}"> Codigo: {{ $item->codigo }}_ Libras: {{ $item->libras }}_ Kilogramos: {{ $item->kilogramos }} </option>
+                                @endforeach
+                            </select>
+                        </div>
 
-                    <div class="form-group col-md-12">
-                        <label for="indice_velocidad">índice de velocidad</label>
-                        <?php
+                        <div class="form-group col-md-12">
+                            <label for="indice_velocidad">índice de velocidad</label>
+                            <?php
                             $query2 = "select * from indice_velocidad ";
                             $data2=DB::select($query2);      
                         ?>
-                        <select id="update_indice_velocidad" name="update_indice_velocidad" class="form-control" required>
-                            @foreach($data2 as $item)
-                            <option value=" Codigo: {{ $item->codigo }}_ MPH: {{ $item->mph }}_ KMH: {{ $item->kmh }}"> Codigo: {{ $item->codigo }}_ MPH: {{ $item->mph }}_ KMH: {{ $item->kmh }} </option>
-                            @endforeach
-                        </select>
-                    </div>
+                            <select id="update_indice_velocidad" name="update_indice_velocidad" class="form-control" required>
+                                @foreach($data2 as $item)
+                                <option value=" Codigo: {{ $item->codigo }}_ MPH: {{ $item->mph }}_ KMH: {{ $item->kmh }}"> Codigo: {{ $item->codigo }}_ MPH: {{ $item->mph }}_ KMH: {{ $item->kmh }} </option>
+                                @endforeach
+                            </select>
+                        </div>
 
-                    <div class="form-row align-items-center col-md-12">
-                        <div class="form-group col-md-6">
-                            <label for="precio">Precio</label>
-                            <div class="input-group mb-2">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">$</div>
+                        <div class="form-row align-items-center col-md-12">
+                            <div class="form-group col-md-6">
+                                <label for="precio">Precio</label>
+                                <div class="input-group mb-2">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">$</div>
+                                    </div>
+                                    <input type="number" min="0.01" max="999999999.00" step="any" lang="en" class="form-control" id="update_precio" name="update_precio" required>
+
                                 </div>
-                                <input type="number" min="0.01" max="999999999.00" step="any" lang="en" class="form-control" id="update_precio" name="update_precio" required>
-
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Imagen</label>
+                                <input type="file" class="ace-file-input" id="ace-file-input2" accept=".jpg,.jpeg,.png,.JPG,.PNG,.JPEG" name="ace-file-input2" onchange="validar_input_file('ace-file-input2')">
                             </div>
                         </div>
-                        <div class="form-group col-md-6">
-                            <label>Imagen</label>
-                            <input type="file" class="ace-file-input" id="ace-file-input2" accept=".jpg,.jpeg,.png,.JPG,.PNG,.JPEG" name="ace-file-input2" onchange="validar_input_file('ace-file-input2')" >
-                        </div>
-                    </div>
-                 </form>
+                    </form>
                 </div>
-                
+
             </div>
             <div class="modal-footer">
 
@@ -398,6 +398,7 @@
                 <div class="d-flex align-items-top mr-2 mr-md-5">
                     <i class="fas fa-exclamation-triangle fa-2x text-orange-d2 float-rigt mr-4 mt-1"></i>
                     <input type="hidden" class="form-control" id="delete_id_llanta" name="update_id_llanta">
+                    <input type="hidden" class="form-control" id="delete_foto" name="delete_foto">
                     <div class="text-secondary-d2 text-105">
                         Esta seguro de que desea eliminarlo?
                     </div>
@@ -525,7 +526,7 @@
                 "capacidad_carga": objeto.capacidad_carga,
                 "modelo": objeto.modelo,
                 "precio": objeto.precio,
-                "precio_limpio":b,
+                "precio_limpio": b,
                 "foto": objeto.fotografia_miniatura,
                 "fotografia_miniatura": '<img src="/img/' + objeto.fotografia_miniatura + '" width="80px" height="80px" alt="' + objeto.nombre + '">'
                 // "sucursal": objeto.sucursal
@@ -554,6 +555,18 @@
                 {
                     field: 'marca',
                     title: 'Marca',
+                    align: 'center',
+                    sortable: true
+                },
+                {
+                    field: 'medida',
+                    title: 'Medida',
+                    align: 'center',
+                    sortable: true
+                },
+                 {
+                    field: 'numero_rin',
+                    title: 'Rin',
                     align: 'center',
                     sortable: true
                 },
@@ -711,9 +724,10 @@
                 //'<i class="fa fa-trash-alt text-105"></i>' +
                 //'</a>' +
                 //'</div>'
-                '<button type="button" class="text-danger mx-1 " data-id="' + eliminar + '"  data-toggle="modal" data-target="#eliminarModal">' +
+                '<button type="button" class="text-danger mx-1" data-foto="' + row.foto + '" data-id="' + eliminar + '"  data-toggle="modal" data-target="#eliminarModal">' +
                 '<i class="fa fa-trash-alt text-105"></i>' +
-                '</button>'
+                '</button>' +
+                '</div>'
         }
         // enable/disable 'remove' button
         var $removeBtn = $('#remove-btn')
@@ -746,20 +760,22 @@
         /*RECUPERAR METADATOS DEL BOTÓN*/
         var button = $(event.relatedTarget)
         var id_llanta = button.data('id')
-
+         var foto=button.data('foto')
         var modal = $(this)
         modal.find('#delete_id_llanta').val(id_llanta)
-
+        modal.find('#delete_foto').val(foto)
     });
 
 </script>
 <script type="text/javascript">
     function eliminar_producto() {
         var id_producto = document.getElementById("delete_id_llanta").value;
+        var foto = document.getElementById("delete_foto").value;
         console.log(id_producto);
         var token = '{{csrf_token()}}';
         var data = {
             id_producto: id_producto,
+            foto:foto,
             _token: token
         };
         console.log(data);
@@ -836,7 +852,7 @@
                          </span>\
                          <div>\
                             <h4 class='text-dark-tp3'>Error</h4>\
-                            <span class='text-dark-tp3 text-110'>Archivo inválido. No se permite la extensión"+extension+"</span>\
+                            <span class='text-dark-tp3 text-110'>Archivo inválido. No se permite la extensión" + extension + "</span>\
                          </div>\
                         </div>\
                         <button data-dismiss='toast' class='btn text-grey btn-h-light-danger position-tr mr-1 mt-1'><i class='fa fa-times'></i></button>",
@@ -990,8 +1006,7 @@
 </script>
 <script type="text/javascript">
     $('#update_check_marca').on('change', function() {
-        if ($(this).is(':checked')) 
-        {
+        if ($(this).is(':checked')) {
             $("#update_marca2").prop("disabled", false);
             $("#update_marca").prop("disabled", true);
             $("#update_marca2").attr("required", true);
@@ -1003,72 +1018,69 @@
             $("#update_marca2").attr("required", false);
         }
     });
-    
+
     function actualizar_Llanta() {
-        if ($("#actualizar_llanta_form")[0].checkValidity()) 
-        {
-        event.preventDefault();
-        var update_id_llanta = document.getElementById("update_id_llanta").value;
-        var update_nombre_llanta = document.getElementById("update_nombre_llanta").value;
-        var update_precio = document.getElementById("update_precio").value;
-        //var update_precio = precio.replace(/[$.,]/g, '');
-        var update_marca = document.getElementById("update_marca").value;
-        var fotografia_miniatura = document.getElementById("ace-file-input2").files[0];
-        var update_modelo = document.getElementById("update_modelo").value;
-        var update_medida = document.getElementById("update_medida").value;
-        var update_capacidad_carga = document.getElementById("update_capacidad_carga").value;
-        var update_indice_velocidad = document.getElementById("update_indice_velocidad").value;
-        var update_numero_rin = document.getElementById("update_numero_rin").value;
-        var update_foto = document.getElementById("update_foto").value;
+        if ($("#actualizar_llanta_form")[0].checkValidity()) {
+            event.preventDefault();
+            var update_id_llanta = document.getElementById("update_id_llanta").value;
+            var update_nombre_llanta = document.getElementById("update_nombre_llanta").value;
+            var update_precio = document.getElementById("update_precio").value;
+            //var update_precio = precio.replace(/[$.,]/g, '');
+            var update_marca = document.getElementById("update_marca").value;
+            var fotografia_miniatura = document.getElementById("ace-file-input2").files[0];
+            var update_modelo = document.getElementById("update_modelo").value;
+            var update_medida = document.getElementById("update_medida").value;
+            var update_capacidad_carga = document.getElementById("update_capacidad_carga").value;
+            var update_indice_velocidad = document.getElementById("update_indice_velocidad").value;
+            var update_numero_rin = document.getElementById("update_numero_rin").value;
+            var update_foto = document.getElementById("update_foto").value;
 
-        var check2 = 0;
-        var nuevo2 = "";
-        var checado = document.getElementById('update_check_marca').checked;
-        if (checado) {
-            check2 = 1;
-            nuevo2 = document.getElementById("update_marca2").value;
-        } else {
-            nuevo2 = "";
-        }
-
-        var formData = new FormData();
-        var token = '{{csrf_token()}}';
-        formData.append("fotografia_miniatura", fotografia_miniatura);
-        formData.append("update_id_llanta", update_id_llanta);
-        formData.append("update_nombre_llanta", update_nombre_llanta);
-        formData.append("update_precio", update_precio);
-        formData.append("update_foto", update_foto);
-        formData.append("update_marca", update_marca);
-        formData.append("update_modelo", update_modelo);
-        formData.append("update_medida", update_medida);
-        formData.append("update_capacidad_carga", update_capacidad_carga);
-        formData.append("update_indice_velocidad", update_indice_velocidad);
-        formData.append("update_numero_rin", update_numero_rin);
-        formData.append("check2", check2);
-        formData.append("nuevo2", nuevo2);
-        formData.append("_token", token);
-        console.log(formData);
-        console.log(update_id_llanta);
-            alert("esta lleno completamente");
-        $.ajax({
-            type: "POST",
-            contentType: false,
-            url: "/actualizar_Llanta",
-            data: formData,
-            processData: false,
-            cache: false,
-            success: function(msg) {
-                //console.log(msg);
-                location.href = "/mostrar_llantas";
+            var check2 = 0;
+            var nuevo2 = "";
+            var checado = document.getElementById('update_check_marca').checked;
+            if (checado) {
+                check2 = 1;
+                nuevo2 = document.getElementById("update_marca2").value;
+            } else {
+                nuevo2 = "";
             }
-        });
-           
+
+            var formData = new FormData();
+            var token = '{{csrf_token()}}';
+            formData.append("fotografia_miniatura", fotografia_miniatura);
+            formData.append("update_id_llanta", update_id_llanta);
+            formData.append("update_nombre_llanta", update_nombre_llanta);
+            formData.append("update_precio", update_precio);
+            formData.append("update_foto", update_foto);
+            formData.append("update_marca", update_marca);
+            formData.append("update_modelo", update_modelo);
+            formData.append("update_medida", update_medida);
+            formData.append("update_capacidad_carga", update_capacidad_carga);
+            formData.append("update_indice_velocidad", update_indice_velocidad);
+            formData.append("update_numero_rin", update_numero_rin);
+            formData.append("check2", check2);
+            formData.append("nuevo2", nuevo2);
+            formData.append("_token", token);
+            console.log(formData);
+            console.log(update_id_llanta);
+            alert("esta lleno completamente");
+            $.ajax({
+                type: "POST",
+                contentType: false,
+                url: "/actualizar_Llanta",
+                data: formData,
+                processData: false,
+                cache: false,
+                success: function(msg) {
+                    //console.log(msg);
+                    location.href = "/mostrar_llantas";
+                }
+            });
+
+        } else {
+            $("#actualizar_llanta_form")[0].reportValidity();
         }
-        else
-        {
-             $("#actualizar_llanta_form")[0].reportValidity();       
-        }
-        
+
     }
 
 </script>

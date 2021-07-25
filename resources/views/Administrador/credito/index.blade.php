@@ -12,6 +12,28 @@
     }
 
 </style>
+<style>
+    .table .thead-blue th {
+        color: #fff;
+        background-color: #3195f1;
+        border-color: #0d7adf;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    .text-red {
+        color: red;
+    }
+
+    /*.thead-blue thead tr th{ 
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background-color: #ffffff;
+    }*/
+
+</style>
 @stop
 <div class="page-content container container-plus">
     <div class="page-header">
@@ -525,7 +547,7 @@
 
 
             toolbar: "#table-toolbar",
-            theadClasses: "bgc-white text-grey text-uppercase text-80",
+            theadClasses: "thead-blue",
             clickToSelect: true,
 
             checkboxHeader: true,
@@ -827,8 +849,8 @@
     /*Actualizar fila al cambiar valor del input cantidad*/
 
     $('#detalles_abonos').on('change', '#check_cant', function(index) {
-
-        $(this).parents("tr").each(function(index2) {
+         if ($("#check_cant").is(':checked')) {
+                     $(this).parents("tr").each(function(index2) {
             var id_abono = $(this).attr("data-id_abono");
             var id_credito = $(this).attr("data-id_credito");
             var data_fecha = $(this).attr("data-fecha");
@@ -851,6 +873,34 @@
             $(this).append(tr);
 
         });
+         }
+        else{
+                    $(this).parents("tr").each(function(index2) {
+            var id_abono = $(this).attr("data-id_abono");
+            var id_credito = $(this).attr("data-id_credito");
+            var data_fecha = $(this).attr("data-fecha");
+            var data_pago = $(this).attr("data-pago");
+            $(this).find("#cant").prop('disabled', false);
+            var pago_nuevo = $(this).find("#cant").val();
+            var data_comentario = $(this).attr("data-comentario");
+
+            alert(id_abono);
+
+            $(this).html("");
+            var tr = '<td data-th="Producto"><span class="bt-content">' + id_abono + '</span></td>' +
+                '<td data-th="Producto"><span class="bt-content">' + id_credito + '</span></td>' +
+                '<td data-th="Producto"><span class="bt-content">' + data_fecha + '</span></td>' +
+                '<td data-th="Cantidad"><span class="bt-content"><div class="col-9"><input style="padding-left:0px; width:106px;" type="number" min="0.01" disabled max="999999999.00" step="any" lang="en" id="cant"  name="cant" value="' + pago_nuevo + '" >' +
+                '</div></span></td>' +
+                '<td data-th="Producto"><span class="bt-content">' + data_comentario + '</span></td>' +
+                '<td data-th="Producto"><span class="bt-content"><input type="checkbox" id="check_cant" name="check_cant"  ></span></td>' +
+                $(this).attr('data-pago', pago_nuevo);
+            $(this).append(tr);
+
+        });
+            
+        }
+
     });
 
 

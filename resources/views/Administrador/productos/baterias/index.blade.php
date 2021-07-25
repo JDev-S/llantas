@@ -397,6 +397,7 @@
                 <div class="d-flex align-items-top mr-2 mr-md-5">
                     <i class="fas fa-exclamation-triangle fa-2x text-orange-d2 float-rigt mr-4 mt-1"></i>
                     <input type="hidden" class="form-control" id="delete_id" name="update_id">
+                    <input type="hidden" class="form-control" id="delete_foto" name="delete_foto">
                     <div class="text-secondary-d2 text-105">
                         Esta seguro de que desea eliminarlo?
                     </div>
@@ -589,7 +590,7 @@
 
 
             toolbar: "#table-toolbar",
-            theadClasses: "bgc-white text-grey text-uppercase text-80",
+            theadClasses: "thead-blue",
             clickToSelect: true,
 
             checkboxHeader: true,
@@ -701,7 +702,7 @@
             return '<div class="action-buttons">' +
                 '<button class="text-blue mx-1" data-target="#modalLlanta" data-toggle="modal"data-id="' + row.id_productos_llantimax + '" data-nombre="' + row.nombre + '" data-marca="' + row.marca + '" data-modelo="' + row.modelo + '" data-medidas="' + row.medidas + '" data-voltaje="' + row.voltaje + '" data-capacidad="' + row.capacidad_arranque + '" data-frio="' + row.capacidad_arranque_frio + '" data-peso="' + row.peso + '" data-foto="' + row.foto + '" data-tamanio="' + row.tamanio + '" data-precio="' + row.precio + '" ><i class="fa fa-search-plus text-105"></i></button>' +
                 '<button class="text-green mx-1" data-target="#editModal" data-toggle="modal"data-id="' + row.id_productos_llantimax + '" data-nombre="' + row.nombre + '" data-marca="' + row.marca + '" data-modelo="' + row.modelo + '" data-medidas="' + row.medidas + '" data-voltaje="' + row.voltaje + '" data-capacidad="' + row.capacidad_arranque + '" data-marc="' + row.id_marca + '" data-frio="' + row.capacidad_arranque_frio + '" data-peso="' + row.peso + '" data-foto="' + row.foto + '" data-tamanio="' + row.tamanio + '" data-precio="' + row.precio + '" ><i class="fa fa-pencil-alt"></i></button>' +
-                '<button type="button" class="text-danger mx-1 " data-id="' + eliminar + '"  data-toggle="modal" data-target="#eliminarModal">' +
+                '<button type="button" class="text-danger mx-1" data-foto="' + row.foto + '" data-id="' + eliminar + '"  data-toggle="modal" data-target="#eliminarModal">' +
                 '<i class="fa fa-trash-alt text-105"></i>' +
                 '</button>' +
                 '</div>'
@@ -765,19 +766,21 @@
         /*RECUPERAR METADATOS DEL BOTÓN*/
         var button = $(event.relatedTarget)
         var id_bateria = button.data('id')
-
+         var foto=button.data('foto')
         var modal = $(this)
         modal.find('#delete_id').val(id_bateria)
-
+        modal.find('#delete_foto').val(foto)
     });
 
 </script>
 <script type="text/javascript">
     function eliminar_producto() {
         var id_producto = document.getElementById("delete_id").value;
+        var foto = document.getElementById("delete_foto").value;
         var token = '{{csrf_token()}}';
         var data = {
             id_producto: id_producto,
+            foto:foto,
             _token: token
         };
         console.log(data);

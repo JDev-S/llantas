@@ -284,6 +284,18 @@
                     align: 'center',
                     sortable: true
                 },
+                 {
+                    field: 'medida',
+                    title: 'Medida',
+                    align: 'center',
+                    sortable: true
+                },
+                 {
+                    field: 'numero_rin',
+                    title: 'Rin',
+                    align: 'center',
+                    sortable: true
+                },
                 {
                     field: 'modelo',
                     title: 'Modelo',

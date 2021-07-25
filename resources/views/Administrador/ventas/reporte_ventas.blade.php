@@ -93,7 +93,7 @@
                 <div class="col-md-12">
                     <div class="card-header t-border-1 mb-0 mt-2">
                         <h5 class="text-success-d4 mb-0">
-                            Llena el formulario:
+                            Introduce fechas:
                         </h5>
                     </div>
                 </div>
@@ -116,10 +116,10 @@
                         </div>
                         <div class="row">
                             <div class="form-row col-md-12 justify-content-center">
-                                <div class="form-group col-md-2 ml-2 justify-content-center">
+                                <div class="form-group col-auto ml-2 justify-content-center">
                                     <button class="btn px-4 btn-primary mb-1 " onclick="mostrar_ventas();">Visualizar</button>
                                 </div>
-                                 <div class="form-group col-md-2 ml-2 justify-content-center">
+                                 <div class="form-group col-auto ml-2 justify-content-center">
                                     <button class="btn px-4 btn-primary mb-1 " onclick="limpiar()">Limpiar</button>
                                 </div>
                             </div>

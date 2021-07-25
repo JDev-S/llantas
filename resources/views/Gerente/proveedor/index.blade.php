@@ -2,6 +2,28 @@
 @section('contenido')
 @section('styles')
 <link rel="stylesheet" type="text/css" href="\npm\bootstrap-table@1.18.3\dist\bootstrap-table.min.css">
+<style>
+    .table .thead-blue th {
+        color: #fff;
+        background-color: #3195f1;
+        border-color: #0d7adf;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    .text-red {
+        color: red;
+    }
+
+    /*.thead-blue thead tr th{ 
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background-color: #ffffff;
+    }*/
+
+</style>
 @stop
 <div class="page-content container container-plus">
     <div class="page-header">
@@ -43,7 +65,7 @@
         <div class="modal-content">
             <div class="modal-header" style="background:#2470bd;">
                 <h5 class="modal-title" id="exampleModalLabel2" style="color:white;">
-                    CATALOGO PROVEEDOR
+                    CATÁLOGO PROVEEDOR
                 </h5>
 
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -69,6 +91,7 @@
                                                                 <tr class="text-white">
                                                                     <th><b>Código del producto</b></th>
                                                                     <th><b>Precio Compra</b></th>
+                                                                    <th><b>Acción</b></th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody class="text-95" id="tbl_pedido" name="tbl_pedido">
@@ -257,6 +280,47 @@
     </div>
 </div>
         <!--FIN MODAL ELIMINAR-->
+<!--MODAL BORRAR-->
+<div class="modal fade" data-backdrop-bg="bgc-white" id="borrarModal" tabindex="-1" aria-labelledby="dangerModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content bgc-transparent brc-danger-m2 shadow">
+            <div class="modal-header py-2 bgc-danger-tp1 border-0  radius-t-1">
+                <h5 class="modal-title text-white-tp1 text-110 pl-2 font-bolder" id="dangerModalLabel">
+                    Advertencia!
+                </h5>
+
+                <button type="button" class="position-tr btn btn-xs btn-outline-white btn-h-yellow btn-a-yellow mt-1px mr-1px btn-brc-tp" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="text-150">×</span>
+                </button>
+            </div>
+
+
+            <div class="modal-body bgc-white-tp2 p-md-4 pl-md-5">
+                <div class="d-flex align-items-top mr-2 mr-md-5">
+                    <i class="fas fa-exclamation-triangle fa-2x text-orange-d2 float-rigt mr-4 mt-1"></i>
+                    <input type="hidden" class="form-control" id="borrar_producto" name="borrar_producto">
+                    <input type="hidden" class="form-control" id="borrar_catalogo" name="borrar_catalogo">
+                    <input type="hidden" class="form-control" id="borrar_proveedor" name="borrar_proveedor">
+                    <div class="text-secondary-d2 text-105">
+                        Esta seguro de que desea eliminarlo?
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer bgc-white-tp2 border-0">
+                <button type="button" class="btn px-4 btn-light-grey" data-dismiss="modal">
+                    No
+                </button>
+
+                <button type="button" class="btn px-4 btn-danger" id="id-danger-yes-btn" onclick="eliminar_Producto()" data-dismiss="modal">
+                    Si
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--FIN MODAL BORRAR-->
+
 @section('scripts')
 
 <!-- include vendor scripts used in "Bootstrap Table" page. see "/views//pages/partials/table-bootstrap/@vendor-scripts.hbs" -->
@@ -350,7 +414,7 @@
 
 
             toolbar: "#table-toolbar",
-            theadClasses: "bgc-white text-grey text-uppercase text-80",
+            theadClasses: "thead-blue",
             clickToSelect: true,
 
             checkboxHeader: true,
@@ -691,7 +755,9 @@
                 //alert("hola");
                 llenado += '<tr> <td>' + objeto.nombre + '</td>' +
                     '<td>' + valor + '</td>' +
+                    '<td><button class="text-red mx-1" data-toggle="modal" data-target="#borrarModal" data-producto="' + objeto.id_producto + '" data-catalogo="' + objeto.id_catalogo + '" data-proveedor="' + objeto.id_proveedor   +  '" ><i class="fa fa-trash-alt text-105"></i></button></td>' +
                     '</tr>';
+                   
             }
         });
         console.log(llenado);
@@ -700,6 +766,45 @@
        
 
     });
+
+</script>
+<script type="text/javascript">
+    $('#borrarModal').on('show.bs.modal', function(event) {
+        /*RECUPERAR METADATOS DEL BOTÓN*/
+        var button = $(event.relatedTarget)
+        var id_producto = button.data('producto')
+        var id_catalogo = button.data('catalogo')
+        var id_proveedor = button.data('proveedor')
+        var modal = $(this)
+        modal.find('#borrar_producto').val(id_producto)
+        modal.find('#borrar_catalogo').val(id_catalogo)
+        modal.find('#borrar_proveedor').val(id_proveedor)
+    });
+</script>   
+
+<script type="text/javascript">
+    function eliminar_Producto() {
+        var id_producto = document.getElementById("borrar_producto").value;
+        var id_catalogo =document.getElementById("borrar_catalogo").value;
+        var id_proveedor =document.getElementById("borrar_proveedor").value;
+        var token = '{{csrf_token()}}';
+        var data = {
+            id_proveedor: id_proveedor,
+            id_producto:id_producto,
+            id_catalogo:id_catalogo,
+            _token: token
+        };
+        console.log(data);
+        $.ajax({
+            type: "POST",
+            url: "/eliminar_catalogo",
+            data: data,
+            success: function(msg) {
+                alert(msg);
+                location.href = "/mostrar_proveedor_sucursal";
+            }
+        });
+    }
 
 </script>
 @stop

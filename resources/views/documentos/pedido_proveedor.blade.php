@@ -113,7 +113,7 @@
 						<table>
 							<tr>
 								<td class="title" style="padding-bottom: 0px;">
-									<img src="https://www.sparksuite.com/images/logo.png" style="width: 100%; max-width: 300px" />
+									<img src="https://serviciosllantimax.com.mx/img/LOGO%20LLANTIMAX.png" style="width: 100%; max-width: 200px" />
 								</td>
 
 								<td style="text-align:right">

@@ -197,7 +197,7 @@
                                         <li class="nav-item">
                                             <a href="/mostrar_llantas" class="nav-link">
                                                 <span class="nav-text">
-                                                    <span>Mostrar llantas</span>
+                                                    <span>Llantas</span>
                                                 </span>
                                             </a>
                                         </li>
@@ -206,7 +206,7 @@
                                         <li class="nav-item">
                                             <a href="/mostrar_baterias" class="nav-link">
                                                 <span class="nav-text">
-                                                    <span>Mostrar Baterias</span>
+                                                    <span>Baterias</span>
                                                 </span>
                                             </a>
                                         </li>
@@ -214,7 +214,7 @@
                                         <li class="nav-item">
                                             <a href="/mostrar_refacciones" class="nav-link">
                                                 <span class="nav-text">
-                                                    <span>Mostrar Refacciones</span>
+                                                    <span>Refacciones</span>
                                                 </span>
                                             </a>
                                         </li>
@@ -222,7 +222,7 @@
                                         <li class="nav-item">
                                             <a href="/mostrar_servicios" class="nav-link">
                                                 <span class="nav-text">
-                                                    <span>Mostrar servicios</span>
+                                                    <span>Servicios</span>
                                                 </span>
                                             </a>
                                         </li>
@@ -231,7 +231,7 @@
                                         <li class="nav-item">
                                             <a href="/mostrar_inventario" class="nav-link">
                                                 <span class="nav-text">
-                                                    <span>Mostrar inventario</span>
+                                                    <span>Inventario</span>
                                                 </span>
                                             </a>
                                         </li>
@@ -262,7 +262,7 @@
                                         <li class="nav-item">
                                             <a href="/mostrar_clientes" class="nav-link">
                                                 <span class="nav-text">
-                                                    <span>Mostrar clientes</span>
+                                                    <span>Clientes</span>
                                                 </span>
                                             </a>
                                         </li>
@@ -270,7 +270,7 @@
                                         <li class="nav-item">
                                             <a href="/mostrar_proveedores" class="nav-link">
                                                 <span class="nav-text">
-                                                    <span>Mostrar proveedores</span>
+                                                    <span>Proveedores</span>
                                                 </span>
                                             </a>
                                         </li>
@@ -278,18 +278,12 @@
                                         <li class="nav-item">
                                             <a href="/agregar_catalogo" class="nav-link">
                                                 <span class="nav-text">
-                                                    <span>Proveedor catalogo</span>
+                                                    <span>Nuevo catálogo</span>
                                                 </span>
                                             </a>
                                         </li>
 
-                                        <li class="nav-item">
-                                            <a href="/mostrar_creditos" class="nav-link">
-                                                <span class="nav-text">
-                                                    <span>Mostrar créditos</span>
-                                                </span>
-                                            </a>
-                                        </li>
+                                        
                                     </ul>
                                 </div>
                                 <b class="sub-arrow"></b>
@@ -311,7 +305,7 @@
                                         <li class="nav-item">
                                             <a href="/mostrar_pedido_proveedor" class="nav-link">
                                                 <span class="nav-text">
-                                                    <span>Pedidos proveedores</span>
+                                                    <span>Compras realizadas</span>
                                                 </span>
                                             </a>
                                         </li>
@@ -319,7 +313,7 @@
                                         <li class="nav-item">
                                             <a href="/pedido_proveedor" class="nav-link">
                                                 <span class="nav-text">
-                                                    <span>Generar pedido</span>
+                                                    <span>Nueva compra</span>
                                                 </span>
                                             </a>
                                         </li>
@@ -344,14 +338,21 @@
                                         <li class="nav-item">
                                             <a href="/mostrar_venta" class="nav-link">
                                                 <span class="nav-text">
-                                                    <span>Mostrar ventas</span>
+                                                    <span>Ventas realizadas</span>
                                                 </span>
                                             </a>
                                         </li>
                                         <li class="nav-item">
                                             <a href="/agregar_venta" class="nav-link">
                                                 <span class="nav-text">
-                                                    <span>Agregar venta</span>
+                                                    <span>Nueva venta</span>
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="/mostrar_creditos" class="nav-link">
+                                                <span class="nav-text">
+                                                    <span>Créditos</span>
                                                 </span>
                                             </a>
                                         </li>
@@ -363,7 +364,7 @@
                                 <a href="/mostrar_reportes" class="nav-link">
                                     <i class="nav-icon fas fa-file-pdf"></i>
                                     <span class="nav-text fadeable">
-                                        <span>Reportes</span>
+                                        <span>Reporte de ventas</span>
                                     </span>
                                 </a>
                                 <b class="sub-arrow"></b>
@@ -385,21 +386,21 @@
                                         <li class="nav-item">
                                             <a href="/mostrar_pedido_sucursal" class="nav-link">
                                                 <span class="nav-text">
-                                                    <span>Mostrar pedidos</span>
+                                                    <span>Pedidos solicitados</span>
                                                 </span>
                                             </a>
                                         </li>
                                         <li class="nav-item">
                                             <a href="/mostrar_pedido_solicitado" class="nav-link">
                                                 <span class="nav-text">
-                                                    <span>Pedidos solicitados</span>
+                                                    <span>Pedidos solicitantes</span>
                                                 </span>
                                             </a>
                                         </li>
                                         <li class="nav-item">
                                             <a href="/pedido_sucursal" class="nav-link">
                                                 <span class="nav-text">
-                                                    <span>Generar pedido</span>
+                                                    <span>Nuevo pedido</span>
                                                 </span>
                                             </a>
                                         </li>
@@ -446,7 +447,7 @@
                                         <li class="nav-item">
                                             <a href="/mostrar_llantas_sucursales" class="nav-link">
                                                 <span class="nav-text">
-                                                    <span>Mostrar llantas</span>
+                                                    <span>Llantas</span>
                                                 </span>
                                             </a>
                                         </li>
@@ -455,7 +456,7 @@
                                         <li class="nav-item">
                                             <a href="/mostrar_baterias_sucursales" class="nav-link">
                                                 <span class="nav-text">
-                                                    <span>Mostrar Baterias</span>
+                                                    <span>Baterias</span>
                                                 </span>
                                             </a>
                                         </li>
@@ -463,7 +464,7 @@
                                         <li class="nav-item">
                                             <a href="/mostrar_refacciones_sucursales" class="nav-link">
                                                 <span class="nav-text">
-                                                    <span>Mostrar Refacciones</span>
+                                                    <span>Refacciones</span>
                                                 </span>
                                             </a>
                                         </li>
@@ -471,7 +472,7 @@
                                         <li class="nav-item">
                                             <a href="/mostrar_servicios_sucursales" class="nav-link">
                                                 <span class="nav-text">
-                                                    <span>Mostrar servicios</span>
+                                                    <span>Servicios</span>
                                                 </span>
                                             </a>
                                         </li>
@@ -480,7 +481,7 @@
                                         <li class="nav-item">
                                             <a href="/mostrar_inventarios_sucursal" class="nav-link">
                                                 <span class="nav-text">
-                                                    <span>Mostrar inventario</span>
+                                                    <span>Inventario</span>
                                                 </span>
                                             </a>
                                         </li>
@@ -511,7 +512,7 @@
                                         <li class="nav-item">
                                             <a href="/mostrar_clientes_sucursal" class="nav-link">
                                                 <span class="nav-text">
-                                                    <span>Mostrar clientes</span>
+                                                    <span>Clientes</span>
                                                 </span>
                                             </a>
                                         </li>
@@ -519,7 +520,7 @@
                                         <li class="nav-item">
                                             <a href="/mostrar_proveedor_sucursal" class="nav-link">
                                                 <span class="nav-text">
-                                                    <span>Mostrar proveedores</span>
+                                                    <span>Proveedores</span>
                                                 </span>
                                             </a>
                                         </li>
@@ -527,15 +528,7 @@
                                         <li class="nav-item">
                                             <a href="/agregar_catalogo_sucursales" class="nav-link">
                                                 <span class="nav-text">
-                                                    <span>Proveedor catalogo</span>
-                                                </span>
-                                            </a>
-                                        </li>
-
-                                        <li class="nav-item">
-                                            <a href="/mostrar_creditos_sucursal" class="nav-link">
-                                                <span class="nav-text">
-                                                    <span>Mostrar créditos</span>
+                                                    <span>Nuevo catalogo</span>
                                                 </span>
                                             </a>
                                         </li>
@@ -560,7 +553,7 @@
                                         <li class="nav-item">
                                             <a href="/mostrar_pedido_proveedor_sucursal" class="nav-link">
                                                 <span class="nav-text">
-                                                    <span>Pedidos proveedores</span>
+                                                    <span>Compras realizadas</span>
                                                 </span>
                                             </a>
                                         </li>
@@ -568,7 +561,7 @@
                                         <li class="nav-item">
                                             <a href="/mostrar_catalogo_proveedores_sucursal" class="nav-link">
                                                 <span class="nav-text">
-                                                    <span>Generar pedido</span>
+                                                    <span>Nueva compra</span>
                                                 </span>
                                             </a>
                                         </li>
@@ -593,14 +586,21 @@
                                         <li class="nav-item">
                                             <a href="/mostrar_ventas_realizadas_sucursal" class="nav-link">
                                                 <span class="nav-text">
-                                                    <span>Mostrar ventas</span>
+                                                    <span>Ventas realizadas</span>
                                                 </span>
                                             </a>
                                         </li>
                                         <li class="nav-item">
                                             <a href="/agregar_venta_sucursal" class="nav-link">
                                                 <span class="nav-text">
-                                                    <span>Agregar venta</span>
+                                                    <span>Nueva venta</span>
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="/mostrar_creditos_sucursal" class="nav-link">
+                                                <span class="nav-text">
+                                                    <span>Créditos</span>
                                                 </span>
                                             </a>
                                         </li>
@@ -612,7 +612,7 @@
                                 <a href="/mostrar_reportes_sucursal" class="nav-link">
                                     <i class="nav-icon fas fa-file-pdf"></i>
                                     <span class="nav-text fadeable">
-                                        <span>Reportes</span>
+                                        <span>Reporte de ventas</span>
                                     </span>
                                 </a>
                                 <b class="sub-arrow"></b>
@@ -634,21 +634,21 @@
                                         <li class="nav-item">
                                             <a href="/mostrar_pedidos_sucursales_sucursal" class="nav-link">
                                                 <span class="nav-text">
-                                                    <span>Mostrar pedidos</span>
+                                                    <span>Pedidos solicitados</span>
                                                 </span>
                                             </a>
                                         </li>
                                         <li class="nav-item">
                                             <a href="/mostrar_pedidos_solicitados_sucursal" class="nav-link">
                                                 <span class="nav-text">
-                                                    <span>Pedidos solicitados</span>
+                                                    <span>Pedidos solicitantes</span>
                                                 </span>
                                             </a>
                                         </li>
                                         <li class="nav-item">
                                             <a href="/pedido_sucursal_sucursal" class="nav-link">
                                                 <span class="nav-text">
-                                                    <span>Generar pedido</span>
+                                                    <span>Nuevo pedido</span>
                                                 </span>
                                             </a>
                                         </li>

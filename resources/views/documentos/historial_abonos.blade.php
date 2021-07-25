@@ -112,7 +112,7 @@
 						<table>
 							<tr>
 								<td class="title" style="padding-bottom: 0px;">
-									<img src="https://www.sparksuite.com/images/logo.png" style="width: 100%; max-width: 300px" />
+									<img src="https://serviciosllantimax.com.mx/img/LOGO%20LLANTIMAX.png" style="width: 100%; max-width: 200px" />
 								</td>
 
 								<td style="text-align:right">
@@ -143,11 +143,19 @@
 								<b>Nombre cliente:</b>
 									'.$cliente.'<br />
                                     <b>Correo eléctronico:</b>
-									'.$correo.'
+									'.$correo.'<br />
+                                    <b>Abonado:</b>
+									$'.$suma_abonado.'<br />
+                                    <b>Restante:</b>
+									$'.$restante.'
 								</td>
 							</tr>
 						</table>
 					</td>
+				</tr>
+                <tr  style="text-align:left;">
+					<td style="text-align:left;"><b>Venta </b></td>
+					
 				</tr>
 				<tr class="heading" >
 					<td style="text-align:center;">Código</td>
@@ -186,7 +194,7 @@
                                 <td width="40%" style="padding-bottom: 0px;"><b>Subtotal:</b></td>
                                 <td style="padding-bottom: 0px;">' ;
 
-                                    echo '$'.number_format($valor2, 2).
+                                    echo '$'.number_format($valor3, 2).
                                 '</td>
                             </tr>
                             </table>

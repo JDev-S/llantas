@@ -121,5 +121,15 @@ class ProveedorController extends Controller
         $query=DB::update("DELETE FROM proveedores where id_proveedor=?",[$id_proveedor]);
         
     }
+    
+    public function eliminar_catalogo(Request $input)
+    {
+        $id_proveedor = $input['id_proveedor'];
+        $id_catalogo = $input['id_catalogo'];
+        $id_producto = $input['id_producto'];
+        
+        $query=DB::update("DELETE FROM catalogo WHERE catalogo.id_catalogo = ? and catalogo.id_producto = ? and catalogo.id_proveedor = ?",[$id_catalogo,$id_producto,$id_proveedor]);
+        
+    }
 
 }

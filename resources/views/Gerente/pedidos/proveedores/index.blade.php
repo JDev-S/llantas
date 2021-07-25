@@ -2,6 +2,28 @@
 @section('contenido')
 @section('styles')
 <link rel="stylesheet" type="text/css" href="\npm\bootstrap-table@1.18.3\dist\bootstrap-table.min.css">
+<style>
+    .table .thead-blue th {
+        color: #fff;
+        background-color: #3195f1;
+        border-color: #0d7adf;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    .text-red {
+        color: red;
+    }
+
+    /*.thead-blue thead tr th{ 
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background-color: #ffffff;
+    }*/
+
+</style>
 @stop
 <div class="page-content container container-plus">
     <div class="page-header">
@@ -101,6 +123,7 @@
 
                                                             </tbody>
                                                         </table>
+                                                        <div style="text-align:right" id="total_mostrar"> </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -170,6 +193,7 @@
 <script src="\npm\bootstrap-table@1.18.3\dist\extensions\export\bootstrap-table-export.min.js"></script>
 <script src="\npm\bootstrap-table@1.18.3\dist\extensions\print\bootstrap-table-print.min.js"></script>
 <script src="\npm\bootstrap-table@1.18.3\dist\extensions\mobile\bootstrap-table-mobile.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
 
 <!-- "Bootstrap Table" page script to enable its demo functionality -->
 <script>
@@ -180,12 +204,14 @@
 
         datos.forEach(objeto => {
             //let tmp =[] ;
+             var myNumeral = numeral(objeto.total_venta);
+            var currencyString = myNumeral.format('$0,0.00');
             arr.push({
                 "id_pedido": objeto.id_pedido,
                 "nombre_completo": objeto.nombre_completo,
                 "sucursal_pedido": objeto.sucursal_pedido,
                 "descripcion": objeto.descripcion,
-                "total_venta": objeto.total_venta,
+                "total_venta": currencyString,
                 "fecha_venta": objeto.fecha_venta
             }, );
             //arr.push(tmp);
@@ -251,7 +277,7 @@
 
 
             toolbar: "#table-toolbar",
-            theadClasses: "bgc-white text-grey text-uppercase text-80",
+            theadClasses: "thead-blue",
             clickToSelect: true,
 
             checkboxHeader: true,
@@ -427,6 +453,7 @@
                    console.log('hola');
             }
         }*/
+        var total_final=0;
         datos.forEach(objeto => {
             if (objeto.id_pedido_proveedor == id_proveedor) {
                 //alert("hola");
@@ -438,10 +465,12 @@
                     '<td>' + objeto.precio_unidad + '</td>' +
                     '<td>' + objeto.total + '</td>' +
                     '</tr>';
+                    total_final=total_final+parseInt(objeto.total);
             }
         });
         console.log(llenado);
         document.getElementById('tbl_pedido').innerHTML = llenado;
+        document.getElementById('total_mostrar').innerHTML="<b>Total:</b> $"+total_final;
     });
 
 </script>

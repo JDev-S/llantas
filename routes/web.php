@@ -201,13 +201,15 @@ Route::post('/mostrar_reportes_ventas_sucursal', 'VentasController@mostrar_repor
 /*Mostrar proveedores*/
 Route::get('/mostrar_proveedores','ProveedorController@mostrar_proveedor')->middleware('admin:1')->name('mostrar_proveedores');
 /*Mostrar proveedores sucursal*/
-Route::get('/mostrar_proveedor_sucursal','ProveedorController@mostrar_proveedor_sucursal')->middleware('gerente:2')->name('mostrar_proveedor_sucursal');
+Route::get('/mostrar_proveedor_sucursal','ProveedorController@mostrar_pedido_proveedor_sucursal')->middleware('gerente:2')->name('mostrar_proveedor_sucursal');
 /*Agregar un proveedor*/
 Route::post('/agregar_proveedores', 'ProveedorController@agregar_proveedor')->name('agregar_proveedores');
 /*Agregar un proveedor_sucursal*/
 Route::post('/agregar_proveedores_sucursal', 'ProveedorController@agregar_proveedores_sucursal')->name('agregar_proveedores_sucursal');
 /*ELIMINAR PROVEEDOR*/
 Route::post('/eliminar_Proveedor', 'ProveedorController@eliminar_Proveedor')->name('eliminar_Proveedor');
+/*Eliminar producto catalogo*/
+Route::post('/eliminar_catalogo', 'ProveedorController@eliminar_catalogo')->name('eliminar_catalogo');
 /*ACTUALIZAR PROVEEDOR*/
 Route::post('/actualizar_proveedor', 'ProveedorController@actualizar_proveedor')->name('actualizar_proveedor');
 /*ACTUALIZAR proveedor sucursal*/

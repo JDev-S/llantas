@@ -133,7 +133,7 @@
                                     Ticket
                                     <i class="fa fa-angle-right text-80 ml-1"></i>
                                     <small class="page-info text-dark-m3">
-                                        #111-222
+                                        #{{$id_venta}}
                                     </small>
                                 </h1>
 
@@ -221,7 +221,7 @@
                                                     <span class="text-600 text-90">
                                                         ID:
                                                     </span>
-                                                    #111-222
+                                                     #{{$id_venta}}
                                                 </div>
 
                                                 <div class="my-2">
@@ -1060,7 +1060,7 @@
                             }
 
                         } else {
-                            comision = "";
+                            comision = "0";
                         }
 
                         alert("Generando venta");

@@ -113,7 +113,7 @@
 						<table>
 							<tr>
 								<td class="title" style="padding-bottom: 0px;">
-									<img src="https://www.sparksuite.com/images/logo.png" style="width: 100%; max-width: 300px" />
+									<img src="https://serviciosllantimax.com.mx/img/LOGO%20LLANTIMAX.png" style="width: 100%; max-width: 200px" />
 								</td>
 
 								<td style="text-align:right">
@@ -142,7 +142,7 @@
 									'.$auto.'
                                      <br />';
     
-                                    if($metodo_pago=="TDC")
+                                    if($metodo_pago=="Crédito")
                                     {
                                         echo '<b>Comentario:</b> 
 									   '.$comentario.'
@@ -189,7 +189,8 @@
                 
                 if($metodo_pago=="TDC")
                 {
-                     $valor1=  intval($total_venta)-(intval($total_venta)*0.03);
+                    $valor3=intval($total_venta)*floatval($comision);
+                     $valor1=  intval($total_venta)-floatval($valor3);
                     if ($valor1<0) return "-".formato_moneda(-$valor1);
                     echo
                     '<tr class="total">
@@ -208,8 +209,8 @@
                             </table>
                           </td>
 				    </tr>';
-                    
-                     $valor2=  intval($total_venta)*0.03;
+                    $valor4=intval($total_venta)*floatval($comision);
+                     $valor2=  $valor4;
                     if ($valor2<0) return "-".formato_moneda(-$valor2);
                     echo
                     '<tr class="total">
@@ -219,7 +220,7 @@
                         <td style="text-align:center;font-size:12px;padding-top: 0px;padding-bottom: 0px;"> 
                             <table>
                             <tr>
-                                <td width="40%" style="padding-top: 0px;padding-bottom: 0px;"><b>Comisión(3%):</b></td>
+                                <td width="40%" style="padding-top: 0px;padding-bottom: 0px;"><b>Comisión('.$comision.'):</b></td>
                                 <td style="padding-top: 0px;padding-bottom: 0px;" >' ;
 
                                     echo '$'.number_format($valor2, 2).
@@ -232,7 +233,7 @@
                 }
                 else
                 {
-                    $valor1=  intval($total_venta)-(intval($total_venta)*0.03);
+                    $valor1=  intval($total_venta);
                     if ($valor1<0) return "-".formato_moneda(-$valor1);
                     echo
                     '<tr class="total">

@@ -2,6 +2,28 @@
 @section('contenido')
 @section('styles')
 <link rel="stylesheet" type="text/css" href="\npm\bootstrap-table@1.18.3\dist\bootstrap-table.min.css">
+<style>
+    .table .thead-blue th {
+        color: #fff;
+        background-color: #3195f1;
+        border-color: #0d7adf;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    .text-red {
+        color: red;
+    }
+
+    /*.thead-blue thead tr th{ 
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background-color: #ffffff;
+    }*/
+
+</style>
 @stop
 <div class="page-content container container-plus">
     <div class="page-header">
@@ -198,6 +220,7 @@
                 <div class="d-flex align-items-top mr-2 mr-md-5">
                     <i class="fas fa-exclamation-triangle fa-2x text-orange-d2 float-rigt mr-4 mt-1"></i>
                     <input type="hidden" class="form-control" id="delete_id" name="delete_id">
+                    <input type="hidden" class="form-control" id="delete_foto" name="delete_foto">
                     <div class="text-secondary-d2 text-105">
                         Esta seguro de que desea eliminarlo?
                     </div>
@@ -326,7 +349,7 @@
 
 
             toolbar: "#table-toolbar",
-            theadClasses: "bgc-white text-grey text-uppercase text-80",
+            theadClasses: "thead-blue",
             clickToSelect: true,
 
             checkboxHeader: true,
@@ -436,7 +459,7 @@
             var eliminar = row.id_refacciones;
             return '<div class="action-buttons">' +
                 '<button class="text-blue mx-1" data-toggle="modal" data-target="#editModal" data-id="' + row.id_refacciones + '" data-nombre="' + row.nombre_refacciones + '" data-sucursal="' + row.sucursal + '" data-suc="' + row.id_sucursal + '" data-precio="' + row.precio + '" data-foto="' + row.photo + '" data-marca="' + row.marca + '" data-modelo="' + row.modelo + '" data-descripcion="' + row.descripcion + '" ><i class="fa fa-pencil-alt"></i></button>' +
-                '<button type="button" class="text-danger mx-1 " data-id="' + eliminar + '"  data-toggle="modal" data-target="#eliminarModal">' +
+                 '<button type="button" class="text-danger mx-1" data-foto="'+row.photo+'" data-id="' + eliminar + '"  data-toggle="modal" data-target="#eliminarModal">' +
                 '<i class="fa fa-trash-alt text-105"></i>' +
                 '</button>' +
                 '</div>'
@@ -500,8 +523,10 @@
         /*RECUPERAR METADATOS DEL BOTÓN*/
         var button = $(event.relatedTarget)
         var id_refaccion = button.data('id')
+        var foto=button.data('foto')
         var modal = $(this)
         modal.find('#delete_id').val(id_refaccion)
+        modal.find('#delete_foto').val(foto)
     });
 
 </script>
@@ -509,9 +534,11 @@
 <script type="text/javascript">
     function eliminar_producto() {
         var id_producto = document.getElementById("delete_id").value;
+        var foto = document.getElementById("delete_foto").value;
         var token = '{{csrf_token()}}';
         var data = {
             id_producto: id_producto,
+            foto:foto,
             _token: token
         };
         console.log(data);

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Database\Connection;
 use App\Http\Controllers\BateriasController;
+use Illuminate\Support\Facades\File; 
 use DB;
 class LlantasController extends Controller
 {
@@ -388,6 +389,8 @@ class LlantasController extends Controller
     public function eliminar_Llanta(Request $input)
 	{
         $id_producto = $input['id_producto'];
+         $foto=$input['foto'];
+        File::delete(public_path().'/img/',$foto);
 
         $query=DB::update("DELETE FROM productos_llantimax where productos_llantimax.id_productos_llantimax=?",[$id_producto]);
         
